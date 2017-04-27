@@ -6,26 +6,27 @@ It was designed to work with mocha programmatically, in order to be able to para
 
 #### Instalation steps:
 
-` npm install mocha-rp-reporter`
+1. ` git clone`
+2. ` npm install`
 
 #### How to use:
-
+Fill in configOptions. 
 ```javascript
 const Mocha = require("mocha");
-let mochaMain = new Mocha({    
+let mochaMain = new Mocha({
     reporter: 'mocha-rp-reporter',
     reporterOptions: {
-        configFile: "path to config.json",
         configOptions: {
-            endpoint: "EPAM report portal api url",
-            username: "user",
-            password: "password",
-            launch: "execution name",
-            project: "project name",
+            endpoint: "",
+            username: "",
+            password: "00000000-0000-0000-0000-000000000000",
+            launch: "",
+            project: "",
             tags: [
-                "tag1", "tag2"
+                ""
             ]
-        }                        
+        },
+        configFile: "reportportal.json"
     }
 });
 ```
@@ -36,7 +37,7 @@ let mochaMain = new Mocha({
 {
   "endpoint": "EPAM report portal api url",
   "username": "user",
-  "password": "password",
+  "password": "00000000-0000-0000-0000-000000000000",
   "launch": "execution name",
   "project": "project name",
   "tags": [
@@ -47,9 +48,7 @@ let mochaMain = new Mocha({
 
 By default reporter will use `configOptions` otherwise will try to load file from `configFile`
 
-######WARNING: Test execution will slow down due to sync request to RP 
-
-
+`npm run test` to start tests execution
 
 
 
