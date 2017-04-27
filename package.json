@@ -1,0 +1,21 @@
+{
+  "name": "mocha",
+  "version": "1.0.12",
+  "description": "mocha reporter for EPAM Report Portal",
+  "main": "mocha-rp-reporter.js",
+  "scripts": {
+    "test": "node ./test/main.js"
+  },
+  "author": "Vitalii Fedosieiev",
+  "license": "ISC",
+  "dependencies": {
+    "mocha": "^3.2.0",
+    "sync-rest-client": "^1.0.3"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0"
+  },
+  "keywords": [
+    "epam", "reports", "portal", "mocha", "reporters", "reportportal"
+  ]
+}
