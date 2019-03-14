@@ -2,22 +2,15 @@
 // create mocha instance
 const Mocha = require("mocha");
 let mochaMain = new Mocha({
-    reporter: 'mocha-rp-reporter',
+    reporter: "lib/mocha-rp-reporter.js",
     reporterOptions: {
-        configOptions: {
-            endpoint: "",
-            username: "",
-            password: "00000000-0000-0000-0000-000000000000",
-            launch: "",
-            project: "",
-            tags: [
-                ""
-            ]
-        },
-        configFile: "reportportal.json"
-    }
+        endpoint: "",
+        token: "",
+        launch: "",
+        project: ""
+    },
+    timeout: 250000
 });
-
 
 // run tests
 try{

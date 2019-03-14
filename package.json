@@ -1,21 +1,49 @@
 {
-  "name": "mocha",
-  "version": "1.0.12",
+  "name": "rp-mocha-reporter",
+  "version": "2.0.0",
   "description": "mocha reporter for EPAM Report Portal",
-  "main": "mocha-rp-reporter.js",
+  "main": "index.js",
   "scripts": {
-    "test": "node ./test/main.js"
+    "test": "node ./test/main.js",
+    "build": "babel src -d lib",
+    "prepublish": "npm run build"
   },
   "author": "Vitalii Fedosieiev",
+  "contributors": [
+    {
+      "name": "Alexander Galichenko",
+      "email": "alexandr.galichenko@gmail.com"
+    }
+  ],
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "6"
+          }
+        }
+      ]
+    ]
+  },
   "license": "ISC",
   "dependencies": {
-    "mocha": "^3.2.0",
-    "sync-rest-client": "^1.0.3"
+    "reportportal-client": "^5.1.0"
   },
   "devDependencies": {
-    "chai": "^3.5.0"
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "chai": "^3.5.0",
+    "mocha": "^5.2.0"
   },
   "keywords": [
-    "epam", "reports", "portal", "mocha", "reporters", "reportportal"
+    "epam",
+    "reports",
+    "portal",
+    "mocha",
+    "reporters",
+    "reportportal"
   ]
 }

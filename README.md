@@ -16,39 +16,12 @@ const Mocha = require("mocha");
 let mochaMain = new Mocha({
     reporter: 'mocha-rp-reporter',
     reporterOptions: {
-        configOptions: {
-            endpoint: "",
-            username: "",
-            password: "00000000-0000-0000-0000-000000000000",
-            launch: "",
-            project: "",
-            tags: [
-                ""
-            ]
-        },
-        configFile: "reportportal.json"
+        endpoint: "",
+        token: "",
+        launch: "",
+        project: ""
     }
 });
 ```
-
-`config.json` should look like this:
-
-```json
-{
-  "endpoint": "EPAM report portal api url",
-  "username": "user",
-  "password": "00000000-0000-0000-0000-000000000000",
-  "launch": "execution name",
-  "project": "project name",
-  "tags": [
-    "tag1", "tag2"
-  ]
-}
-```
-
-By default reporter will use `configOptions` otherwise will try to load file from `configFile`
-
-`npm run test` to start tests execution
-
 
 
