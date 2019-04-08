@@ -6,8 +6,7 @@ It was designed to work with mocha programmatically, in order to be able to para
 
 #### Instalation steps:
 
-1. ` git clone`
-2. ` npm install`
+` npm install rp-mocha-reporter`
 
 #### How to use:
 Fill in configOptions. 
