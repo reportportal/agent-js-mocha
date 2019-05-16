@@ -1,10 +1,12 @@
 {
   "name": "rp-mocha-reporter",
-  "version": "2.0.1",
+  "version": "2.0.0",
   "description": "mocha reporter for EPAM Report Portal",
   "main": "index.js",
   "scripts": {
-    "test": "node ./test/main.js"
+    "test": "node ./test/main.js",
+    "build": "babel ./src -d lib",
+    "prepublish": "npm run build"
   },
   "author": "Vitalii Fedosieiev",
   "contributors": [
