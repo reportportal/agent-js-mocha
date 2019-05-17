@@ -24,8 +24,9 @@ let mochaMain = new Mocha({
 ```
 
 #### Run test example:
-For running test example clone **agent-js-mocha**.
-In the working directory run
+For running test example clone **agent-js-mocha**.  
+In the working directory run:  
+
 ```npm install```  - that would install all dependencies.
 
 ```npm run test``` - that would run example tests.
