@@ -4,7 +4,7 @@
   "description": "mocha reporter for EPAM Report Portal",
   "main": "index.js",
   "scripts": {
-    "test": "node ./test/main.js"
+    "test": "node ./example/main.js"
   },
   "author": "Vitalii Fedosieiev",
   "contributors": [

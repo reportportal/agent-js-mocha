@@ -2,7 +2,7 @@
 // create mocha instance
 const Mocha = require("mocha");
 let mochaMain = new Mocha({
-    reporter: "lib/mocha-rp-reporter.js",
+    reporter: "./lib/mocha-rp-reporter.js",
     reporterOptions: {
         endpoint: "",
         token: "",
@@ -14,11 +14,8 @@ let mochaMain = new Mocha({
 
 // run tests
 try{
-    mochaMain.files = ["./test/test.js"];
+    mochaMain.files = ["./example/test.js"];
     mochaMain.run((failures) => process.on('exit', () => process.exit(failures))); // exit with non-zero exit code, other wise fails will not fail mocha run
 } catch (err) {
     console.error(`Test suite doesn't exists or set. Error: ${err}`);
 }
-
-
-
