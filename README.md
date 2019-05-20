@@ -4,12 +4,12 @@ This is mocha runtime reporter for [EPAM report portal](https://github.com/repor
 It was designed to work with mocha programmatically, in order to be able to parametrize each test run.
 
 
-#### Instalation steps:
+#### Installation steps:
 
 ` npm install rp-mocha-reporter`
 
 #### How to use:
-Fill in configOptions. 
+Fill in reporterOptions. 
 ```javascript
 const Mocha = require("mocha");
 let mochaMain = new Mocha({
@@ -23,4 +23,10 @@ let mochaMain = new Mocha({
 });
 ```
 
+#### Run test example:
+For running test example clone [agent-js-mocha](https://github.com/reportportal/agent-js-mocha) and fill in [reporterOptions](#How-to-use).  
 
+In the working directory run:  
+1. ```npm install```  - that would install all dependencies.
+
+2. ```npm test``` - that would run example tests.
