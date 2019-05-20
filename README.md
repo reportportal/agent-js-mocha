@@ -4,7 +4,7 @@ This is mocha runtime reporter for [EPAM report portal](https://github.com/repor
 It was designed to work with mocha programmatically, in order to be able to parametrize each test run.
 
 
-#### Instalation steps:
+#### Installation steps:
 
 ` npm install rp-mocha-reporter`
 
