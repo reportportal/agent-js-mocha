@@ -4,7 +4,9 @@
   "description": "mocha reporter for EPAM Report Portal",
   "main": "index.js",
   "scripts": {
-    "test": "node ./example/main.js"
+    "test": "node ./example/main.js",
+    "eslint": "eslint \"./**/*.js\"",
+    "format": "npm run eslint -- --fix"
   },
   "author": "Vitalii Fedosieiev",
   "contributors": [
@@ -15,7 +17,7 @@
   ],
   "license": "Apache 2.0",
   "dependencies": {
-    "reportportal-client": "5.1.0"
+    "reportportal-client": "^5.5.0"
   },
   "repository": {
     "type": "git",
@@ -23,7 +25,16 @@
   },
   "devDependencies": {
     "chai": "3.5.0",
-    "mocha": "5.2.0"
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-mocha": "^6.2.2",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-promise": "^4.2.1",
+    "mocha": "5.2.0",
+    "prettier": "^1.19.1"
   },
   "keywords": [
     "epam",
