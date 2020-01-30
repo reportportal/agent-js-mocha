@@ -1,1 +1,1 @@
-module.exports = require("./lib/mocha-rp-reporter");
+module.exports = require('./lib/mocha-rp-reporter');

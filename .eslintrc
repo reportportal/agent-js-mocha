@@ -1,0 +1,38 @@
+{
+  "env": {
+    "es6": true,
+    "node": true,
+    "mocha": true
+  },
+  "extends": ["airbnb-base", "plugin:prettier/recommended", "plugin:mocha/recommended"],
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
+  "plugins": ["prettier", "mocha"],
+  "rules": {
+    "prettier/prettier": 2,
+    "no-unused-expressions": [
+      "error",
+      { "allowTernary": true, "allowShortCircuit": true }
+    ],
+    "import/prefer-default-export": 0,
+    "import/no-extraneous-dependencies": 0,
+    "no-restricted-globals": 0,
+    "prefer-destructuring": 0,
+    "import/no-cycle": 0,
+    "import/named": 0,
+    "no-else-return": 0,
+    "lines-between-class-members": 0,
+    "import/no-useless-path-segments": 0,
+    "no-invalid-this": 0,
+    "prefer-object-spread": 0,
+    "no-console": 0
+  },
+  "overrides": [{
+    "files": ["*.spec.js"],
+    "rules": {
+      "func-names":"off",
+      "mocha/no-pending-tests": 0
+    }
+  }]
+}
