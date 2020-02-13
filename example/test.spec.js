@@ -27,6 +27,11 @@ describe('describe', function() {
       expect(true).to.be.equal(false);
     });
 
+    it('test fail with 3 reties in nested describe', function() {
+      this.retries(3);
+      expect(true).to.be.equal(false);
+    });
+
     it('test pending in nested describe');
 
     after('named hook', function() {
