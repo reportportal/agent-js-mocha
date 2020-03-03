@@ -2,7 +2,7 @@
 const Mocha = require('mocha');
 
 const mochaMain = new Mocha({
-  reporter: './lib/mocha-rp-reporter.js',
+  reporter: './lib/mochaReporter.js',
   reporterOptions: {
     endpoint: '',
     token: '',

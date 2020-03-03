@@ -49,7 +49,7 @@ For running test example clone [agent-js-mocha](https://github.com/reportportal/
 In the working directory run:  
 1. ```npm install```  - that would install all dependencies.
 
-2. ```npm test``` - that would run example tests.
+2. ```npm example``` - that would run example tests.
 
 # Copyright Notice
 
