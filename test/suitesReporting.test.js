@@ -7,6 +7,7 @@ describe('suites reporting', function() {
   let suiteFirstLevel;
   let suiteSecondLevel;
   let rootSuite;
+
   beforeAll(function() {
     const options = getDefaultConfig();
     const runner = new EventEmitter();
@@ -26,47 +27,62 @@ describe('suites reporting', function() {
       parent: suiteFirstLevel,
     }
   });
+
   afterEach(() => {
     reporter.suiteIds.clear();
     jest.clearAllMocks();
   });
-  it('shouldn\'t start root suite', function() {
-    const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
-    reporter.onSuiteStart(rootSuite);
-    expect(spyStartTestItem).not.toHaveBeenCalled();
+
+  describe('onSuiteStart', () =>{
+    it('shouldn\'t start root suite', function() {
+      const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
+
+      reporter.onSuiteStart(rootSuite);
+
+      expect(spyStartTestItem).not.toHaveBeenCalled();
+    });
+
+    it('should start first-level suite', function(){
+      const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
+      reporter.suiteIds.set(rootSuite, undefined);
+      const expectedSuiteStartObj = {
+        name: 'First level suite',
+        startTime: mockedDate,
+        attributes: [],
+        type: 'suite',
+      };
+
+      reporter.onSuiteStart(suiteFirstLevel);
+
+      expect(spyStartTestItem).toHaveBeenCalledWith(expectedSuiteStartObj, 'tempLaunchId', undefined);
+    });
+
+    it('should start nested suite', function(){
+      const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
+      reporter.suiteIds.set(rootSuite, undefined);
+      reporter.suiteIds.set(suiteFirstLevel, 'firstLevelSuiteId');
+      const expectedSuiteStartObj = {
+        name: 'Second level suite',
+        startTime: mockedDate,
+        attributes: [],
+        type: 'suite',
+      };
+
+      reporter.onSuiteStart(suiteSecondLevel);
+
+      expect(spyStartTestItem).toHaveBeenCalledWith(expectedSuiteStartObj, 'tempLaunchId', 'firstLevelSuiteId');
+    });
   });
 
-  it('should start first-level suite', function(){
-    const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
-    reporter.suiteIds.set(rootSuite, undefined);
-    reporter.onSuiteStart(suiteFirstLevel);
-    const expectedSuiteStartObj = {
-      name: 'First level suite',
-      startTime: mockedDate,
-      attributes: [],
-      type: 'suite',
-    };
-    expect(spyStartTestItem).toHaveBeenCalledWith(expectedSuiteStartObj, 'tempLaunchId', undefined);
-  });
+  describe('finishTestItem', () => {
+    it('should finish started suite', function() {
+      const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
+      reporter.suiteIds.set(rootSuite, undefined);
+      reporter.suiteIds.set(suiteFirstLevel, 'firstLevelSuiteId');
 
-  it('should start nested suite', function(){
-    const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
-    reporter.suiteIds.set(rootSuite, undefined);
-    reporter.suiteIds.set(suiteFirstLevel, 'firstLevelSuiteId');
-    reporter.onSuiteStart(suiteSecondLevel);
-    const expectedSuiteStartObj = {
-      name: 'Second level suite',
-      startTime: mockedDate,
-      attributes: [],
-      type: 'suite',
-    };
-    expect(spyStartTestItem).toHaveBeenCalledWith(expectedSuiteStartObj, 'tempLaunchId', 'firstLevelSuiteId');
-  });
-  it('should finish started suite', function() {
-    const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
-    reporter.suiteIds.set(rootSuite, undefined);
-    reporter.suiteIds.set(suiteFirstLevel, 'firstLevelSuiteId');
-    reporter.onSuiteFinish(suiteFirstLevel);
-    expect(spyFinishTestItem).toHaveBeenCalledWith('firstLevelSuiteId', { endTime: mockedDate });
+      reporter.onSuiteFinish(suiteFirstLevel);
+
+      expect(spyFinishTestItem).toHaveBeenCalledWith('firstLevelSuiteId', { endTime: mockedDate });
+    });
   });
 });
