@@ -4,11 +4,11 @@
     "node": true,
     "mocha": true
   },
-  "extends": ["airbnb-base", "plugin:prettier/recommended", "plugin:mocha/recommended"],
+  "extends": ["airbnb-base", "plugin:prettier/recommended", "plugin:mocha/recommended", "plugin:jest/recommended"],
   "parserOptions": {
     "ecmaVersion": 2018
   },
-  "plugins": ["prettier", "mocha"],
+  "plugins": ["prettier", "mocha", "jest"],
   "rules": {
     "prettier/prettier": 2,
     "no-unused-expressions": [

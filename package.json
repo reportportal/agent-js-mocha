@@ -4,9 +4,11 @@
   "description": "mocha reporter for EPAM Report Portal",
   "main": "index.js",
   "scripts": {
-    "test": "node ./example/main.js",
+    "example": "node ./example/main.js",
     "eslint": "eslint \"./**/*.js\"",
-    "format": "npm run eslint -- --fix"
+    "format": "npm run eslint -- --fix",
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "author": "Vitalii Fedosieiev",
   "contributors": [
@@ -30,10 +32,12 @@
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-import": "^2.20.0",
+    "eslint-plugin-jest": "^23.8.0",
     "eslint-plugin-mocha": "^6.2.2",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-promise": "^4.2.1",
+    "jest": "^25.1.0",
     "prettier": "^1.19.1"
   },
   "keywords": [
@@ -43,5 +47,8 @@
     "mocha",
     "reporters",
     "reportportal"
-  ]
+  ],
+  "jest": {
+    "testPathIgnorePatterns": ["<rootDir>/example/", "<rootDir>/node_modules/"]
+  }
 }
