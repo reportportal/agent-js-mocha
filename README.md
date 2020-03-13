@@ -42,6 +42,7 @@ Runs support following options:
 | project               | The name of the project in which the launches will be created.                                                    |
 | rerun                 | Enable [rerun](https://github.com/reportportal/documentation/blob/master/src/md/src/DevGuides/rerun.md)           |
 | rerunOf               | UUID of launch you want to rerun. If not specified, report portal will update the latest launch with the same name|
+| reportHooks           | Determines report before and after hooks or not. Default: false.                                                                  |
 
 ## Run test example:
 For running test example clone [agent-js-mocha](https://github.com/reportportal/agent-js-mocha) and fill in [reporterOptions](#How-to-use).  
