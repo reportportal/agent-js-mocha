@@ -40,9 +40,10 @@ Runs support following options:
 | endpoint              | URL of your server. For example 'https://server:8080/api/v1'.                                                     |
 | launch                | Name of launch at creation.                                                                                       |
 | project               | The name of the project in which the launches will be created.                                                    |
-| rerun                 | Enable [rerun](https://github.com/reportportal/documentation/blob/master/src/md/src/DevGuides/rerun.md)           |
+| rerun                 | *Default: false.* Enable [rerun](https://github.com/reportportal/documentation/blob/master/src/md/src/DevGuides/rerun.md)|
 | rerunOf               | UUID of launch you want to rerun. If not specified, report portal will update the latest launch with the same name|
-| skippedIssue          | ReportPortal provides feature to mark skipped tests as not 'To Investigate' items on WS side.<br> Parameter could be equal boolean values:<br> *TRUE* - skipped tests considered as issues and will be marked as 'To Investigate' on Report Portal.<br> *FALSE* - skipped tests will not be marked as 'To Investigate' on application.|
+| reportHooks           | *Default: false.* Determines report before and after hooks or not.                                                |
+| skippedIssue          | *Default: true.* ReportPortal provides feature to mark skipped tests as not 'To Investigate' items on WS side.<br> Parameter could be equal boolean values:<br> *TRUE* - skipped tests considered as issues and will be marked as 'To Investigate' on Report Portal.<br> *FALSE* - skipped tests will not be marked as 'To Investigate' on application.|
 
 ## Run test example:
 For running test example clone [agent-js-mocha](https://github.com/reportportal/agent-js-mocha) and fill in [reporterOptions](#How-to-use).  
