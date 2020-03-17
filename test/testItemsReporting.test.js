@@ -318,9 +318,9 @@ describe('test items reporting', function() {
 
         reporter.onTestFail(hook, 'error message');
 
-        expect(spyFinishTestItem).toHaveBeenCalledTimes(2);
-        expect(spyFinishTestItem).toHaveBeenNthCalledWith(2, 'testItemId', expectedTestFinishObj);
-      });
+        expect(spyFinishTestItem).toHaveBeenCalledTimes(1);
+        expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
+      });  
     });
   });
 });
