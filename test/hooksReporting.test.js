@@ -1,12 +1,12 @@
 const EventEmitter = require('events');
 const { getDefaultConfig, RPClient, mockedDate } = require('./mocks');
-const RPReporter = require('./../lib/mochaReporter');
+const ReportportalAgent = require('./../lib/mochaReporter');
 
 const createReporter = (customReporterOptions = {}) => {
   const options = getDefaultConfig();
   options.reporterOptions = Object.assign(options.reporterOptions, customReporterOptions);
   const runner = new EventEmitter();
-  reporter = new RPReporter(runner, options);
+  reporter = new ReportportalAgent(runner, options);
   reporter.rpClient = new RPClient(options);
   return reporter;
 };
@@ -21,7 +21,7 @@ describe('reporting hooks', function() {
     title: 'Suite',
     parent: rootSuite,
   };
-  describe('reportHooks = true', () => {
+  describe('reportHooks = true', function() {
     beforeAll(function() {
       reporter = createReporter({ reportHooks: true });
       reporter.launchId = 'tempLaunchId';
@@ -29,13 +29,13 @@ describe('reporting hooks', function() {
       reporter.suiteIds.set(suiteFirstLevel, 'tempSuiteId');
     });
 
-    afterEach(function () {
+    afterEach(function() {
       reporter.hookIds.clear();
       reporter.currentTest = null;
       jest.clearAllMocks();
     });
-    describe('onHookStart', ()=>{
-      it('should start before each hook', function(){
+    describe('onHookStart', function() {
+      it('should start before each hook', function() {
         const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
         const hook = {
           title: '"before each" hook: before each hook with title',
@@ -49,10 +49,14 @@ describe('reporting hooks', function() {
 
         reporter.onHookStart(hook);
 
-        expect(spyStartTestItem).toHaveBeenCalledWith(expectedHookStartObj, 'tempLaunchId', 'tempSuiteId');
+        expect(spyStartTestItem).toHaveBeenCalledWith(
+          expectedHookStartObj,
+          'tempLaunchId',
+          'tempSuiteId',
+        );
       });
 
-      it('should start before all hook', function(){
+      it('should start before all hook', function() {
         const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
         const hook = {
           title: '"before all" hook: before all hook with title',
@@ -66,10 +70,14 @@ describe('reporting hooks', function() {
 
         reporter.onHookStart(hook);
 
-        expect(spyStartTestItem).toHaveBeenCalledWith(expectedHookStartObj, 'tempLaunchId', undefined);
+        expect(spyStartTestItem).toHaveBeenCalledWith(
+          expectedHookStartObj,
+          'tempLaunchId',
+          undefined,
+        );
       });
 
-      it('should start after each hook', function(){
+      it('should start after each hook', function() {
         const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
         const hook = {
           title: '"after each" hook: after each hook with title',
@@ -83,10 +91,14 @@ describe('reporting hooks', function() {
 
         reporter.onHookStart(hook);
 
-        expect(spyStartTestItem).toHaveBeenCalledWith(expectedHookStartObj, 'tempLaunchId', 'tempSuiteId');
+        expect(spyStartTestItem).toHaveBeenCalledWith(
+          expectedHookStartObj,
+          'tempLaunchId',
+          'tempSuiteId',
+        );
       });
 
-      it('should start after all hook', function(){
+      it('should start after all hook', function() {
         const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
         const hook = {
           title: '"after all" hook: after all hook with title',
@@ -100,12 +112,16 @@ describe('reporting hooks', function() {
 
         reporter.onHookStart(hook);
 
-        expect(spyStartTestItem).toHaveBeenCalledWith(expectedHookStartObj, 'tempLaunchId', undefined);
+        expect(spyStartTestItem).toHaveBeenCalledWith(
+          expectedHookStartObj,
+          'tempLaunchId',
+          undefined,
+        );
       });
     });
 
-    describe('onHookFinish', () => {
-      it('should finish passed hook', function(){
+    describe('onHookFinish', function() {
+      it('should finish passed hook', function() {
         const hook = {
           title: '"before each" hook: before each hook with title',
           parent: suiteFirstLevel,
@@ -119,10 +135,13 @@ describe('reporting hooks', function() {
 
         reporter.onHookFinish(hook);
 
-        expect(reporter.rpClient.finishTestItem).toHaveBeenCalledWith('hookTempId', expectedHookFinishObj);
+        expect(reporter.rpClient.finishTestItem).toHaveBeenCalledWith(
+          'hookTempId',
+          expectedHookFinishObj,
+        );
       });
 
-      it('should finish failed hook', function(){
+      it('should finish failed hook', function() {
         const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
         const spySendLog = jest.spyOn(reporter.rpClient, 'sendLog');
         const currentTest = {
@@ -138,8 +157,8 @@ describe('reporting hooks', function() {
           state: 'failed',
           type: 'hook',
           ctx: {
-            currentTest: currentTest,
-          }
+            currentTest,
+          },
         };
         reporter.hookIds.set(hook, 'tempHookId');
         hook.state = 'failed';
@@ -160,7 +179,7 @@ describe('reporting hooks', function() {
     });
   });
 
-  describe('reportHooks is not defined', () => {
+  describe('reportHooks is not defined', function() {
     beforeAll(function() {
       reporter = createReporter();
       reporter.launchId = 'tempLaunchId';
@@ -168,13 +187,13 @@ describe('reporting hooks', function() {
       reporter.suiteIds.set(suiteFirstLevel, 'tempSuiteId');
     });
 
-    afterEach(function () {
+    afterEach(function() {
       reporter.hookIds.clear();
       reporter.currentTest = null;
       jest.clearAllMocks();
     });
 
-    it('onHookStart: should not start hook', function(){
+    it('onHookStart: should not start hook', function() {
       const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
       const hook = {
         title: '"before each" hook: before each hook with title',
@@ -186,7 +205,7 @@ describe('reporting hooks', function() {
       expect(spyStartTestItem).not.toHaveBeenCalled();
     });
 
-    it('onHookFinish: should not finish hook', function(){
+    it('onHookFinish: should not finish hook', function() {
       const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
       const hook = {
         title: '"before each" hook: before each hook with title',
