@@ -1,15 +1,16 @@
 const EventEmitter = require('events');
 const { getDefaultConfig, RPClient, mockedDate } = require('./mocks');
-const RPReporter = require('./../lib/mochaReporter');
+const ReportportalAgent = require('./../lib/mochaReporter');
+
 describe('launch reporting', function() {
-  afterEach(() => {
+  afterEach(function() {
     jest.clearAllMocks();
   });
-  describe('onLaunchStart', ()=>{
+  describe('onLaunchStart', function() {
     it('should start launch with default options', function() {
       const options = getDefaultConfig();
       const runner = new EventEmitter();
-      const reporter = new RPReporter(runner, options);
+      const reporter = new ReportportalAgent(runner, options);
       reporter.rpClient = new RPClient(options);
       const expetedLaunchStartObject = {
         token: '00000000-0000-0000-0000-000000000000',
@@ -33,7 +34,7 @@ describe('launch reporting', function() {
       options.reporterOptions.rerun = true;
       options.reporterOptions.rerunOf = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
       const runner = new EventEmitter();
-      const reporter = new RPReporter(runner, options);
+      const reporter = new ReportportalAgent(runner, options);
       reporter.rpClient = new RPClient(options);
       const spyStartLaunch = jest.spyOn(reporter.rpClient, 'startLaunch');
       const expetedLaunchStartObject = {
@@ -53,11 +54,11 @@ describe('launch reporting', function() {
     });
   });
 
-  describe('onLaunchFinish', () => {
+  describe('onLaunchFinish', function() {
     it('should finish launch', function() {
       const options = getDefaultConfig();
       const runner = new EventEmitter();
-      const reporter = new RPReporter(runner, options);
+      const reporter = new ReportportalAgent(runner, options);
       reporter.rpClient = new RPClient(options);
       const spyFinishLaunch = jest.spyOn(reporter.rpClient, 'finishLaunch');
       reporter.launchId = 'tempLaunchId';
@@ -70,4 +71,3 @@ describe('launch reporting', function() {
     });
   });
 });
-

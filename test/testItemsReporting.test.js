@@ -1,6 +1,6 @@
 const EventEmitter = require('events');
 const { getDefaultConfig, RPClient, mockedDate } = require('./mocks');
-const RPReporter = require('./../lib/mochaReporter');
+const ReportportalAgent = require('./../lib/mochaReporter');
 const testStatuses = require('./../lib/constants/testStatuses');
 
 describe('test items reporting', function() {
@@ -11,7 +11,7 @@ describe('test items reporting', function() {
     const options = getDefaultConfig();
     Object.assign(options.reporterOptions, customReporterOptions);
     const runner = new EventEmitter();
-    reporter = new RPReporter(runner, options);
+    reporter = new ReportportalAgent(runner, options);
     reporter.rpClient = new RPClient(options);
     reporter.launchId = 'tempLaunchId';
     suite = {
@@ -20,22 +20,22 @@ describe('test items reporting', function() {
     };
     reporter.suiteIds.set(suite, 'tempSuiteId');
     return reporter;
-  }
+  };
 
-  describe('finishTest', () => {
+  describe('finishTest', function() {
     afterEach(function() {
       reporter.currentTest = null;
       reporter.hookIds.clear();
       jest.clearAllMocks();
     });
-    it('should finish test with specified status', function(){
+    it('should finish test with specified status', function() {
       reporter = createAndPrepareReporter();
       const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
       const currentTest = {
         title: 'test',
         parent: suite,
         state: 'passed',
-        tempId: 'testItemId'
+        tempId: 'testItemId',
       };
       const expectedTestFinishObj = {
         endTime: mockedDate,
@@ -49,14 +49,14 @@ describe('test items reporting', function() {
       expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
     });
 
-    it('skippedIssue is not defined: should finish skipped test with issue', function(){
+    it('skippedIssue is not defined: should finish skipped test with issue', function() {
       reporter = createAndPrepareReporter();
       const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
       const currentTest = {
         title: 'test',
         parent: suite,
         state: 'pending',
-        tempId: 'testItemId'
+        tempId: 'testItemId',
       };
       const expectedTestFinishObj = {
         endTime: mockedDate,
@@ -70,7 +70,7 @@ describe('test items reporting', function() {
       expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
     });
 
-    it('skippedIssue=false: should finish skipped test with issue NOT_ISSUE', function(){
+    it('skippedIssue=false: should finish skipped test with issue NOT_ISSUE', function() {
       reporter = createAndPrepareReporter({
         skippedIssue: false,
       });
@@ -79,14 +79,14 @@ describe('test items reporting', function() {
         title: 'test',
         parent: suite,
         state: 'pending',
-        tempId: 'testItemId'
+        tempId: 'testItemId',
       };
       const expectedTestFinishObj = {
         endTime: mockedDate,
         status: 'skipped',
         retry: false,
         issue: {
-          issueType: "NOT_ISSUE",
+          issueType: 'NOT_ISSUE',
         },
       };
       reporter.currentTest = currentTest;
@@ -97,7 +97,7 @@ describe('test items reporting', function() {
     });
   });
 
-  describe('test event listeners', () => {
+  describe('test event listeners', function() {
     beforeAll(function() {
       reporter = createAndPrepareReporter();
     });
@@ -108,8 +108,8 @@ describe('test items reporting', function() {
       jest.clearAllMocks();
     });
 
-    describe('onTestStart', () => {
-      it('should start test', function(){
+    describe('onTestStart', function() {
+      it('should start test', function() {
         const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
         const testItem = {
           title: 'test',
@@ -125,10 +125,14 @@ describe('test items reporting', function() {
 
         reporter.onTestStart(testItem);
 
-        expect(spyStartTestItem).toHaveBeenCalledWith(expectedTestStartObj, 'tempLaunchId', 'tempSuiteId');
+        expect(spyStartTestItem).toHaveBeenCalledWith(
+          expectedTestStartObj,
+          'tempLaunchId',
+          'tempSuiteId',
+        );
       });
 
-      it('should start first retry', function(){
+      it('should start first retry', function() {
         const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
         const testItem = {
           title: 'test',
@@ -145,10 +149,14 @@ describe('test items reporting', function() {
 
         reporter.onTestStart(testItem);
 
-        expect(spyStartTestItem).toHaveBeenCalledWith(expectedTestStartObj, 'tempLaunchId', 'tempSuiteId');
+        expect(spyStartTestItem).toHaveBeenCalledWith(
+          expectedTestStartObj,
+          'tempLaunchId',
+          'tempSuiteId',
+        );
       });
 
-      it('should finish first and start second retry', function(){
+      it('should finish first and start second retry', function() {
         const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
         const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
         const testItem = {
@@ -173,13 +181,17 @@ describe('test items reporting', function() {
         reporter.onTestStart(testItem);
 
         expect(spyStartTestItem).toHaveBeenCalledTimes(2);
-        expect(spyStartTestItem).toHaveBeenCalledWith(expectedTestStartObj, 'tempLaunchId', 'tempSuiteId');
+        expect(spyStartTestItem).toHaveBeenCalledWith(
+          expectedTestStartObj,
+          'tempLaunchId',
+          'tempSuiteId',
+        );
         expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
       });
     });
 
-    describe('onTestPending', () => {
-      it('should start and finish pending test', function(){
+    describe('onTestPending', function() {
+      it('should start and finish pending test', function() {
         const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
         const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
         const testItem = {
@@ -202,19 +214,23 @@ describe('test items reporting', function() {
 
         reporter.onTestPending(testItem);
 
-        expect(spyStartTestItem).toHaveBeenCalledWith(expectedTestStartObj, 'tempLaunchId', 'tempSuiteId');
+        expect(spyStartTestItem).toHaveBeenCalledWith(
+          expectedTestStartObj,
+          'tempLaunchId',
+          'tempSuiteId',
+        );
         expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
       });
     });
 
-    describe('onTestFinish', () => {
-      it('should finish passed test', function(){
+    describe('onTestFinish', function() {
+      it('should finish passed test', function() {
         const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
         const currentTest = {
           title: 'test',
           parent: suite,
           state: 'passed',
-          tempId: 'testItemId'
+          tempId: 'testItemId',
         };
         const expectedTestFinishObj = {
           endTime: mockedDate,
@@ -228,13 +244,13 @@ describe('test items reporting', function() {
         expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
       });
 
-      it('should finish failed test', function(){
+      it('should finish failed test', function() {
         const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
         const currentTest = {
           title: 'test',
           parent: suite,
           state: 'failed',
-          tempId: 'testItemId'
+          tempId: 'testItemId',
         };
         const expectedTestFinishObj = {
           endTime: mockedDate,
@@ -248,7 +264,7 @@ describe('test items reporting', function() {
         expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
       });
 
-      it('should finish failed retry', function(){
+      it('should finish failed retry', function() {
         const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
         const currentTest = {
           title: 'test',
@@ -270,8 +286,8 @@ describe('test items reporting', function() {
       });
     });
 
-    describe('onTestFail', () => {
-      it('should send log on test fail', function(){
+    describe('onTestFail', function() {
+      it('should send log on test fail', function() {
         const spySendLog = jest.spyOn(reporter.rpClient, 'sendLog');
         const currentTest = {
           title: 'test',
@@ -290,7 +306,7 @@ describe('test items reporting', function() {
         expect(spySendLog).toHaveBeenCalledWith('testItemId', expectedLogObj);
       });
 
-      it('should finish current test as skipped on hook fail', function(){
+      it('should finish current test as skipped on hook fail', function() {
         const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
         const currentTest = {
           title: 'test #1',
@@ -305,8 +321,8 @@ describe('test items reporting', function() {
           state: 'failed',
           type: 'hook',
           ctx: {
-            currentTest: currentTest,
-          }
+            currentTest,
+          },
         };
         const expectedTestFinishObj = {
           endTime: mockedDate,
@@ -320,9 +336,7 @@ describe('test items reporting', function() {
 
         expect(spyFinishTestItem).toHaveBeenCalledTimes(1);
         expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
-      });  
+      });
     });
   });
 });
-
-

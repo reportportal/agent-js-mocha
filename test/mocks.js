@@ -28,8 +28,8 @@ class RPClient {
     });
 
     this.helpers = {
-      now: () => mockedDate
-    }
+      now: () => mockedDate,
+    };
   }
 }
 

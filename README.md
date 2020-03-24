@@ -45,13 +45,66 @@ Runs support following options:
 | reportHooks           | *Default: false.* Determines report before and after hooks or not.                                                |
 | skippedIssue          | *Default: true.* ReportPortal provides feature to mark skipped tests as not 'To Investigate' items on WS side.<br> Parameter could be equal boolean values:<br> *TRUE* - skipped tests considered as issues and will be marked as 'To Investigate' on Report Portal.<br> *FALSE* - skipped tests will not be marked as 'To Investigate' on application.|
 
+### Additional reporting functionality
+
+The agent provides an API to extend the functionality of Mocha.
+
+Import the PublicReportingAPI as shown below to use additional reporting features.
+
+```javascript
+const PublicReportingAPI = require('agent-js-mocha/lib/publicReportingAPI');
+```
+#### Report logs and attachments
+PublicReportingAPI provides the following methods for reporting logs into the current test/step/launch.
+
+* log(*level*, *message* , *file*). Reports *message* and optional *file* with specified log *level* as a log of the current test. If called outside of the test, reports message as a log of the current suite.<br/>
+*level* shoud be equal to one the following values: *TRACE*, *DEBUG*, *INFO*, *WARN*, *ERROR*, *FATAL*.<br/>
+*file* should be an object: <br/>
+```javascript
+{
+  name: "filename",
+  type: "image/png",  // media type
+  content: data,  // file content represented as 64base string
+}
+```
+* launchLog (*level*, *message* , *file*). Reports *message* and optional *file* with the specified log *level* as a log of the current launch.
+* trace (*message* , *file*). Reports *message* and optional *file* as a log of the current test/suite with trace log level.
+* debug (*message* , *file*). Reports *message* and optional *file* as a log of the current test/suite with debug log level.
+* info (*message* , *file*). Reports *message* and optional *file* as log of the current test/suite with info log level.
+* warn (*message* , *file*). Reports *message* and optional *file* as a log of the current test/suite with warning log level.
+* error (*message* , *file*). Reports *message* and optional *file* as a log of the current test/suite with error log level.
+* fatal (*message* , *file*). Reports *message* and optional *file* as a log of the current test/suite with fatal log level.
+
+**Example:**
+```javascript
+const PublicReportingAPI = require('agent-js-mocha/lib/publicReportingAPI');
+...
+describe('suite',()=>{
+  it('test', () => {
+    const attachment = {
+      name: 'attachment.png',
+      type: 'image/png',
+      content: data.toString('base64'),
+    }
+    PublicReportingAPI.log('INFO', 'Info log message for test "test" with attachment', attachment);
+    PublicReportingAPI.launchLog('ERROR', 'Error log message for current launch with attachment', attachment);
+    PublicReportingAPI.trace('Trace log message for test "test"', attachment);
+    PublicReportingAPI.debug('Debug log message for test "test"');
+    PublicReportingAPI.info('Info log message for test "test" with attachment');
+    PublicReportingAPI.warn('Warning for test "test"');
+    PublicReportingAPI.error('Error log message for test "test"');
+    PublicReportingAPI.fatal('Fatal log message for test "test"');
+  });
+});
+```
+
 ## Run test example:
 For running test example clone [agent-js-mocha](https://github.com/reportportal/agent-js-mocha) and fill in [reporterOptions](#How-to-use).  
 
 In the working directory run:  
 1. ```npm install```  - that would install all dependencies.
 
-2. ```npm example``` - that would run example tests.
+2. ```npm run example``` - that would run example tests.
 
 # Copyright Notice
 
