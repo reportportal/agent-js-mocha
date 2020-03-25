@@ -41,7 +41,13 @@ describe('describe', function() {
   });
 
   it('test with logs and attachments', async function() {
-    PublicReportingAPI.launchLog('INFO', 'info launch log');
+    PublicReportingAPI.launchLog('INFO', 'launch log with manually specified info level');
+    PublicReportingAPI.launchInfo('info launch log');
+    PublicReportingAPI.launchDebug('debug launch log');
+    PublicReportingAPI.launchTrace('trace launch log');
+    PublicReportingAPI.launchWarn('warn launch log');
+    PublicReportingAPI.launchError('error launch log');
+    PublicReportingAPI.launchFatal('fatal launch log');
     PublicReportingAPI.debug('debug log');
     PublicReportingAPI.trace('trace log');
     PublicReportingAPI.warn('warning');

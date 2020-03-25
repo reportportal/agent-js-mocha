@@ -55,7 +55,7 @@ Import the PublicReportingAPI as shown below to use additional reporting feature
 const PublicReportingAPI = require('agent-js-mocha/lib/publicReportingAPI');
 ```
 #### Report logs and attachments
-PublicReportingAPI provides the following methods for reporting logs into the current test/step/launch.
+PublicReportingAPI provides the following methods for reporting logs into the current test/step.
 
 * log(*level*, *message* , *file*). Reports *message* and optional *file* with specified log *level* as a log of the current test. If called outside of the test, reports message as a log of the current suite.<br/>
 *level* shoud be equal to one the following values: *TRACE*, *DEBUG*, *INFO*, *WARN*, *ERROR*, *FATAL*.<br/>
@@ -67,13 +67,21 @@ PublicReportingAPI provides the following methods for reporting logs into the cu
   content: data,  // file content represented as 64base string
 }
 ```
-* launchLog (*level*, *message* , *file*). Reports *message* and optional *file* with the specified log *level* as a log of the current launch.
 * trace (*message* , *file*). Reports *message* and optional *file* as a log of the current test/suite with trace log level.
 * debug (*message* , *file*). Reports *message* and optional *file* as a log of the current test/suite with debug log level.
 * info (*message* , *file*). Reports *message* and optional *file* as log of the current test/suite with info log level.
 * warn (*message* , *file*). Reports *message* and optional *file* as a log of the current test/suite with warning log level.
 * error (*message* , *file*). Reports *message* and optional *file* as a log of the current test/suite with error log level.
 * fatal (*message* , *file*). Reports *message* and optional *file* as a log of the current test/suite with fatal log level.
+
+PublicReportingAPI provides the corresponding methods for reporting logs into the launch.
+* launchLog (*level*, *message* , *file*). Reports *message* and optional *file* with the specified log *level* as a log of the current launch.
+* launchTrace (*message* , *file*). Reports *message* and optional *file* as a log of the launch with trace log level.
+* launchDebug (*message* , *file*). Reports *message* and optional *file* as a log of the launch with debug log level.
+* launchInfo (*message* , *file*). Reports *message* and optional *file* as log of the launch with info log level.
+* launchWarn (*message* , *file*). Reports *message* and optional *file* as a log of the launch with warning log level.
+* launchError (*message* , *file*). Reports *message* and optional *file* as a log of the launch with error log level.
+* launchFatal (*message* , *file*). Reports *message* and optional *file* as a log of the launch with fatal log level.
 
 **Example:**
 ```javascript
