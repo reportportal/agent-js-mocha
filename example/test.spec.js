@@ -75,10 +75,13 @@ describe('describe', function() {
   });
 
   it('test pass', function() {
+    PublicReportingAPI.addAttributes([{ key: 'state', value: 'stable' }]);
     expect(true).to.be.equal(true);
   });
 
   it('test fail', function() {
+    PublicReportingAPI.addAttributes([{ value: 'most failed' }]);
+    PublicReportingAPI.addAttributes([{ value: 'never passed' }]);
     expect(true).to.be.equal(false);
   });
 
@@ -86,6 +89,7 @@ describe('describe', function() {
 
   describe('nested describe', function() {
     before(function() {
+      PublicReportingAPI.addAttributes([{ key: 'suiteAttrKey', value: 'suiteAttrValue' }]);
       foo = 'bar';
     });
 

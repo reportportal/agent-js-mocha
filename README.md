@@ -105,6 +105,36 @@ describe('suite',()=>{
   });
 });
 ```
+#### Report attributes for steps and suites
+
+**addAttributes (*attributes*)**. Add attributes(tags) to the current test/suite. Should be called inside of corresponding test or suite.</br> 
+*attributes* is array of pairs of key and value:
+```javascript
+[{
+  key: "attributeKey1",
+  value: "attributeValue2",
+}]
+```
+*Key* is optional field.
+
+**Note**
+
+Mocha doesn't allow functional calls directly into describe section. At the same time, calling addAttributes inside of before/after hooks adds attributes to the corresponding suite.
+
+**Example:**
+```javascript
+const PublicReportingAPI = require('agent-js-mocha/lib/publicReportingAPI');
+...
+describe('suite',()=>{
+  before(function (){
+    PublicReportingAPI.addAttributes([{ key: 'suiteAttr1Key', value: 'suiteAttr1Value' }, { value: 'suiteAttr2' }]);
+  });
+  it('test', () => {
+    PublicReportingAPI.addAttributes([{ key: 'testAttr1Key', value: 'testAttr1Value' }]);
+    PublicReportingAPI.addAttributes([{ value: 'testAttr2' }]);
+  });
+});
+```
 
 ## Run test example:
 For running test example clone [agent-js-mocha](https://github.com/reportportal/agent-js-mocha) and fill in [reporterOptions](#How-to-use).  
