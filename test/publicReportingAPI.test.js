@@ -36,21 +36,6 @@ describe('PublicReportingAPI', function() {
 
     expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
   });
-  it('launchLog: should call addLaunchLog method with parameters', function() {
-    const spyAddLog = jest
-      .spyOn(ClientPublicReportingAPI, 'addLaunchLog')
-      .mockImplementation(() => {});
-
-    const expectedAddLogObj = {
-      level: 'ERROR',
-      message: 'message text',
-      file,
-    };
-
-    PublicReportingAPI.launchLog('ERROR', 'message text', file);
-
-    expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
-  });
   it('trace: should call addLog method with TRACE level and specified parameters', function() {
     const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
 
@@ -126,6 +111,111 @@ describe('PublicReportingAPI', function() {
     };
 
     PublicReportingAPI.fatal('message text', file);
+
+    expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
+  });
+  it('launchLog: should call addLaunchLog method with parameters', function() {
+    const spyAddLog = jest
+      .spyOn(ClientPublicReportingAPI, 'addLaunchLog')
+      .mockImplementation(() => {});
+
+    const expectedAddLogObj = {
+      level: 'ERROR',
+      message: 'message text',
+      file,
+    };
+
+    PublicReportingAPI.launchLog('ERROR', 'message text', file);
+
+    expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
+  });
+  it('launchTrace: should call addLaunchLog with TRACE level and specified parameters', function() {
+    const spyAddLog = jest
+      .spyOn(ClientPublicReportingAPI, 'addLaunchLog')
+      .mockImplementation(() => {});
+
+    const expectedAddLogObj = {
+      level: 'TRACE',
+      message: 'message text',
+      file,
+    };
+
+    PublicReportingAPI.launchTrace('message text', file);
+
+    expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
+  });
+  it('launchDebug: should call addLaunchLog with DEBUG level and specified parameters', function() {
+    const spyAddLog = jest
+      .spyOn(ClientPublicReportingAPI, 'addLaunchLog')
+      .mockImplementation(() => {});
+
+    const expectedAddLogObj = {
+      level: 'DEBUG',
+      message: 'message text',
+      file,
+    };
+
+    PublicReportingAPI.launchDebug('message text', file);
+
+    expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
+  });
+  it('launchInfo: should call addLaunchLog with INFO level and specified parameters', function() {
+    const spyAddLog = jest
+      .spyOn(ClientPublicReportingAPI, 'addLaunchLog')
+      .mockImplementation(() => {});
+
+    const expectedAddLogObj = {
+      level: 'INFO',
+      message: 'message text',
+      file,
+    };
+
+    PublicReportingAPI.launchInfo('message text', file);
+
+    expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
+  });
+  it('launchWarn: should call addLaunchLog with WARN level and specified parameters', function() {
+    const spyAddLog = jest
+      .spyOn(ClientPublicReportingAPI, 'addLaunchLog')
+      .mockImplementation(() => {});
+
+    const expectedAddLogObj = {
+      level: 'WARN',
+      message: 'message text',
+      file,
+    };
+
+    PublicReportingAPI.launchWarn('message text', file);
+
+    expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
+  });
+  it('launchError: should call addLaunchLog with ERROR level and specified parameters', function() {
+    const spyAddLog = jest
+      .spyOn(ClientPublicReportingAPI, 'addLaunchLog')
+      .mockImplementation(() => {});
+
+    const expectedAddLogObj = {
+      level: 'ERROR',
+      message: 'message text',
+      file,
+    };
+
+    PublicReportingAPI.launchError('message text', file);
+
+    expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
+  });
+  it('launchFatal: should call addLaunchLog with FATAL level and specified parameters', function() {
+    const spyAddLog = jest
+      .spyOn(ClientPublicReportingAPI, 'addLaunchLog')
+      .mockImplementation(() => {});
+
+    const expectedAddLogObj = {
+      level: 'FATAL',
+      message: 'message text',
+      file,
+    };
+
+    PublicReportingAPI.launchFatal('message text', file);
 
     expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
   });
