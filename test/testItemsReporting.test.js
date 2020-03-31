@@ -95,6 +95,27 @@ describe('test items reporting', function() {
 
       expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
     });
+
+    it('attributes exists for test: should finish test with corresponded attributes', function() {
+      reporter = createAndPrepareReporter();
+      const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
+      const currentTest = {
+        tempId: 'testItemId',
+      };
+      reporter.attributes.set('testItemId', [{ key: 'key1', value: 'value1' }]);
+
+      const expectedTestFinishObj = {
+        endTime: mockedDate,
+        retry: false,
+        status: 'passed',
+        attributes: [{ key: 'key1', value: 'value1' }],
+      };
+      reporter.currentTest = currentTest;
+
+      reporter.finishTest(currentTest, testStatuses.PASSED);
+
+      expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
+    });
   });
 
   describe('test event listeners', function() {
