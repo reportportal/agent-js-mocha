@@ -33,6 +33,7 @@ const attachments = [
 describe('describe', function() {
   let foo = '';
   before(function() {
+    PublicReportingAPI.setDescription('root describe');
     foo = 'bar';
   });
 
@@ -75,6 +76,7 @@ describe('describe', function() {
   });
 
   it('test pass', function() {
+    PublicReportingAPI.setDescription('passed test description');
     PublicReportingAPI.addAttributes([{ key: 'state', value: 'stable' }]);
     expect(true).to.be.equal(true);
   });
@@ -89,6 +91,7 @@ describe('describe', function() {
 
   describe('nested describe', function() {
     before(function() {
+      PublicReportingAPI.setDescription('nested describe description');
       PublicReportingAPI.addAttributes([{ key: 'suiteAttrKey', value: 'suiteAttrValue' }]);
       foo = 'bar';
     });
