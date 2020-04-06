@@ -2,6 +2,8 @@ const EventEmitter = require('events');
 const { getDefaultConfig, RPClient, mockedDate } = require('./mocks');
 const ReportportalAgent = require('./../lib/mochaReporter');
 
+jest.mock('./../lib/utils');
+
 describe('suites reporting', function() {
   let reporter;
   let suiteFirstLevel;

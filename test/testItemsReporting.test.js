@@ -3,6 +3,8 @@ const { getDefaultConfig, RPClient, mockedDate } = require('./mocks');
 const ReportportalAgent = require('./../lib/mochaReporter');
 const testStatuses = require('./../lib/constants/testStatuses');
 
+jest.mock('./../lib/utils');
+
 describe('test items reporting', function() {
   let reporter;
   let suite;
