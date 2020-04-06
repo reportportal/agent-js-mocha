@@ -8,7 +8,7 @@ describe('utils', function() {
       file: `${process.cwd()}${path.sep}test${path.sep}example.js`,
       titlePath: () => ['rootDescribe', 'parentDescribe', 'testTitle'],
     };
-    const expectedCodeRef = `test/example.js:rootDescribe.parentDescribe.testTitle`;
+    const expectedCodeRef = `test/example.js/rootDescribe/parentDescribe/testTitle`;
 
     const codeRef = getCodeRef(mockedTest);
 
