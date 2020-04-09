@@ -117,9 +117,13 @@ describe('suite',()=>{
 ```
 *Key* is optional field.
 
-**Note**
+Mocha doesn't allow functional calls directly into describe section. You can call addAttributes inside of before/after hooks to add attributes to the corresponding suite.
 
-Mocha doesn't allow functional calls directly into describe section. At the same time, calling addAttributes inside of before/after hooks adds attributes to the corresponding suite.
+#### Report description for steps and suites
+
+**setDescription (*description*)**. Set text description to the current test/suite. Should be called inside of corresponding test or suite.</br> 
+
+Mocha doesn't allow functional calls directly into describe section. You can call setDescription inside of before/after hooks to set description to the corresponding suite. 
 
 **Example:**
 ```javascript

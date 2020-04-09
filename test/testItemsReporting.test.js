@@ -28,6 +28,8 @@ describe('test items reporting', function() {
     afterEach(function() {
       reporter.currentTest = null;
       reporter.hookIds.clear();
+      reporter.attributes.clear();
+      reporter.descriptions.clear();
       jest.clearAllMocks();
     });
     it('should finish test with specified status', function() {
@@ -111,6 +113,26 @@ describe('test items reporting', function() {
         retry: false,
         status: 'passed',
         attributes: [{ key: 'key1', value: 'value1' }],
+      };
+      reporter.currentTest = currentTest;
+
+      reporter.finishTest(currentTest, testStatuses.PASSED);
+
+      expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
+    });
+    it('description exists for the test: should finish test with description', function() {
+      reporter = createAndPrepareReporter();
+      const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
+      const currentTest = {
+        tempId: 'testItemId',
+      };
+      reporter.descriptions.set('testItemId', 'test description');
+
+      const expectedTestFinishObj = {
+        endTime: mockedDate,
+        retry: false,
+        status: 'passed',
+        description: 'test description',
       };
       reporter.currentTest = currentTest;
 
