@@ -15,8 +15,10 @@ describe('PublicReportingAPI', function() {
     const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
 
     const expectedAddLogObj = {
-      level: 'ERROR',
-      message: 'message text',
+      log: {
+        level: 'ERROR',
+        message: 'message text',
+      },
     };
 
     PublicReportingAPI.log('ERROR', 'message text');
@@ -27,9 +29,11 @@ describe('PublicReportingAPI', function() {
     const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
 
     const expectedAddLogObj = {
-      level: 'ERROR',
-      message: 'message text',
-      file,
+      log: {
+        level: 'ERROR',
+        message: 'message text',
+        file,
+      },
     };
 
     PublicReportingAPI.log('ERROR', 'message text', file);
@@ -40,9 +44,11 @@ describe('PublicReportingAPI', function() {
     const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
 
     const expectedAddLogObj = {
-      level: 'TRACE',
-      message: 'message text',
-      file,
+      log: {
+        level: 'TRACE',
+        message: 'message text',
+        file,
+      },
     };
 
     PublicReportingAPI.trace('message text', file);
@@ -53,9 +59,11 @@ describe('PublicReportingAPI', function() {
     const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
 
     const expectedAddLogObj = {
-      level: 'DEBUG',
-      message: 'message text',
-      file,
+      log: {
+        level: 'DEBUG',
+        message: 'message text',
+        file,
+      },
     };
 
     PublicReportingAPI.debug('message text', file);
@@ -66,9 +74,11 @@ describe('PublicReportingAPI', function() {
     const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
 
     const expectedAddLogObj = {
-      level: 'INFO',
-      message: 'message text',
-      file,
+      log: {
+        level: 'INFO',
+        message: 'message text',
+        file,
+      },
     };
 
     PublicReportingAPI.info('message text', file);
@@ -79,9 +89,11 @@ describe('PublicReportingAPI', function() {
     const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
 
     const expectedAddLogObj = {
-      level: 'WARN',
-      message: 'message text',
-      file,
+      log: {
+        level: 'WARN',
+        message: 'message text',
+        file,
+      },
     };
 
     PublicReportingAPI.warn('message text', file);
@@ -92,9 +104,11 @@ describe('PublicReportingAPI', function() {
     const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
 
     const expectedAddLogObj = {
-      level: 'ERROR',
-      message: 'message text',
-      file,
+      log: {
+        level: 'ERROR',
+        message: 'message text',
+        file,
+      },
     };
 
     PublicReportingAPI.error('message text', file);
@@ -105,9 +119,11 @@ describe('PublicReportingAPI', function() {
     const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
 
     const expectedAddLogObj = {
-      level: 'FATAL',
-      message: 'message text',
-      file,
+      log: {
+        level: 'FATAL',
+        message: 'message text',
+        file,
+      },
     };
 
     PublicReportingAPI.fatal('message text', file);
@@ -120,9 +136,11 @@ describe('PublicReportingAPI', function() {
       .mockImplementation(() => {});
 
     const expectedAddLogObj = {
-      level: 'ERROR',
-      message: 'message text',
-      file,
+      log: {
+        level: 'ERROR',
+        message: 'message text',
+        file,
+      },
     };
 
     PublicReportingAPI.launchLog('ERROR', 'message text', file);
@@ -135,9 +153,11 @@ describe('PublicReportingAPI', function() {
       .mockImplementation(() => {});
 
     const expectedAddLogObj = {
-      level: 'TRACE',
-      message: 'message text',
-      file,
+      log: {
+        level: 'TRACE',
+        message: 'message text',
+        file,
+      },
     };
 
     PublicReportingAPI.launchTrace('message text', file);
@@ -150,9 +170,11 @@ describe('PublicReportingAPI', function() {
       .mockImplementation(() => {});
 
     const expectedAddLogObj = {
-      level: 'DEBUG',
-      message: 'message text',
-      file,
+      log: {
+        level: 'DEBUG',
+        message: 'message text',
+        file,
+      },
     };
 
     PublicReportingAPI.launchDebug('message text', file);
@@ -165,9 +187,11 @@ describe('PublicReportingAPI', function() {
       .mockImplementation(() => {});
 
     const expectedAddLogObj = {
-      level: 'INFO',
-      message: 'message text',
-      file,
+      log: {
+        level: 'INFO',
+        message: 'message text',
+        file,
+      },
     };
 
     PublicReportingAPI.launchInfo('message text', file);
@@ -180,9 +204,11 @@ describe('PublicReportingAPI', function() {
       .mockImplementation(() => {});
 
     const expectedAddLogObj = {
-      level: 'WARN',
-      message: 'message text',
-      file,
+      log: {
+        level: 'WARN',
+        message: 'message text',
+        file,
+      },
     };
 
     PublicReportingAPI.launchWarn('message text', file);
@@ -195,9 +221,11 @@ describe('PublicReportingAPI', function() {
       .mockImplementation(() => {});
 
     const expectedAddLogObj = {
-      level: 'ERROR',
-      message: 'message text',
-      file,
+      log: {
+        level: 'ERROR',
+        message: 'message text',
+        file,
+      },
     };
 
     PublicReportingAPI.launchError('message text', file);
@@ -210,9 +238,11 @@ describe('PublicReportingAPI', function() {
       .mockImplementation(() => {});
 
     const expectedAddLogObj = {
-      level: 'FATAL',
-      message: 'message text',
-      file,
+      log: {
+        level: 'FATAL',
+        message: 'message text',
+        file,
+      },
     };
 
     PublicReportingAPI.launchFatal('message text', file);
