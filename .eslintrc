@@ -26,12 +26,14 @@
     "import/no-useless-path-segments": 0,
     "no-invalid-this": 0,
     "prefer-object-spread": 0,
-    "no-console": 0
+    "no-console": 0,
+    "func-names": 0
   },
   "overrides": [{
     "files": ["*.spec.js"],
     "rules": {
       "func-names":"off",
+      "jest/valid-expect": 0,
       "mocha/no-pending-tests": 0
     }
   }]
