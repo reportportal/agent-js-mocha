@@ -96,7 +96,7 @@ describe('launch reporting', function() {
       const runner = new EventEmitter();
       const reporter = new ReportportalAgent(runner, options);
       reporter.rpClient = new RPClient(options);
-      const expetedSystemAttributes = [
+      const expectedSystemAttributes = [
         {
           key: 'agent',
           value: 'agentName|agentVersion',
@@ -106,7 +106,7 @@ describe('launch reporting', function() {
 
       const systemAttributes = reporter.getSystemAttributes();
 
-      expect(systemAttributes).toEqual(expetedSystemAttributes);
+      expect(systemAttributes).toEqual(expectedSystemAttributes);
     });
 
     it('skippedIssue = true. Should return attribute with agent name and version', function() {
@@ -115,7 +115,7 @@ describe('launch reporting', function() {
       const runner = new EventEmitter();
       const reporter = new ReportportalAgent(runner, options);
       reporter.rpClient = new RPClient(options);
-      const expetedSystemAttributes = [
+      const expectedSystemAttributes = [
         {
           key: 'agent',
           value: 'agentName|agentVersion',
@@ -125,7 +125,7 @@ describe('launch reporting', function() {
 
       const systemAttributes = reporter.getSystemAttributes();
 
-      expect(systemAttributes).toEqual(expetedSystemAttributes);
+      expect(systemAttributes).toEqual(expectedSystemAttributes);
     });
 
     it('skippedIssue = false. Should return 2 attribute: with agent name/version and skippedIssue', function() {
@@ -134,7 +134,7 @@ describe('launch reporting', function() {
       const runner = new EventEmitter();
       const reporter = new ReportportalAgent(runner, options);
       reporter.rpClient = new RPClient(options);
-      const expetedSystemAttributes = [
+      const expectedSystemAttributes = [
         {
           key: 'agent',
           value: 'agentName|agentVersion',
@@ -149,7 +149,7 @@ describe('launch reporting', function() {
 
       const systemAttributes = reporter.getSystemAttributes();
 
-      expect(systemAttributes).toEqual(expetedSystemAttributes);
+      expect(systemAttributes).toEqual(expectedSystemAttributes);
     });
   });
 });
