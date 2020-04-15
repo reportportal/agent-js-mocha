@@ -1,5 +1,5 @@
 const EventEmitter = require('events');
-const { getDefaultConfig, RPClient, mockedDate } = require('./mocks');
+const { getDefaultConfig, RPClient } = require('./mocks');
 const ReportportalAgent = require('./../lib/mochaReporter');
 
 describe('description reporting', function() {
