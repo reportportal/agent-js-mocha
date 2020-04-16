@@ -2,6 +2,13 @@ const EventEmitter = require('events');
 const { getDefaultConfig, RPClient, mockedDate } = require('./mocks');
 const ReportportalAgent = require('./../lib/mochaReporter');
 
+jest.mock('./../lib/utils', () => ({
+  getAgentInfo: () => ({
+    name: 'agentName',
+    version: 'agentVersion',
+  }),
+}));
+
 describe('launch reporting', function() {
   afterEach(function() {
     jest.clearAllMocks();
@@ -17,7 +24,13 @@ describe('launch reporting', function() {
         name: 'LauncherName',
         startTime: mockedDate,
         description: 'Launch description',
-        attributes: [],
+        attributes: [
+          {
+            key: 'agent',
+            value: 'agentName|agentVersion',
+            system: true,
+          },
+        ],
         rerun: undefined,
         rerunOf: undefined,
       };
@@ -42,7 +55,13 @@ describe('launch reporting', function() {
         name: 'LauncherName',
         startTime: mockedDate,
         description: 'Launch description',
-        attributes: [],
+        attributes: [
+          {
+            key: 'agent',
+            value: 'agentName|agentVersion',
+            system: true,
+          },
+        ],
         rerun: true,
         rerunOf: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
       };
@@ -68,6 +87,69 @@ describe('launch reporting', function() {
       expect(spyFinishLaunch).toHaveBeenCalledWith('tempLaunchId', {
         endTime: mockedDate,
       });
+    });
+  });
+
+  describe('getSystemAttributes', function() {
+    it('skippedIssue undefined. Should return attribute with agent name and version', function() {
+      const options = getDefaultConfig();
+      const runner = new EventEmitter();
+      const reporter = new ReportportalAgent(runner, options);
+      reporter.rpClient = new RPClient(options);
+      const expectedSystemAttributes = [
+        {
+          key: 'agent',
+          value: 'agentName|agentVersion',
+          system: true,
+        },
+      ];
+
+      const systemAttributes = reporter.getSystemAttributes();
+
+      expect(systemAttributes).toEqual(expectedSystemAttributes);
+    });
+
+    it('skippedIssue = true. Should return attribute with agent name and version', function() {
+      const options = getDefaultConfig();
+      options.reporterOptions.skippedIssue = true;
+      const runner = new EventEmitter();
+      const reporter = new ReportportalAgent(runner, options);
+      reporter.rpClient = new RPClient(options);
+      const expectedSystemAttributes = [
+        {
+          key: 'agent',
+          value: 'agentName|agentVersion',
+          system: true,
+        },
+      ];
+
+      const systemAttributes = reporter.getSystemAttributes();
+
+      expect(systemAttributes).toEqual(expectedSystemAttributes);
+    });
+
+    it('skippedIssue = false. Should return 2 attribute: with agent name/version and skippedIssue', function() {
+      const options = getDefaultConfig();
+      options.reporterOptions.skippedIssue = false;
+      const runner = new EventEmitter();
+      const reporter = new ReportportalAgent(runner, options);
+      reporter.rpClient = new RPClient(options);
+      const expectedSystemAttributes = [
+        {
+          key: 'agent',
+          value: 'agentName|agentVersion',
+          system: true,
+        },
+        {
+          key: 'skippedIssue',
+          value: 'false',
+          system: true,
+        },
+      ];
+
+      const systemAttributes = reporter.getSystemAttributes();
+
+      expect(systemAttributes).toEqual(expectedSystemAttributes);
     });
   });
 });
