@@ -140,6 +140,26 @@ describe('test items reporting', function() {
 
       expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
     });
+    it('testCaseId exists for the test: should finish test with testCaseId', function() {
+      reporter = createAndPrepareReporter();
+      const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
+      const currentTest = {
+        tempId: 'testItemId',
+      };
+      reporter.testCaseIds.set('testItemId', 'test_case_Id');
+
+      const expectedTestFinishObj = {
+        endTime: mockedDate,
+        retry: false,
+        status: 'passed',
+        testCaseId: 'test_case_Id',
+      };
+      reporter.currentTest = currentTest;
+
+      reporter.finishTest(currentTest, testStatuses.PASSED);
+
+      expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
+    });
   });
 
   describe('test event listeners', function() {
