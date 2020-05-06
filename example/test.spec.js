@@ -34,6 +34,7 @@ describe('describe', function() {
   let foo = '';
   before(function() {
     PublicReportingAPI.setDescription('root describe');
+    PublicReportingAPI.setTestCaseId('describe_test_case_id');
     foo = 'bar';
   });
 
@@ -78,6 +79,7 @@ describe('describe', function() {
   it('test pass', function() {
     PublicReportingAPI.setDescription('passed test description');
     PublicReportingAPI.addAttributes([{ key: 'state', value: 'stable' }]);
+    PublicReportingAPI.setTestCaseId('test_pass_test_case_id');
     expect(true).to.be.equal(true);
   });
 

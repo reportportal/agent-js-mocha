@@ -140,6 +140,27 @@ describe('suite',()=>{
 });
 ```
 
+#### Report test case id for steps and suites
+
+**setTestCaseId (*testCaseId*)**. Set test case id to the current test/suite. Should be called inside of corresponding test or suite.</br> 
+
+Mocha doesn't allow functional calls directly into describe section. You can call setTestCaseId inside of before/after hooks to set test case id to the corresponding suite. 
+
+**Example:**
+```javascript
+const PublicReportingAPI = require('agent-js-mocha/lib/publicReportingAPI');
+...
+describe('suite',()=>{
+  before(function (){
+    PublicReportingAPI.addAttributes([{ key: 'suiteAttr1Key', value: 'suiteAttr1Value' }, { value: 'suiteAttr2' }]);
+  });
+  it('test', () => {
+    PublicReportingAPI.addAttributes([{ key: 'testAttr1Key', value: 'testAttr1Value' }]);
+    PublicReportingAPI.addAttributes([{ value: 'testAttr2' }]);
+  });
+});
+```
+
 ## Run test example:
 For running test example clone [agent-js-mocha](https://github.com/reportportal/agent-js-mocha) and fill in [reporterOptions](#How-to-use).  
 
