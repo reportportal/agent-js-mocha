@@ -161,6 +161,36 @@ describe('suite',()=>{
 });
 ```
 
+#### Finish launch/test item with status
+
+PublicReportingAPI provides the following methods for setting status to the current suite/spec.
+
+* setStatus(*status*). Assign *status* to the current test. If called outside of the test (for example in before/after hooks), status is assigned to the current suite.<br/>
+*status* should be equal to one of the following values: *passed*, *failed*, *stopped*, *skipped*, *interrupted*, *cancelled*, *info*, *warn*.<br/>
+
+You can use the shorthand forms of the setStatus method:
+
+* setStatusPassed(). Assign *passed* status to the current test or suite.
+* setStatusFailed(). Assign *failed* status to the current test or suite.
+* setStatusSkipped(). Assign *skipped* status to the current test or suite.
+* setStatusStopped(). Assign *stopped* status to the current test or suite.
+* setStatusInterrupted(). Assign *interrupted* status to the current test or suite.
+* setStatusCancelled(). Assign *cancelled* status to the current test or suite.
+* setStatusInfo(). Assign *info* status to the current test or suite.
+* setStatusWarn(). Assign *warn* status to the current test or suite.
+
+There are also the corresponding methods for setting status into the launch:
+* setLaunchStatus(*status*). Assign *status* to the launch.<br/>
+*status* should be equal to one of the following values: *passed*, *failed*, *stopped*, *skipped*, *interrupted*, *cancelled*, *info*, *warn*.<br/>
+* setLaunchStatusPassed(). Assign *passed* status to the launch.
+* setLaunchStatusFailed(). Assign *failed* status to the launch.
+* setLaunchStatusSkipped(). Assign *skipped* status to the launch.
+* setLaunchStatusStopped(). Assign *stopped* status to the launch.
+* setLaunchStatusInterrupted(). Assign *interrupted* status to the launch.
+* setLaunchStatusCancelled(). Assign *cancelled* status to the launch.
+* setLaunchStatusInfo(). Assign *info* status to the launch.
+ 
+
 ## Run test example:
 For running test example clone [agent-js-mocha](https://github.com/reportportal/agent-js-mocha) and fill in [reporterOptions](#How-to-use).  
 
