@@ -2,6 +2,27 @@ const ClientPublicReportingAPI = require('reportportal-client/lib/publicReportin
 const { RP_STATUSES } = require('reportportal-client/lib/constants/statuses');
 const PublicReportingAPI = require('./../lib/publicReportingAPI');
 
+const publicReportingAPILaunchStatusMethods = [
+  { method: 'setLaunchStatusPassed', status: 'passed' },
+  { method: 'setLaunchStatusFailed', status: 'failed' },
+  { method: 'setLaunchStatusSkipped', status: 'skipped' },
+  { method: 'setLaunchStatusStopped', status: 'stopped' },
+  { method: 'setLaunchStatusInterrupted', status: 'interrupted' },
+  { method: 'setLaunchStatusCancelled', status: 'cancelled' },
+  { method: 'setLaunchStatusInfo', status: 'info' },
+  { method: 'setLaunchStatusWarn', status: 'warn' },
+];
+const publicReportingAPIStatusMethods = [
+  { method: 'setStatusPassed', status: 'passed' },
+  { method: 'setStatusFailed', status: 'failed' },
+  { method: 'setStatusSkipped', status: 'skipped' },
+  { method: 'setStatusStopped', status: 'stopped' },
+  { method: 'setStatusInterrupted', status: 'interrupted' },
+  { method: 'setStatusCancelled', status: 'cancelled' },
+  { method: 'setStatusInfo', status: 'info' },
+  { method: 'setStatusWarn', status: 'warn' },
+];
+
 describe('PublicReportingAPI', function() {
   describe('Log reporting', function() {
     let file;
@@ -238,132 +259,30 @@ describe('PublicReportingAPI', function() {
   });
 
   describe('Item status reporting', function() {
-    it('setStatus: should call setStatus method with "passed" status', function() {
-      const spySetStatus = jest.spyOn(ClientPublicReportingAPI, 'setStatus').mockImplementation(() => {});
+    publicReportingAPIStatusMethods.forEach(({ method, status }) => {
+      it(`${method}: should call ${method} method with "${status}" status`, function() {
+        const spySetStatus = jest
+          .spyOn(ClientPublicReportingAPI, 'setStatus')
+          .mockImplementation(() => {});
 
-      PublicReportingAPI.setStatusPassed();
+        PublicReportingAPI[method]();
 
-      expect(spySetStatus).toHaveBeenCalledWith(RP_STATUSES.PASSED);
+        expect(spySetStatus).toHaveBeenCalledWith(status);
+      });
     });
+  });
 
-    it('setStatusFailed: should call setStatus method with "failed" status', function() {
-      const spySetStatus = jest.spyOn(ClientPublicReportingAPI, 'setStatus').mockImplementation(() => {});
+  describe('Launch status reporting', function() {
+    publicReportingAPILaunchStatusMethods.forEach(({ method, status }) => {
+      it(`${method}: should call ${method} method with "${status}" status`, function() {
+        const spySetStatus = jest
+          .spyOn(ClientPublicReportingAPI, 'setLaunchStatus')
+          .mockImplementation(() => {});
 
-      PublicReportingAPI.setStatusFailed();
+        PublicReportingAPI[method]();
 
-      expect(spySetStatus).toHaveBeenCalledWith(RP_STATUSES.FAILED);
-    });
-
-    it('setStatusSkipped: should call setStatus method with "skipped" status', function() {
-      const spySetStatus = jest.spyOn(ClientPublicReportingAPI, 'setStatus').mockImplementation(() => {});
-
-      PublicReportingAPI.setStatusSkipped();
-
-      expect(spySetStatus).toHaveBeenCalledWith(RP_STATUSES.SKIPPED);
-    });
-
-    it('setStatusStopped: should call setStatus method with "stopped" status', function() {
-      const spySetStatus = jest.spyOn(ClientPublicReportingAPI, 'setStatus').mockImplementation(() => {});
-
-      PublicReportingAPI.setStatusStopped();
-
-      expect(spySetStatus).toHaveBeenCalledWith(RP_STATUSES.STOPPED);
-    });
-
-    it('setStatusInterrupted: should call setStatus method with "interrupted" status', function() {
-      const spySetStatus = jest.spyOn(ClientPublicReportingAPI, 'setStatus').mockImplementation(() => {});
-
-      PublicReportingAPI.setStatusInterrupted();
-
-      expect(spySetStatus).toHaveBeenCalledWith(RP_STATUSES.INTERRUPTED);
-    });
-
-    it('setStatusCancelled: should call setStatus method with "cancelled" status', function() {
-      const spySetStatus = jest.spyOn(ClientPublicReportingAPI, 'setStatus').mockImplementation(() => {});
-
-      PublicReportingAPI.setStatusCancelled();
-
-      expect(spySetStatus).toHaveBeenCalledWith(RP_STATUSES.CANCELLED);
-    });
-
-    it('setStatusInfo: should call setStatus method with "info" status', function() {
-      const spySetStatus = jest.spyOn(ClientPublicReportingAPI, 'setStatus').mockImplementation(() => {});
-
-      PublicReportingAPI.setStatusInfo();
-
-      expect(spySetStatus).toHaveBeenCalledWith(RP_STATUSES.INFO);
-    });
-
-    it('setStatusWarn: should call setStatus method with "warn" status', function() {
-      const spySetStatus = jest.spyOn(ClientPublicReportingAPI, 'setStatus').mockImplementation(() => {});
-
-      PublicReportingAPI.setStatusWarn();
-
-      expect(spySetStatus).toHaveBeenCalledWith(RP_STATUSES.WARN);
-    });
-
-    it('setLaunchStatusPassed: should call setLaunchStatus method with "passed" status', function() {
-      const spyLaunchStatus = jest.spyOn(ClientPublicReportingAPI, 'setLaunchStatus').mockImplementation(() => {});
-
-      PublicReportingAPI.setLaunchStatusPassed();
-
-      expect(spyLaunchStatus).toHaveBeenCalledWith(RP_STATUSES.PASSED);
-    });
-
-    it('setLaunchStatusFailed: should call setLaunchStatus method with "failed" status', function() {
-      const spyLaunchStatus = jest.spyOn(ClientPublicReportingAPI, 'setLaunchStatus').mockImplementation(() => {});
-
-      PublicReportingAPI.setLaunchStatusFailed();
-
-      expect(spyLaunchStatus).toHaveBeenCalledWith(RP_STATUSES.FAILED);
-    });
-
-    it('setLaunchStatusSkipped: should call setLaunchStatus method with "skipped" status', function() {
-      const spyLaunchStatus = jest.spyOn(ClientPublicReportingAPI, 'setLaunchStatus').mockImplementation(() => {});
-
-      PublicReportingAPI.setLaunchStatusSkipped();
-
-      expect(spyLaunchStatus).toHaveBeenCalledWith(RP_STATUSES.SKIPPED);
-    });
-
-    it('setLaunchStatusStopped: should call setLaunchStatus method with "stopped" status', function() {
-      const spyLaunchStatus = jest.spyOn(ClientPublicReportingAPI, 'setLaunchStatus').mockImplementation(() => {});
-
-      PublicReportingAPI.setLaunchStatusStopped();
-
-      expect(spyLaunchStatus).toHaveBeenCalledWith(RP_STATUSES.STOPPED);
-    });
-
-    it('setLaunchStatusInterrupted: should call setLaunchStatus method with "interrupted" status', function() {
-      const spyLaunchStatus = jest.spyOn(ClientPublicReportingAPI, 'setLaunchStatus').mockImplementation(() => {});
-
-      PublicReportingAPI.setLaunchStatusInterrupted();
-
-      expect(spyLaunchStatus).toHaveBeenCalledWith(RP_STATUSES.INTERRUPTED);
-    });
-
-    it('setLaunchStatusCancelled: should call setLaunchStatus method with "cancelled" status', function() {
-      const spyLaunchStatus = jest.spyOn(ClientPublicReportingAPI, 'setLaunchStatus').mockImplementation(() => {});
-
-      PublicReportingAPI.setLaunchStatusCancelled();
-
-      expect(spyLaunchStatus).toHaveBeenCalledWith(RP_STATUSES.CANCELLED);
-    });
-
-    it('setLaunchStatusInfo: should call setLaunchStatus method with "info" status', function() {
-      const spyLaunchStatus = jest.spyOn(ClientPublicReportingAPI, 'setLaunchStatus').mockImplementation(() => {});
-
-      PublicReportingAPI.setLaunchStatusInfo();
-
-      expect(spyLaunchStatus).toHaveBeenCalledWith(RP_STATUSES.INFO);
-    });
-
-    it('setLaunchStatusWarn: should call setLaunchStatus method with "warn" status', function() {
-      const spyLaunchStatus = jest.spyOn(ClientPublicReportingAPI, 'setLaunchStatus').mockImplementation(() => {});
-
-      PublicReportingAPI.setLaunchStatusWarn();
-
-      expect(spyLaunchStatus).toHaveBeenCalledWith(RP_STATUSES.WARN);
+        expect(spySetStatus).toHaveBeenCalledWith(status);
+      });
     });
   });
 });
