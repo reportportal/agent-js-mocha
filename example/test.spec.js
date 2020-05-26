@@ -91,6 +91,12 @@ describe('describe', function() {
 
   it('test pending');
 
+  it('test info', function() {
+    PublicReportingAPI.setLaunchStatusInfo();
+    PublicReportingAPI.setStatusInfo();
+    expect(true).to.be.equal(true);
+  });
+
   describe('nested describe', function() {
     before(function() {
       PublicReportingAPI.setDescription('nested describe description');
