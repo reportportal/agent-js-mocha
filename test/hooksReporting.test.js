@@ -25,8 +25,11 @@ describe('reporting hooks', function() {
     beforeAll(function() {
       reporter = createReporter({ reportHooks: true });
       reporter.launchId = 'tempLaunchId';
-      reporter.suiteIds.set(rootSuite, undefined);
-      reporter.suiteIds.set(suiteFirstLevel, 'tempSuiteId');
+      reporter.suitesInfo.set(rootSuite, undefined);
+      reporter.suitesInfo.set(suiteFirstLevel, {
+        tempId: 'tempSuiteId',
+        startTime: mockedDate,
+      });
     });
 
     afterEach(function() {
@@ -35,6 +38,11 @@ describe('reporting hooks', function() {
       jest.clearAllMocks();
     });
     describe('onHookStart', function() {
+      beforeEach(function() {
+        reporter.currentTest = {
+          startTime: mockedDate + 1,
+        };
+      });
       it('should start before each hook', function() {
         const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
         const hook = {
@@ -64,7 +72,7 @@ describe('reporting hooks', function() {
         };
         const expectedHookStartObj = {
           name: 'before all hook with title',
-          startTime: mockedDate,
+          startTime: mockedDate - 1,
           type: 'BEFORE_SUITE',
         };
 
@@ -183,8 +191,8 @@ describe('reporting hooks', function() {
     beforeAll(function() {
       reporter = createReporter();
       reporter.launchId = 'tempLaunchId';
-      reporter.suiteIds.set(rootSuite, undefined);
-      reporter.suiteIds.set(suiteFirstLevel, 'tempSuiteId');
+      reporter.suitesInfo.set(rootSuite, undefined);
+      reporter.suitesInfo.set(suiteFirstLevel, { tempId: 'tempSuiteId', startTime: mockedDate });
     });
 
     afterEach(function() {

@@ -40,6 +40,7 @@ describe('describe', function() {
 
   beforeEach(function() {
     foo = 'bar';
+    return setTimeout(() => {}, 100);
   });
 
   it('test with logs and attachments', async function() {
@@ -92,45 +93,15 @@ describe('describe', function() {
   it('test pending');
 
   it('test info', function() {
+    PublicReportingAPI.info('test info log');
     PublicReportingAPI.setLaunchStatusInfo();
     PublicReportingAPI.setStatusInfo();
     expect(true).to.be.equal(true);
   });
 
-  describe('nested describe', function() {
-    before(function() {
-      PublicReportingAPI.setDescription('nested describe description');
-      PublicReportingAPI.addAttributes([{ key: 'suiteAttrKey', value: 'suiteAttrValue' }]);
-      foo = 'bar';
-    });
-
-    beforeEach(function() {
-      foo = 'bar';
-    });
-
-    it('test pass in nested describe', function() {
-      PublicReportingAPI.info('test info log');
-      expect(foo).to.be.equal('bar');
-    });
-
-    it('test fail in nested describe', function() {
-      expect(true).to.be.equal(false);
-    });
-
-    it('test fail with 3 reties in nested describe', function() {
-      this.retries(3);
-      expect(true).to.be.equal(false);
-    });
-
-    it('test pending in nested describe');
-
-    after('named hook', function() {
-      foo = 'bar';
-    });
-
-    afterEach(function() {
-      foo = 'bar';
-    });
+  it('test fail with 3 reties', function() {
+    this.retries(3);
+    expect(true).to.be.equal(false);
   });
 
   after(function() {

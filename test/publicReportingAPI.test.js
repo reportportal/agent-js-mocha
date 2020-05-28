@@ -1,5 +1,4 @@
 const ClientPublicReportingAPI = require('reportportal-client/lib/publicReportingAPI');
-const { RP_STATUSES } = require('reportportal-client/lib/constants/statuses');
 const PublicReportingAPI = require('./../lib/publicReportingAPI');
 
 const publicReportingAPILaunchStatusMethods = [
