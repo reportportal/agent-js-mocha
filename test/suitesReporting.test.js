@@ -31,7 +31,7 @@ describe('suites reporting', function() {
   });
 
   afterEach(function() {
-    reporter.suiteIds.clear();
+    reporter.suitesInfo.clear();
     jest.clearAllMocks();
   });
 
@@ -46,7 +46,7 @@ describe('suites reporting', function() {
 
     it('should start first-level suite', function() {
       const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
-      reporter.suiteIds.set(rootSuite, undefined);
+      reporter.suitesInfo.set(rootSuite, undefined);
       const expectedSuiteStartObj = {
         name: 'First level suite',
         startTime: mockedDate,
@@ -65,8 +65,11 @@ describe('suites reporting', function() {
 
     it('should start nested suite', function() {
       const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
-      reporter.suiteIds.set(rootSuite, undefined);
-      reporter.suiteIds.set(suiteFirstLevel, 'firstLevelSuiteId');
+      reporter.suitesInfo.set(rootSuite, undefined);
+      reporter.suitesInfo.set(suiteFirstLevel, {
+        tempId: 'firstLevelSuiteId',
+        startTime: mockedDate,
+      });
       const expectedSuiteStartObj = {
         name: 'Second level suite',
         startTime: mockedDate,
@@ -87,8 +90,11 @@ describe('suites reporting', function() {
   describe('finishTestItem', function() {
     it('should finish started suite', function() {
       const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
-      reporter.suiteIds.set(rootSuite, undefined);
-      reporter.suiteIds.set(suiteFirstLevel, 'firstLevelSuiteId');
+      reporter.suitesInfo.set(rootSuite, undefined);
+      reporter.suitesInfo.set(suiteFirstLevel, {
+        tempId: 'firstLevelSuiteId',
+        startTime: mockedDate,
+      });
 
       reporter.onSuiteFinish(suiteFirstLevel);
 

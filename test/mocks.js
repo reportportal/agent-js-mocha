@@ -1,4 +1,4 @@
-const mockedDate = new Date();
+const mockedDate = Date.now();
 class RPClient {
   constructor(config) {
     this.config = config;

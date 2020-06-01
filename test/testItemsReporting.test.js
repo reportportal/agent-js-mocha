@@ -20,7 +20,7 @@ describe('test items reporting', function() {
       title: 'Suite',
       parent: {},
     };
-    reporter.suiteIds.set(suite, 'tempSuiteId');
+    reporter.suitesInfo.set(suite, { tempId: 'tempSuiteId', startTime: mockedDate });
     return reporter;
   };
 
