@@ -6,8 +6,7 @@
   "scripts": {
     "eslint": "eslint \"./**/*.js\"",
     "format": "npm run eslint -- --fix",
-    "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test": "jest --detectOpenHandles --coverage --config ./jest.config.js"
   },
   "author": "ReportPortal.io",
   "contributors": [
@@ -56,7 +55,6 @@
   ],
   "jest": {
     "testPathIgnorePatterns": [
-      "<rootDir>/example/",
       "<rootDir>/node_modules/"
     ]
   }

@@ -133,4 +133,12 @@ describe('attributes reporting', function() {
 
     expect(reporter.attributes).toEqual(expectedAttributesMap);
   });
+
+  it('onAddAttributes without attributes: should not add attributes for current suite in attributes map', function() {
+    const expectedAttributesMap = new Map();
+
+    reporter.onAddAttributes({});
+
+    expect(reporter.attributes).toEqual(expectedAttributesMap);
+  });
 });

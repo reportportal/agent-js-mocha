@@ -104,6 +104,23 @@ describe('launch reporting', function() {
         endTime: mockedDate,
       });
     });
+
+    it('setLaunchStatus: should finish launch with specifyed status', function() {
+      const options = getDefaultConfig();
+      const runner = new EventEmitter();
+      const reporter = new ReportportalAgent(runner, options);
+      reporter.rpClient = new RPClient(options);
+      const spyFinishLaunch = jest.spyOn(reporter.rpClient, 'finishLaunch');
+      reporter.launchId = 'tempLaunchId';
+      reporter.setLaunchStatus('info');
+
+      reporter.onLaunchFinish();
+
+      expect(spyFinishLaunch).toHaveBeenCalledWith('tempLaunchId', {
+        endTime: mockedDate,
+        status: 'info',
+      });
+    });
   });
 
   describe('getSystemAttributes', function() {

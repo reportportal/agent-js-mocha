@@ -49,6 +49,19 @@ describe('PublicReportingAPI', function() {
       };
     });
 
+    it('log withot parameters: should call addLog method with info level and empty message', function() {
+      const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
+
+      const expectedAddLogObj = {
+        level: 'INFO',
+        message: '',
+      };
+
+      PublicReportingAPI.log();
+
+      expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
+    });
+
     it('log: should call addLog method with specified level and message', function() {
       const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
 
@@ -149,6 +162,22 @@ describe('PublicReportingAPI', function() {
       };
 
       PublicReportingAPI.fatal('message text', file);
+
+      expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
+    });
+    it('launchLog without params: should call addLaunchLog method with info level and empty message', function() {
+      const spyAddLog = jest
+        .spyOn(ClientPublicReportingAPI, 'addLaunchLog')
+        .mockImplementation(() => {});
+
+      const expectedAddLogObj = {
+        log: {
+          level: 'INFO',
+          message: '',
+        },
+      };
+
+      PublicReportingAPI.launchLog();
 
       expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
     });
@@ -274,6 +303,7 @@ describe('PublicReportingAPI', function() {
   });
 
   describe('Item status reporting', function() {
+    // eslint-disable-next-line mocha/no-setup-in-describe
     publicReportingAPIStatusMethods.forEach(({ method, status }) => {
       it(`${method}: should call ${method} method with "${status}" status`, function() {
         const spySetStatus = jest
@@ -288,6 +318,7 @@ describe('PublicReportingAPI', function() {
   });
 
   describe('Launch status reporting', function() {
+    // eslint-disable-next-line mocha/no-setup-in-describe
     publicReportingAPILaunchStatusMethods.forEach(({ method, status }) => {
       it(`${method}: should call ${method} method with "${status}" status`, function() {
         const spySetStatus = jest
