@@ -1,4 +1,20 @@
-const ClientPublicReportingAPI = require('reportportal-client/lib/publicReportingAPI');
+/*
+ *  Copyright 2020 EPAM Systems
+ *
+ *  Licensed under the Apache License, Version 2.0 (the "License");
+ *  you may not use this file except in compliance with the License.
+ *  You may obtain a copy of the License at
+ *
+ *  http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
+const ClientPublicReportingAPI = require('@reportportal/client-javascript/lib/publicReportingAPI');
 const PublicReportingAPI = require('./../lib/publicReportingAPI');
 
 const publicReportingAPILaunchStatusMethods = [
@@ -31,6 +47,19 @@ describe('PublicReportingAPI', function() {
         type: 'image/png',
         content: Buffer.from([1, 2, 3, 4, 5, 6, 7]).toString('base64'),
       };
+    });
+
+    it('log withot parameters: should call addLog method with info level and empty message', function() {
+      const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
+
+      const expectedAddLogObj = {
+        level: 'INFO',
+        message: '',
+      };
+
+      PublicReportingAPI.log();
+
+      expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
     });
 
     it('log: should call addLog method with specified level and message', function() {
@@ -133,6 +162,22 @@ describe('PublicReportingAPI', function() {
       };
 
       PublicReportingAPI.fatal('message text', file);
+
+      expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
+    });
+    it('launchLog without params: should call addLaunchLog method with info level and empty message', function() {
+      const spyAddLog = jest
+        .spyOn(ClientPublicReportingAPI, 'addLaunchLog')
+        .mockImplementation(() => {});
+
+      const expectedAddLogObj = {
+        log: {
+          level: 'INFO',
+          message: '',
+        },
+      };
+
+      PublicReportingAPI.launchLog();
 
       expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
     });
@@ -258,6 +303,7 @@ describe('PublicReportingAPI', function() {
   });
 
   describe('Item status reporting', function() {
+    // eslint-disable-next-line mocha/no-setup-in-describe
     publicReportingAPIStatusMethods.forEach(({ method, status }) => {
       it(`${method}: should call ${method} method with "${status}" status`, function() {
         const spySetStatus = jest
@@ -272,6 +318,7 @@ describe('PublicReportingAPI', function() {
   });
 
   describe('Launch status reporting', function() {
+    // eslint-disable-next-line mocha/no-setup-in-describe
     publicReportingAPILaunchStatusMethods.forEach(({ method, status }) => {
       it(`${method}: should call ${method} method with "${status}" status`, function() {
         const spySetStatus = jest

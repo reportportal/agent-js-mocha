@@ -1,26 +1,27 @@
 {
-  "name": "rp-mocha-reporter",
-  "version": "2.0.5",
-  "description": "mocha reporter for EPAM Report Portal",
+  "name": "@reportportal/agent-js-mocha",
+  "version": "5.0.0",
+  "description": "Mocha reporter for the Report Portal",
   "main": "index.js",
   "scripts": {
-    "example": "node ./example/main.js",
     "eslint": "eslint \"./**/*.js\"",
     "format": "npm run eslint -- --fix",
-    "test": "jest",
-    "test:coverage": "jest --coverage"
+    "test": "jest --detectOpenHandles --coverage --config ./jest.config.js"
   },
-  "author": "Vitalii Fedosieiev",
+  "author": "ReportPortal.io",
   "contributors": [
     {
       "name": "Alexander Galichenko",
       "email": "alexandr.galichenko@gmail.com"
+    },
+    {
+      "name": "Vitalii Fedosieiev"
     }
   ],
   "license": "Apache 2.0",
   "dependencies": {
-    "mocha": "^7.0.1",
-    "reportportal-client": "^5.5.0"
+    "@reportportal/client-javascript": "^5.0.0",
+    "mocha": "^7.0.1"
   },
   "repository": {
     "type": "git",
@@ -40,15 +41,21 @@
     "jest": "^25.1.0",
     "prettier": "^1.19.1"
   },
+  "bugs": {
+    "url": "https://github.com/reportportal/agent-js-mocha/issues"
+  },
   "keywords": [
     "epam",
     "reports",
     "portal",
     "mocha",
     "reporters",
+    "rp",
     "reportportal"
   ],
   "jest": {
-    "testPathIgnorePatterns": ["<rootDir>/example/", "<rootDir>/node_modules/"]
+    "testPathIgnorePatterns": [
+      "<rootDir>/node_modules/"
+    ]
   }
 }

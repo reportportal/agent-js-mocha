@@ -1,18 +1,20 @@
 # Mocha reporter for EPAM report portal
-This is mocha runtime reporter for [EPAM report portal](https://github.com/reportportal/reportportal).
+This is mocha runtime reporter for the [Report Portal](https://github.com/reportportal/reportportal).
 
 It was designed to work with mocha programmatically, in order to be able to parametrize each test run.
 
 ## Installation steps:
 
-` npm install rp-mocha-reporter`
+```cmd
+npm install @reportportal/agent-js-mocha
+```
 
 ## How to use:
 Fill reporterOptions in Mocha configuration. 
 ```javascript
 const Mocha = require("mocha");
 let mochaMain = new Mocha({
-  reporter: 'mocha-rp-reporter',
+  reporter: '@reportportal/agent-js-mocha',
   reporterOptions: {
     "token": "00000000-0000-0000-0000-000000000000",                
     "endpoint": "https://your.reportportal.server/api/v1",
@@ -52,7 +54,7 @@ The agent provides an API to extend the functionality of Mocha.
 Import the PublicReportingAPI as shown below to use additional reporting features.
 
 ```javascript
-const PublicReportingAPI = require('agent-js-mocha/lib/publicReportingAPI');
+const PublicReportingAPI = require('@reportportal/agent-js-mocha/lib/publicReportingAPI');
 ```
 #### Report logs and attachments
 PublicReportingAPI provides the following methods for reporting logs into the current test/step.
@@ -85,7 +87,7 @@ PublicReportingAPI provides the corresponding methods for reporting logs into th
 
 **Example:**
 ```javascript
-const PublicReportingAPI = require('agent-js-mocha/lib/publicReportingAPI');
+const PublicReportingAPI = require('@reportportal/agent-js-mocha/lib/publicReportingAPI');
 ...
 describe('suite',()=>{
   it('test', () => {
@@ -119,15 +121,9 @@ describe('suite',()=>{
 
 Mocha doesn't allow functional calls directly into describe section. You can call addAttributes inside of before/after hooks to add attributes to the corresponding suite.
 
-#### Report description for steps and suites
-
-**setDescription (*description*)**. Set text description to the current test/suite. Should be called inside of corresponding test or suite.</br> 
-
-Mocha doesn't allow functional calls directly into describe section. You can call setDescription inside of before/after hooks to set description to the corresponding suite. 
-
 **Example:**
 ```javascript
-const PublicReportingAPI = require('agent-js-mocha/lib/publicReportingAPI');
+const PublicReportingAPI = require('@reportportal/agent-js-mocha/lib/publicReportingAPI');
 ...
 describe('suite',()=>{
   before(function (){
@@ -140,6 +136,40 @@ describe('suite',()=>{
 });
 ```
 
+#### Integration with Sauce Labs
+
+To integrate with Sauce Labs just add attributes: 
+
+```javascript
+[{
+ "key": "SLID",
+ "value": "# of the job in Sauce Labs"
+}, {
+ "key": "SLDC",
+ "value": "EU (EU or US)"
+}]
+```
+
+#### Report description for steps and suites
+
+**setDescription (*description*)**. Set text description to the current test/suite. Should be called inside of corresponding test or suite.</br> 
+
+Mocha doesn't allow functional calls directly into describe section. You can call setDescription inside of before/after hooks to set description to the corresponding suite. 
+
+**Example:**
+```javascript
+const PublicReportingAPI = require('@reportportal/agent-js-mocha/lib/publicReportingAPI');
+...
+describe('suite',()=>{
+  before(function (){
+    PublicReportingAPI.setDescription('suite description');
+  });
+  it('test', () => {
+    PublicReportingAPI.setDescription('test description');
+  });
+});
+```
+
 #### Report test case id for steps and suites
 
 **setTestCaseId (*testCaseId*)**. Set test case id to the current test/suite. Should be called inside of corresponding test or suite.</br> 
@@ -148,15 +178,14 @@ Mocha doesn't allow functional calls directly into describe section. You can cal
 
 **Example:**
 ```javascript
-const PublicReportingAPI = require('agent-js-mocha/lib/publicReportingAPI');
+const PublicReportingAPI = require('@reportportal/agent-js-mocha/lib/publicReportingAPI');
 ...
 describe('suite',()=>{
   before(function (){
-    PublicReportingAPI.addAttributes([{ key: 'suiteAttr1Key', value: 'suiteAttr1Value' }, { value: 'suiteAttr2' }]);
+    PublicReportingAPI.setTestCaseId('TestCaseIdForTheSuite'));
   });
   it('test', () => {
-    PublicReportingAPI.addAttributes([{ key: 'testAttr1Key', value: 'testAttr1Value' }]);
-    PublicReportingAPI.addAttributes([{ value: 'testAttr2' }]);
+    PublicReportingAPI.setTestCaseId('TestCaseIdForTheTest'));
   });
 });
 ```
@@ -189,16 +218,19 @@ There are also the corresponding methods for setting status into the launch:
 * setLaunchStatusInterrupted(). Assign *interrupted* status to the launch.
 * setLaunchStatusCancelled(). Assign *cancelled* status to the launch.
 * setLaunchStatusInfo(). Assign *info* status to the launch.
+
+**Example:**
+```javascript
+const PublicReportingAPI = require('@reportportal/agent-js-mocha/lib/publicReportingAPI');
+...
+describe('suite',()=>{
+  it('test info', function() {
+    PublicReportingAPI.setStatusInfo();
+    expect(true).to.be.equal(true);
+  });
+});
+```
  
-
-## Run test example:
-For running test example clone [agent-js-mocha](https://github.com/reportportal/agent-js-mocha) and fill in [reporterOptions](#How-to-use).  
-
-In the working directory run:  
-1. ```npm install```  - that would install all dependencies.
-
-2. ```npm run example``` - that would run example tests.
-
 # Copyright Notice
 
 Licensed under the [Apache License v2.0](LICENSE)
