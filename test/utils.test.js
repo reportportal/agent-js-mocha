@@ -14,18 +14,16 @@
  *  limitations under the License.
  */
 
+const path = require('path');
 const { getCodeRef, getAgentInfo } = require('./../lib/utils');
 
 describe('utils', function() {
   describe('getCodeRef', function() {
     it('should return correct code ref', function() {
-      jest.mock('path', () => ({
-        sep: '\\',
-      }));
-      jest.spyOn(process, 'cwd').mockImplementation(() => 'C:\\testProject');
+      jest.spyOn(process, 'cwd').mockImplementation(() => `C:${path.sep}testProject`);
       const mockedTest = {
         title: 'testTitle',
-        file: `C:\\testProject\\test\\example.js`,
+        file: `C:${path.sep}testProject${path.sep}test${path.sep}example.js`,
         titlePath: () => ['rootDescribe', 'parentDescribe', 'testTitle'],
       };
       const expectedCodeRef = `test/example.js/rootDescribe/parentDescribe/testTitle`;
