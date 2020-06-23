@@ -1,3 +1,5 @@
+
+## [5.0.1] - 2020-06-23
 ### Added
 - Added link to the example in readme. 
 
