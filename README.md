@@ -32,6 +32,9 @@ let mochaMain = new Mocha({
   }
 });
 ```
+
+#### You can find an example of using Mocha Reporter [here](https://github.com/reportportal/examples-js/tree/master/example-mocha).
+
 ### Options
 
 Runs support following options:
