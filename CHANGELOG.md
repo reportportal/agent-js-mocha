@@ -1,3 +1,5 @@
+### Added
+- Added link to the example in readme. 
 
 ## [5.0.0] - 2020-06-22
 ### Added
