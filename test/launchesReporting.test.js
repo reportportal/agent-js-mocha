@@ -47,10 +47,39 @@ describe('launch reporting', function() {
             system: true,
           },
         ],
+        mode: undefined,
         rerun: undefined,
         rerunOf: undefined,
       };
       const spyStartLaunch = jest.spyOn(reporter.rpClient, 'startLaunch');
+
+      reporter.onLaunchStart();
+
+      expect(reporter.launchId).toEqual('tempLaunchId');
+      expect(spyStartLaunch).toHaveBeenCalledWith(expetedLaunchStartObject);
+    });
+
+    it('should submit results to Debug tab', function() {
+      const options = getDefaultConfig();
+      options.reporterOptions.mode = "DEBUG";
+      const runner = new EventEmitter();
+      const reporter = new ReportportalAgent(runner, options);
+      reporter.rpClient = new RPClient(options);
+      const spyStartLaunch = jest.spyOn(reporter.rpClient, 'startLaunch');
+      const expetedLaunchStartObject = {
+        token: '00000000-0000-0000-0000-000000000000',
+        name: 'LauncherName',
+        startTime: mockedDate,
+        description: 'Launch description',
+        attributes: [
+          {
+            key: 'agent',
+            value: 'agentName|agentVersion',
+            system: true,
+          },
+        ],
+        mode: "DEBUG",
+      };
 
       reporter.onLaunchStart();
 
