@@ -61,7 +61,7 @@ describe('launch reporting', function() {
 
     it('should submit results to Debug tab', function() {
       const options = getDefaultConfig();
-      options.reporterOptions.mode = "DEBUG";
+      options.reporterOptions.mode = 'DEBUG';
       const runner = new EventEmitter();
       const reporter = new ReportportalAgent(runner, options);
       reporter.rpClient = new RPClient(options);
@@ -78,7 +78,7 @@ describe('launch reporting', function() {
             system: true,
           },
         ],
-        mode: "DEBUG",
+        mode: 'DEBUG',
       };
 
       reporter.onLaunchStart();
