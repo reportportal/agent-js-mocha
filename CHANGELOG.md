@@ -1,4 +1,3 @@
-## [5.0.2] - 2020-03-07
 ### Added
 - Added "mode" option for submitting results to Debug tab.
 
