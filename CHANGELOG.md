@@ -1,7 +1,9 @@
+### Added
+- Added "mode" option for submitting results to Debug tab.
 
 ## [5.0.1] - 2020-06-23
 ### Added
-- Added link to the example in readme. 
+- Added link to the example in readme.
 
 ## [5.0.0] - 2020-06-22
 ### Added
