@@ -1,5 +1,6 @@
 ### Added
 - Added "mode" option for submitting results to Debug tab.
+- Added latest error log to the step description.
 
 ## [5.0.1] - 2020-06-23
 ### Added
