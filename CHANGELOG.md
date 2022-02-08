@@ -1,6 +1,9 @@
 ### Added
 - Added "mode" option for submitting results to Debug tab.
 
+### Changed
+- Package size reduced
+
 ## [5.0.1] - 2020-06-23
 ### Added
 - Added link to the example in readme.
