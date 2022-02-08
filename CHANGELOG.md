@@ -1,5 +1,6 @@
 ### Added
 - Added "mode" option for submitting results to Debug tab.
+- Added latest error log to the step description.
 
 ### Changed
 - Package size reduced
