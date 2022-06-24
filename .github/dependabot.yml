@@ -1,0 +1,26 @@
+
+version: 2
+updates:
+  - package-ecosystem: docker
+    directory: '/'
+    schedule:
+      interval: monthly
+      time: '02:00'
+      timezone: America/Los_Angeles
+    open-pull-requests-limit: 2
+    reviewers:
+      - '@returnly/sdet'
+    labels:
+      - 'docker-dependencies'
+
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'monthly'
+      time: '02:00'
+      timezone: America/Los_Angeles
+    reviewers:
+      - '@returnly/sdet'
+    labels:
+      - 'npm-dependencies'
+      - 'dependencies'

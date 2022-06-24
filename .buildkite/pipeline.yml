@@ -1,0 +1,87 @@
+env:
+  NEXUS_HOST: 'http://nexus.returnly.systems:8081/repository/npm-repo-qa/'
+  NPM_USERNAME: 'ci'
+  NPM_EMAIL: 'eng-admin+nexus-ci@returnly.com'
+
+steps:
+  - label: 'npm Install, Eslint and Test'
+    command:
+      - 'cp .npmrc-ci .npmrc'
+      - 'npm install'
+      - 'npm run eslint'
+      - 'npm run test'
+    plugins:
+      docker#v3.5.0:
+        image: 'node:12'
+        propagate-environment: true
+        volumes:
+          - '.:/usr/src/app'
+        environment:
+          - 'BUILDKITE'
+    timeout_in_minutes: 5
+    retry:
+      manual:
+        permit_on_passed: true
+    agents:
+      queue: 'tests'
+
+  - wait: ~
+    continue_on_failure: false
+
+  - label: 'npm Publish'
+    if: build.branch == pipeline.default_branch
+    command: './PublishNpmPackage.sh'
+    plugins:
+      - unbounce/aws-ssm#v1.0.0:
+          parameters:
+            NPM_PASSWORD: /returnly/secrets/common/nexus_repo_password
+      - docker#v3.5.0:
+          image: 'node:12'
+          propagate-environment: true
+          workdir: /usr/src/app
+          volumes:
+            - '.:/usr/src/app'
+          environment:
+            - 'BUILDKITE'
+            - 'NPM_USERNAME'
+            - 'NPM_PASSWORD'
+            - 'NPM_EMAIL'
+            - 'NEXUS_HOST'
+    agents:
+      queue: 'deploy'
+
+  - label: ':spiral_note_pad: README! '
+    if: build.branch != pipeline.default_branch
+    command: buildkite-agent annotate "This branch is not a master branch. Artifacts should not be published to avoid usage of unmerged code."
+
+  - block: 'Force publish non-master branch version'
+    if: build.branch != pipeline.default_branch
+
+  - label: 'npm Publish'
+    if: build.branch != pipeline.default_branch
+    command: './PublishNpmPackage.sh'
+    plugins:
+      - unbounce/aws-ssm#v1.0.0:
+          parameters:
+            NPM_PASSWORD: /returnly/secrets/common/nexus_repo_password
+      - docker#v3.5.0:
+          image: 'node:12'
+          propagate-environment: true
+          workdir: /usr/src/app
+          volumes:
+            - '.:/usr/src/app'
+          environment:
+            - 'BUILDKITE'
+            - 'NPM_USERNAME'
+            - 'NPM_PASSWORD'
+            - 'NPM_EMAIL'
+            - 'NEXUS_HOST'
+    agents:
+      queue: 'deploy'
+
+  - wait: ~
+    continue_on_failure: true
+
+notify:
+  - slack: '#eng-ci-qa'
+    if: build.branch == pipeline.default_branch

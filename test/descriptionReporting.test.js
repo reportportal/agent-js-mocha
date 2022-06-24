@@ -18,9 +18,9 @@ const EventEmitter = require('events');
 const { getDefaultConfig, RPClient } = require('./mocks');
 const ReportportalAgent = require('./../lib/mochaReporter');
 
-describe('description reporting', function() {
+describe('description reporting', function () {
   let reporter;
-  beforeAll(function() {
+  beforeAll(function () {
     const options = getDefaultConfig();
     const runner = new EventEmitter();
     reporter = new ReportportalAgent(runner, options);
@@ -28,18 +28,17 @@ describe('description reporting', function() {
     reporter.suitesStackTempId = ['tempRootSuiteId', 'tempSuiteId'];
   });
 
-  afterEach(function() {
+  afterEach(function () {
     reporter.currentTest = null;
     reporter.descriptions.clear();
     jest.clearAllMocks();
   });
 
-  it('onSetDescription: should set description for current test in the descriptions map', function() {
-    const currentTest = {
+  it('onSetDescription: should set description for current test in the descriptions map', function () {
+    reporter.currentTest = {
       title: 'test',
       tempId: 'testItemId',
     };
-    reporter.currentTest = currentTest;
     const description = 'test description';
     const expectedDescriptionsMap = new Map([['testItemId', description]]);
 
@@ -48,12 +47,11 @@ describe('description reporting', function() {
     expect(reporter.descriptions).toEqual(expectedDescriptionsMap);
   });
 
-  it('onSetDescription: should overwrite description for current test in the descriptions map', function() {
-    const currentTest = {
+  it('onSetDescription: should overwrite description for current test in the descriptions map', function () {
+    reporter.currentTest = {
       title: 'test',
       tempId: 'testItemId',
     };
-    reporter.currentTest = currentTest;
     reporter.descriptions.set('testItemId', 'old description');
     const newDescription = 'new description';
 
@@ -64,7 +62,7 @@ describe('description reporting', function() {
     expect(reporter.descriptions).toEqual(expectedDescriptionsMap);
   });
 
-  it('onSetDescription: should set description for current suite in descriptions map', function() {
+  it('onSetDescription: should set description for current suite in descriptions map', function () {
     const description = 'test description';
     const expectedDescriptionsMap = new Map([['tempSuiteId', description]]);
 

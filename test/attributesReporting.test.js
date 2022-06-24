@@ -18,9 +18,9 @@ const EventEmitter = require('events');
 const { getDefaultConfig, RPClient } = require('./mocks');
 const ReportportalAgent = require('./../lib/mochaReporter');
 
-describe('attributes reporting', function() {
+describe('attributes reporting', function () {
   let reporter;
-  beforeAll(function() {
+  beforeAll(function () {
     const options = getDefaultConfig();
     const runner = new EventEmitter();
     reporter = new ReportportalAgent(runner, options);
@@ -28,18 +28,17 @@ describe('attributes reporting', function() {
     reporter.suitesStackTempId = ['tempRootSuiteId', 'tempSuiteId'];
   });
 
-  afterEach(function() {
+  afterEach(function () {
     reporter.currentTest = null;
     reporter.attributes.clear();
     jest.clearAllMocks();
   });
 
-  it('onAddAttributes: should add attributes for current test in attributes map', function() {
-    const currentTest = {
+  it('onAddAttributes: should add attributes for current test in attributes map', function () {
+    reporter.currentTest = {
       title: 'test',
       tempId: 'testItemId',
     };
-    reporter.currentTest = currentTest;
     const attributes = [
       {
         key: 'key1',
@@ -53,12 +52,11 @@ describe('attributes reporting', function() {
     expect(reporter.attributes).toEqual(expectedAttributes);
   });
 
-  it('onAddAttributes: should append attributes for current test in attributes map', function() {
-    const currentTest = {
+  it('onAddAttributes: should append attributes for current test in attributes map', function () {
+    reporter.currentTest = {
       title: 'test',
       tempId: 'testItemId',
     };
-    reporter.currentTest = currentTest;
     reporter.attributes.set('testItemId', [
       {
         key: 'key1',
@@ -101,7 +99,7 @@ describe('attributes reporting', function() {
     expect(reporter.attributes).toEqual(expectedAttributesMap);
   });
 
-  it('onAddAttributes: should add attributes for current suite in attributes map', function() {
+  it('onAddAttributes: should add attributes for current suite in attributes map', function () {
     const attributes = [
       {
         key: 'key1',
@@ -134,7 +132,7 @@ describe('attributes reporting', function() {
     expect(reporter.attributes).toEqual(expectedAttributesMap);
   });
 
-  it('onAddAttributes without attributes: should not add attributes for current suite in attributes map', function() {
+  it('onAddAttributes without attributes: should not add attributes for current suite in attributes map', function () {
     const expectedAttributesMap = new Map();
 
     reporter.onAddAttributes({});

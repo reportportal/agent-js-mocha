@@ -17,9 +17,9 @@
 const path = require('path');
 const { getCodeRef, getAgentInfo } = require('./../lib/utils');
 
-describe('utils', function() {
-  describe('getCodeRef', function() {
-    it('should return correct code ref', function() {
+describe('utils', function () {
+  describe('getCodeRef', function () {
+    it('should return correct code ref', function () {
       jest.spyOn(process, 'cwd').mockImplementation(() => `C:${path.sep}testProject`);
       const mockedTest = {
         title: 'testTitle',
@@ -35,8 +35,8 @@ describe('utils', function() {
       jest.clearAllMocks();
     });
   });
-  describe('getAgentInfo', function() {
-    it('should contain version and name properties', function() {
+  describe('getAgentInfo', function () {
+    it('should contain version and name properties', function () {
       const agentInfo = getAgentInfo();
 
       expect(Object.keys(agentInfo)).toContain('version');
