@@ -1,32 +1,33 @@
 {
-  "name": "@reportportal/agent-js-mocha",
-  "version": "5.0.1",
+  "name": "@rtly-sdet/reportportal-agent",
+  "version": "1.0.0",
   "description": "Mocha reporter for the Report Portal",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/returnly/sdet-reportportal-agent.git"
+  },
   "main": "index.js",
   "scripts": {
-    "lint": "eslint . --quiet",
-    "format": "npm run lint -- --fix",
+    "eslint": "eslint . --quiet",
     "test": "jest --detectOpenHandles --config ./jest.config.js",
-    "test:coverage": "jest --coverage"
+    "prettier": "run-p prettier:* -c --max-parallel 2 -l -n ",
+    "prettier:tsjs": "prettier --write --loglevel warn \"**/**/*.[j-t]s\"",
+    "prettier:json": "prettier --write --loglevel warn --parser json \"**/**/*.json\"",
+    "cleandependencies": "npm ci",
+    "build": "run-s cleandependencies test",
+    "release": "run-s prettier eslint build"
   },
-  "author": "ReportPortal.io",
-  "contributors": [
-    {
-      "name": "Alexander Galichenko",
-      "email": "alexandr.galichenko@gmail.com"
-    },
-    {
-      "name": "Vitalii Fedosieiev"
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run release",
+      "commit-msg": "TAG_MATCHER=\"(RETURN-[0-9]+|SDET-[0-9]+)\" TAG_MATCH_INDEX=1 jira-smart-commit"
     }
-  ],
-  "license": "Apache 2.0",
+  },
+  "license": "ISC",
+  "author": "",
   "dependencies": {
     "@reportportal/client-javascript": "^5.0.0",
     "mocha": "^7.0.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/reportportal/agent-js-mocha"
   },
   "devDependencies": {
     "chai": "3.5.0",
@@ -40,18 +41,8 @@
     "eslint-plugin-prettier": "^3.1.2",
     "eslint-plugin-promise": "^4.2.1",
     "jest": "^25.3.0",
-    "prettier": "^1.19.1"
-  },
-  "bugs": {
-    "url": "https://github.com/reportportal/agent-js-mocha/issues"
-  },
-  "keywords": [
-    "reports",
-    "portal",
-    "mocha",
-    "reporters",
-    "rp",
-    "reportportal",
-    "epam"
-  ]
+    "prettier": "^2.4.1",
+    "npm-run-all": "^4.1.5",
+    "husky": "^7.0.4"
+  }
 }
