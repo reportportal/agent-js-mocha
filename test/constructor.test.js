@@ -18,8 +18,8 @@ const EventEmitter = require('events');
 const { getDefaultConfig } = require('./mocks');
 const ReportportalAgent = require('./../lib/mochaReporter');
 
-describe('constructor', function() {
-  test('should create RP client instance with passed options', function() {
+describe('constructor', function () {
+  test('should create RP client instance with passed options', function () {
     const options = getDefaultConfig();
     const runner = new EventEmitter();
 
@@ -29,7 +29,7 @@ describe('constructor', function() {
     expect(reporter.options).toEqual(options);
   });
 
-  test('should override default options', function() {
+  test('should override default options', function () {
     const options = getDefaultConfig();
     options.reporterOptions.launch = 'NewLaunchName';
     options.reporterOptions.rerun = true;

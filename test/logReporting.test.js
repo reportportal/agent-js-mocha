@@ -18,11 +18,11 @@ const EventEmitter = require('events');
 const { getDefaultConfig, RPClient, mockedDate } = require('./mocks');
 const ReportportalAgent = require('./../lib/mochaReporter');
 
-describe('logs reporting', function() {
+describe('logs reporting', function () {
   let reporter;
   let file;
 
-  beforeAll(function() {
+  beforeAll(function () {
     const options = getDefaultConfig();
     const runner = new EventEmitter();
     reporter = new ReportportalAgent(runner, options);
@@ -37,14 +37,14 @@ describe('logs reporting', function() {
     };
   });
 
-  afterEach(function() {
+  afterEach(function () {
     reporter.currentTest = null;
     reporter.hookIds.clear();
     jest.clearAllMocks();
   });
 
-  describe('sendLog', function() {
-    it('should send log fr current test with specified params', function() {
+  describe('sendLog', function () {
+    it('should send log fr current test with specified params', function () {
       const spySendLog = jest.spyOn(reporter.rpClient, 'sendLog');
       const currentTest = {
         title: 'test',
@@ -68,7 +68,7 @@ describe('logs reporting', function() {
       expect(spySendLog).toHaveBeenCalledWith('testItemId', expectedSendLogObj, file);
     });
 
-    it('should send log to suite with specified params', function() {
+    it('should send log to suite with specified params', function () {
       const spySendLog = jest.spyOn(reporter.rpClient, 'sendLog');
       const log = {
         level: 'ERROR',
@@ -86,8 +86,8 @@ describe('logs reporting', function() {
       expect(spySendLog).toHaveBeenCalledWith('tempSuiteId', expectedSendLogObj, file);
     });
   });
-  describe('sendLaunchLog', function() {
-    it('should send log to launch with specified params', function() {
+  describe('sendLaunchLog', function () {
+    it('should send log to launch with specified params', function () {
       const spySendLog = jest.spyOn(reporter.rpClient, 'sendLog');
       const log = {
         level: 'ERROR',

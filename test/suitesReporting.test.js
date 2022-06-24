@@ -20,13 +20,13 @@ const ReportportalAgent = require('./../lib/mochaReporter');
 
 jest.mock('./../lib/utils');
 
-describe('suites reporting', function() {
+describe('suites reporting', function () {
   let reporter;
   let suiteFirstLevel;
   let suiteSecondLevel;
   let rootSuite;
 
-  beforeAll(function() {
+  beforeAll(function () {
     const options = getDefaultConfig();
     const runner = new EventEmitter();
     reporter = new ReportportalAgent(runner, options);
@@ -46,13 +46,13 @@ describe('suites reporting', function() {
     };
   });
 
-  afterEach(function() {
+  afterEach(function () {
     reporter.suitesInfo.clear();
     jest.clearAllMocks();
   });
 
-  describe('onSuiteStart', function() {
-    it("shouldn't start root suite", function() {
+  describe('onSuiteStart', function () {
+    it("shouldn't start root suite", function () {
       const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
 
       reporter.onSuiteStart(rootSuite);
@@ -60,7 +60,7 @@ describe('suites reporting', function() {
       expect(spyStartTestItem).not.toHaveBeenCalled();
     });
 
-    it('should start first-level suite', function() {
+    it('should start first-level suite', function () {
       const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
       reporter.suitesInfo.set(rootSuite, undefined);
       const expectedSuiteStartObj = {
@@ -79,7 +79,7 @@ describe('suites reporting', function() {
       );
     });
 
-    it('should start nested suite', function() {
+    it('should start nested suite', function () {
       const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
       reporter.suitesInfo.set(rootSuite, undefined);
       reporter.suitesInfo.set(suiteFirstLevel, {
@@ -103,8 +103,8 @@ describe('suites reporting', function() {
     });
   });
 
-  describe('finishTestItem', function() {
-    it('should finish started suite', function() {
+  describe('finishTestItem', function () {
+    it('should finish started suite', function () {
       const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
       reporter.suitesInfo.set(rootSuite, undefined);
       reporter.suitesInfo.set(suiteFirstLevel, {
