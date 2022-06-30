@@ -1,0 +1,125 @@
+{
+  "extends": ["prettier"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "ecmaVersion": 8,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true,
+      "impliedStrict": true,
+      "classes": true
+    }
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "jquery": true,
+    "mocha": true
+  },
+  "rules": {
+    "semi": ["error", "never"],
+    "@typescript-eslint/semi": "off",
+    "no-debugger": "error",
+    "no-alert": "error",
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "all"
+      }
+    ],
+    "arrow-body-style": ["error", "as-needed"],
+    "no-unused-expressions": [
+      "error",
+      {
+        "allowTaggedTemplates": true
+      }
+    ],
+    "no-param-reassign": "error",
+    "no-console": "error",
+    "eol-last": 2,
+    "import/prefer-default-export": "off",
+    "func-names": "off",
+    "space-before-function-paren": "off",
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "always-multiline",
+        "exports": "always-multiline",
+        "functions": "never"
+      }
+    ],
+    "max-len": [
+      "warn",
+      {
+        "code": 160
+      }
+    ],
+    "import/extensions": "off",
+    "no-underscore-dangle": "off",
+    "consistent-return": "off",
+    "radix": "off",
+    "quotes": [
+      "error",
+      "single",
+      {
+        "avoidEscape": true,
+        "allowTemplateLiterals": true
+      }
+    ],
+    "prettier/prettier": "error",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "warn",
+      {
+        "varsIgnorePattern": "^_",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "camelcase": "off",
+    "@typescript-eslint/naming-convention": [
+      "warn",
+      {
+        "selector": "interface",
+        "format": ["PascalCase"]
+      },
+      {
+        "selector": "function",
+        "format": ["PascalCase", "camelCase"]
+      },
+      {
+        "selector": "property",
+        "format": ["camelCase", "snake_case"]
+      },
+      {
+        "selector": "variable",
+        "format": ["UPPER_CASE", "camelCase", "PascalCase"]
+      },
+      {
+        "selector": "typeLike",
+        "format": ["PascalCase", "camelCase", "UPPER_CASE"]
+      },
+      {
+        "selector": "parameter",
+        "format": ["camelCase"],
+        "leadingUnderscore": "allow"
+      },
+      {
+        "selector": "default",
+        "format": ["camelCase"]
+      }
+    ],
+    "@typescript-eslint/ban-ts-comment": "error"
+  },
+  "overrides": [
+    {
+      "files": ["./src/**/*.ts"],
+      "rules": {
+        "no-unused-expressions": 0,
+        "camelcase": "off"
+      }
+    }
+  ],
+  "plugins": ["prettier", "@typescript-eslint"]
+}

@@ -14,20 +14,20 @@
  *  limitations under the License.
  */
 
-const path = require('path');
-const pjson = require('./../package.json');
-
-const getCodeRef = (testItem) => {
+const path = require('path')
+export const getCodeRef = (testItem) => {
   const testFileDir = path
     .parse(path.normalize(path.relative(process.cwd(), testItem.file)))
-    .dir.replace(new RegExp('\\'.concat(path.sep), 'g'), '/');
-  const testFile = path.parse(testItem.file);
-  return `${testFileDir}/${testFile.name}${testFile.ext}/${testItem.titlePath().join('/')}`;
-};
+    .dir.replace(new RegExp('\\'.concat(path.sep), 'g'), '/')
+  const testFile = path.parse(testItem.file)
+  return `${testFileDir}/${testFile.name}${testFile.ext}/${testItem
+    .titlePath()
+    .join('/')}`
+}
 
-const getAgentInfo = () => ({
-  version: pjson.version,
-  name: pjson.name,
-});
+export const getTimeStamp = () => new Date().valueOf()
 
-module.exports = { getCodeRef, getAgentInfo };
+export const getAgentInfo = () => ({
+  version: '1.0.1',
+  name: `@rtly-sdet/reportportal-agent`,
+})

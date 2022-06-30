@@ -14,33 +14,35 @@
  *  limitations under the License.
  */
 
-const path = require('path');
-const { getCodeRef, getAgentInfo } = require('./../lib/utils');
+const path = require('path')
+const { getCodeRef, getAgentInfo } = require('../src/utils')
 
 describe('utils', function () {
   describe('getCodeRef', function () {
     it('should return correct code ref', function () {
-      jest.spyOn(process, 'cwd').mockImplementation(() => `C:${path.sep}testProject`);
+      jest
+        .spyOn(process, 'cwd')
+        .mockImplementation(() => `C:${path.sep}testProject`)
       const mockedTest = {
         title: 'testTitle',
         file: `C:${path.sep}testProject${path.sep}test${path.sep}example.js`,
         titlePath: () => ['rootDescribe', 'parentDescribe', 'testTitle'],
-      };
-      const expectedCodeRef = `test/example.js/rootDescribe/parentDescribe/testTitle`;
+      }
+      const expectedCodeRef = `test/example.js/rootDescribe/parentDescribe/testTitle`
 
-      const codeRef = getCodeRef(mockedTest);
+      const codeRef = getCodeRef(mockedTest)
 
-      expect(codeRef).toEqual(expectedCodeRef);
+      expect(codeRef).toEqual(expectedCodeRef)
 
-      jest.clearAllMocks();
-    });
-  });
+      jest.clearAllMocks()
+    })
+  })
   describe('getAgentInfo', function () {
     it('should contain version and name properties', function () {
-      const agentInfo = getAgentInfo();
+      const agentInfo = getAgentInfo()
 
-      expect(Object.keys(agentInfo)).toContain('version');
-      expect(Object.keys(agentInfo)).toContain('name');
-    });
-  });
-});
+      expect(Object.keys(agentInfo)).toContain('version')
+      expect(Object.keys(agentInfo)).toContain('name')
+    })
+  })
+})

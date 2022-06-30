@@ -14,38 +14,38 @@
  *  limitations under the License.
  */
 
-const mockedDate = Date.now();
+const mockedDate = Date.now()
 class RPClient {
   constructor(config) {
-    this.config = config;
+    this.config = config
     this.headers = {
       foo: 'bar',
-    };
+    }
     this.startLaunch = jest.fn().mockReturnValue({
       promise: Promise.resolve('ok'),
       tempId: 'tempLaunchId',
-    });
+    })
 
     this.finishLaunch = jest.fn().mockReturnValue({
       promise: Promise.resolve('ok'),
-    });
+    })
 
     this.startTestItem = jest.fn().mockReturnValue({
       promise: Promise.resolve('ok'),
       tempId: 'testItemId',
-    });
+    })
 
     this.finishTestItem = jest.fn().mockReturnValue({
       promise: Promise.resolve('ok'),
-    });
+    })
 
     this.sendLog = jest.fn().mockReturnValue({
       promise: Promise.resolve('ok'),
-    });
+    })
 
     this.helpers = {
       now: () => mockedDate,
-    };
+    }
   }
 }
 
@@ -59,10 +59,10 @@ const getDefaultConfig = () => ({
     description: 'Launch description',
     attributes: [],
   },
-});
+})
 
 module.exports = {
   RPClient,
   getDefaultConfig,
   mockedDate,
-};
+}
