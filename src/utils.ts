@@ -25,7 +25,7 @@ export const getCodeRef = (testItem) => {
     .join('/')}`
 }
 
-export const getTimeStamp = () => new Date().valueOf()
+export const getTimeStamp = (): number => new Date().valueOf()
 
 export const getAgentInfo = () => ({
   version: '1.0.1',

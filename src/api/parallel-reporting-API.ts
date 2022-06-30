@@ -2,12 +2,17 @@ import { hookTypes } from '../constants/itemTypes'
 import { HOST, PORT } from '../constants/event-setver-settings'
 import { LOG_LEVELS } from '../constants/logLevels'
 import { HttpClient } from '@rtly-sdet/utils'
+import {
+  LoggerEvent,
+  TestObjectData,
+} from '../interfaces/logger-event.interface'
+import { getTimeStamp } from '../utils'
 
 const {
   EVENTS,
 } = require('@reportportal/client-javascript/lib/constants/events')
 
-function createTestData(test) {
+function createTestData(test): TestObjectData {
   if (test.type === 'hook') {
     const testName = test.ctx.test.parent.title.includes(hookTypes.BEFORE_ALL)
       ? hookTypes.BEFORE_ALL
@@ -19,8 +24,9 @@ function createTestData(test) {
 
 export class ParallelReportingAPI {
   public log(test, level = LOG_LEVELS.INFO, message = '', file) {
-    const body = {
-      testData: createTestData(test),
+    const body: LoggerEvent = {
+      testObjectData: createTestData(test),
+      timeStamp: getTimeStamp(),
       event: EVENTS.ADD_LOG,
       log: { level, file, message },
     }

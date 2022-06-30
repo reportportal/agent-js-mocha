@@ -3,6 +3,9 @@ import { Server, createServer } from 'http'
 const Mocha = require('Mocha')
 import { PrParallelRunClient } from './pr-parallel-run-client'
 import { TEST_STATUSES } from './constants/testStatuses'
+import { getTimeStamp } from './utils'
+import { MochaEvent } from './interfaces/mocha-event.interface'
+import { LoggerEvent } from './interfaces/logger-event.interface'
 const path = require('path')
 const fs = require('fs')
 const {
@@ -30,10 +33,6 @@ const {
 const promiseErrorHandler = (promise, message = '') =>
   promise.catch((err) => {
     // eslint-disable-next-line no-console
-    console.error('Error message: ', (err as Error).message)
-    if ((err as Error).message.includes('Value is not allowed for field'))
-      return
-    // eslint-disable-next-line no-console
     console.error(message, err)
   })
 
@@ -48,7 +47,6 @@ export class ReportportalParallelRunAgent extends Mocha.reporters.Base {
   private testMochaIds: any[]
   private attributes: Map<any, any>
   private descriptions: Map<any, any>
-  private testCaseIds: Map<any, any>
   private testItemStatuses: Map<any, any>
   private options: any
   private isLaunchStarted: boolean
@@ -69,32 +67,53 @@ export class ReportportalParallelRunAgent extends Mocha.reporters.Base {
     this.testMochaIds = []
     this.attributes = new Map()
     this.descriptions = new Map()
-    this.testCaseIds = new Map()
     this.testItemStatuses = new Map()
     this.options = options
     this.isLaunchStarted = false
     this.isLaunchFinished = false
 
-    runner.on(EVENT_RUN_BEGIN, () => this.onLaunchStart())
+    runner.on(EVENT_RUN_BEGIN, () =>
+      this.onLaunchStart({ timeStamp: getTimeStamp() })
+    )
 
-    runner.on(EVENT_RUN_END, () => this.onLaunchFinish())
+    runner.on(EVENT_RUN_END, () =>
+      this.onLaunchFinish({ timeStamp: getTimeStamp() })
+    )
 
-    runner.on(EVENT_SUITE_BEGIN, (suite) => this.onSuiteStart(suite))
+    runner.on(EVENT_SUITE_BEGIN, (suite) =>
+      this.onSuiteStart({ timeStamp: getTimeStamp(), item: suite })
+    )
 
-    runner.on(EVENT_SUITE_END, (suite) => this.onSuiteFinish(suite))
+    runner.on(EVENT_SUITE_END, (suite) =>
+      this.onSuiteFinish({ timeStamp: getTimeStamp(), item: suite })
+    )
 
-    runner.on(EVENT_TEST_BEGIN, (test) => this.onTestStart(test))
+    runner.on(EVENT_TEST_BEGIN, (test) =>
+      this.onTestStart({ timeStamp: getTimeStamp(), item: test })
+    )
 
-    runner.on(EVENT_TEST_FAIL, (test, err) => this.onTestFail(test, err))
+    runner.on(EVENT_TEST_FAIL, (test, err) =>
+      this.onTestFail({ timeStamp: getTimeStamp(), item: test, error: err })
+    )
 
-    runner.on(EVENT_TEST_PENDING, (test) => this.onTestPending(test))
+    runner.on(EVENT_TEST_PENDING, (test) =>
+      this.onTestPending({ timeStamp: getTimeStamp(), item: test })
+    )
 
-    runner.on(EVENT_TEST_END, (test) => this.onTestFinish(test))
+    runner.on(EVENT_TEST_END, (test) =>
+      this.onTestFinish({ timeStamp: getTimeStamp(), item: test })
+    )
 
-    runner.on(EVENT_HOOK_BEGIN, (hook) => this.onHookStart(hook))
+    runner.on(EVENT_HOOK_BEGIN, (hook) =>
+      this.onHookStart({ timeStamp: getTimeStamp(), item: hook })
+    )
 
     runner.on(EVENT_HOOK_END, (hook) =>
-      this.onHookFinish(hook, TEST_STATUSES.PASSED)
+      this.onHookFinish({
+        timeStamp: getTimeStamp(),
+        item: hook,
+        status: TEST_STATUSES.PASSED,
+      })
     )
 
     if (!options.reporterOptions.dontLaunchServer) {
@@ -106,9 +125,8 @@ export class ReportportalParallelRunAgent extends Mocha.reporters.Base {
         req.on('end', () => {
           res.writeHead(200)
           res.end(`{}`)
-          const requestBody = JSON.parse(data)
-          if (requestBody.event === EVENTS.ADD_LOG)
-            this.sendTestItemLog(requestBody)
+          const logEvent = data as unknown as LoggerEvent
+          if (logEvent.event === EVENTS.ADD_LOG) this.sendTestItemLog(logEvent)
         })
       })
       this.server.listen(PORT, HOST, () => {})
@@ -214,7 +232,7 @@ export class ReportportalParallelRunAgent extends Mocha.reporters.Base {
     return systemAttributes
   }
 
-  onLaunchStart() {
+  onLaunchStart(event: MochaEvent) {
     // eslint-disable-next-line no-plusplus
     this.launchCounter++
     if (this.launchCounter === 1) {
@@ -224,7 +242,7 @@ export class ReportportalParallelRunAgent extends Mocha.reporters.Base {
       const { tempId, promise } = this.rpClient.startLaunch({
         token: this.options.reporterOptions.token,
         name: this.options.reporterOptions.launch,
-        startTime: this.rpClient.helpers.now(),
+        startTime: event.timeStamp,
         description: this.options.reporterOptions.description,
         rerun: this.options.reporterOptions.rerun,
         rerunOf: this.options.reporterOptions.rerunOf,
@@ -235,7 +253,7 @@ export class ReportportalParallelRunAgent extends Mocha.reporters.Base {
     }
   }
 
-  async onLaunchFinish() {
+  async onLaunchFinish(event: MochaEvent) {
     // eslint-disable-next-line no-plusplus
     this.launchCounter--
     if (this.launchCounter === 0) {
@@ -252,7 +270,7 @@ export class ReportportalParallelRunAgent extends Mocha.reporters.Base {
         this.launchId,
         Object.assign(
           {
-            endTime: this.rpClient.helpers.now(),
+            endTime: event.timeStamp,
           },
           this.launchStatus && { status: this.launchStatus }
         )
@@ -312,7 +330,8 @@ export class ReportportalParallelRunAgent extends Mocha.reporters.Base {
     }
   }
 
-  async onSuiteStart(suite) {
+  async onSuiteStart(event: MochaEvent) {
+    const suite = event.item
     const convertedSuite = this.convertParallelRunSuite(suite)
     if (convertedSuite === undefined) return
     this.suitesData.push(convertedSuite)
@@ -329,7 +348,7 @@ export class ReportportalParallelRunAgent extends Mocha.reporters.Base {
         const codeRef = convertedSuite.file
         const suiteObj = {
           name: convertedSuite.title,
-          startTime: this.rpClient.helpers.now(),
+          startTime: event.timeStamp,
           attributes: [],
           type: entityType.SUITE,
           codeRef,
@@ -349,7 +368,8 @@ export class ReportportalParallelRunAgent extends Mocha.reporters.Base {
     }
   }
 
-  async onSuiteFinish(suite) {
+  async onSuiteFinish(event: MochaEvent) {
+    const suite = event.item
     const convertedSuite = this.convertParallelRunSuite(suite)
     if (convertedSuite === undefined) return
     const suiteId = this.getSuiteTempId(this.getMochaId(convertedSuite))
@@ -365,15 +385,13 @@ export class ReportportalParallelRunAgent extends Mocha.reporters.Base {
       await poll(pollFn, 1000, 10 * 1000)
       const suiteAttributes = this.attributes.get(suiteId)
       const suiteDescription = this.descriptions.get(suiteId)
-      const suiteTestCaseId = this.testCaseIds.get(suiteId)
       const suiteStatus = this.testItemStatuses.get(suiteId)
       const suiteFinishObj = Object.assign(
         {
-          endTime: this.rpClient.helpers.now(),
+          endTime: event.timeStamp,
         },
         suiteAttributes && { attributes: suiteAttributes },
         suiteDescription && { description: suiteDescription },
-        suiteTestCaseId && { testCaseId: suiteTestCaseId },
         suiteStatus && { status: suiteStatus }
       )
       const { promise } = this.rpClient.finishTestItem(suiteId, suiteFinishObj)
@@ -384,11 +402,11 @@ export class ReportportalParallelRunAgent extends Mocha.reporters.Base {
       promiseErrorHandler(promise, 'Failed to finish suite.')
       this.attributes.delete(suiteId)
       this.descriptions.delete(suiteId)
-      this.testCaseIds.delete(suiteId)
     }
   }
 
-  async onTestStart(test) {
+  async onTestStart(event: MochaEvent) {
+    const test = event.item
     const mochaId = this.getMochaId(test)
     if (!this.testMochaIds.includes(mochaId)) {
       this.testMochaIds.push(mochaId)
@@ -396,7 +414,7 @@ export class ReportportalParallelRunAgent extends Mocha.reporters.Base {
       const codeRef = getCodeRef(test)
       const testObj = {
         name: test.title,
-        startTime: this.rpClient.helpers.now(),
+        startTime: event.timeStamp,
         attributes: [],
         type: entityType.STEP,
         retry: false,
@@ -417,48 +435,52 @@ export class ReportportalParallelRunAgent extends Mocha.reporters.Base {
     }
   }
 
-  async onTestFinish(test) {
-    const status =
-      test.state ||
-      (test.pending && TEST_STATUSES.SKIPPED) ||
-      TEST_STATUSES.PASSED
+  async onTestFinish(event: MochaEvent) {
     // eslint-disable-next-line no-console
     console.log(
-      `******** onTestFinish. test.title: ${test.title}, test.state: ${test.state} final status: ${status}`
+      '************ finishTest MochaEvent test.state: ',
+      event.item.state
     )
-    await this.finishTest(test, status)
+    event.status =
+      event.item.state === 'pending'
+        ? TEST_STATUSES.SKIPPED
+        : TEST_STATUSES.PASSED
+
+    // eslint-disable-next-line no-console
+    console.log(
+      '************ finishTest MochaEvent event state: ',
+      event.status
+    )
+    await this.finishTest(event)
   }
 
-  async finishTest(test, autoStatus) {
+  async finishTest(event: MochaEvent) {
+    // eslint-disable-next-line no-console
+    console.log('************ finishTest MochaEvent: ', JSON.stringify(event))
+    const test = event.item
     const mochaId = this.getMochaId(test)
     const testData = this.testsInfo.get(mochaId)
     const testId = testData.tempId
-    const testAttributes = this.attributes.get(testId)
-    const testDescription = this.descriptions.get(testId)
-    const testCaseId = this.testCaseIds.get(testId)
+
+    const testFinishObj: any = {
+      endTime: event.timeStamp,
+      retry: test._retries > 0,
+      status: event.status,
+    }
     const withoutIssue =
-      autoStatus === TEST_STATUSES.SKIPPED &&
+      event.status === TEST_STATUSES.SKIPPED &&
       this.options.reporterOptions.skippedIssue === false
-    const testFinishObj = Object.assign(
-      {
-        endTime: this.rpClient.helpers.now(),
-        // eslint-disable-next-line no-underscore-dangle
-        retry: test._retries > 0,
-        status: autoStatus,
-      },
-      withoutIssue && { issue: { issueType: 'NOT_ISSUE' } },
-      testAttributes && { attributes: testAttributes },
-      testDescription && { description: testDescription },
-      testCaseId && { testCaseId }
+    if (withoutIssue) testFinishObj.issue = { issueType: 'NOT_ISSUE' }
+    // eslint-disable-next-line no-console
+    console.log(
+      '************ finishTest testFinishObj: ',
+      JSON.stringify(testFinishObj)
     )
     const { promise } = this.rpClient.finishTestItem(testId, testFinishObj)
     testData.endTime = testFinishObj.endTime
     testData.testStatus = testFinishObj.status
     this.testsInfo.set(mochaId, testData)
     promiseErrorHandler(promise, 'Failed to finish child item.')
-    this.attributes.delete(testId)
-    this.descriptions.delete(testId)
-    this.testCaseIds.delete(testId)
   }
 
   async getHookStartTime(hook, hookRPType, parentId) {
@@ -485,14 +507,8 @@ export class ReportportalParallelRunAgent extends Mocha.reporters.Base {
     return this.rpClient.helpers.now()
   }
 
-  async onHookStart(hook) {
-    // eslint-disable-next-line no-console
-    console.log(
-      '**************** onHookStart title : ',
-      hook.title,
-      "includes('root') : ",
-      hook.title.includes('root')
-    )
+  async onHookStart(event: MochaEvent) {
+    const hook = event.item
     if (!this.options.reporterOptions.reportHooks) return
     if (!hook.parent) return
     if (hook.title.includes('generated_')) return
@@ -506,7 +522,7 @@ export class ReportportalParallelRunAgent extends Mocha.reporters.Base {
     const parentId = this.getSuiteTempId(this.getMochaId(hook.parent))
     const hookStartObj = {
       name: hookName,
-      startTime: this.rpClient.helpers.now(), //await this.getHookStartTime(hook, hookRPType, parentId),
+      startTime: event.timeStamp - 1, //await this.getHookStartTime(hook, hookRPType, parentId),
       type: hookRPType,
     }
     const { tempId, promise } = this.rpClient.startTestItem(
@@ -518,41 +534,52 @@ export class ReportportalParallelRunAgent extends Mocha.reporters.Base {
     promiseErrorHandler(promise, 'Failed to start hook.')
     this.testsInfo.set(mochaId, {
       tempId,
-      hook,
       startTime: hookStartObj.startTime,
       name: hookName,
       type: 'hook',
     })
   }
 
-  async onHookFinish(hook, status, error?) {
+  async onHookFinish(event: MochaEvent) {
+    const hook = event.item
     if (!this.options.reporterOptions.reportHooks) return
     const mochaId = this.getMochaId(hook)
     if (this.deletedHookIds.includes(mochaId)) return
     if (this.createdHookIds.get(mochaId) !== undefined) {
       const hookId = this.createdHookIds.get(mochaId)
       if (hookId) {
-        if (error) {
-          await this.sendError(hookId, error)
-        }
         this.deletedHookIds.push(mochaId)
         const response = this.rpClient.finishTestItem(hookId, {
-          status: status || hook.state,
-          endTime: this.rpClient.helpers.now(),
+          status: event.status,
+          endTime: event.timeStamp,
         })
+        const hookData = this.testsInfo.get(mochaId)
+        hookData.endTime = event.timeStamp
+        hookData.testStatus = event.status
+        this.testsInfo.set(mochaId, hookData)
         const { promise } = response
         await promiseErrorHandler(promise, 'Failed to finish hook')
       }
     }
   }
 
-  async onTestPending(test) {
-    if (!this.testsInfo.has(this.getMochaId(test))) await this.onTestStart(test)
-    await this.finishTest(test, TEST_STATUSES.SKIPPED)
+  async onTestPending(event: MochaEvent) {
+    // eslint-disable-next-line no-console
+    console.log(
+      '************ onTestPending MochaEvent: ',
+      JSON.stringify(event)
+    )
+
+    if (!this.testsInfo.has(this.getMochaId(event.item)))
+      await this.onTestStart(event)
+    event.status = TEST_STATUSES.SKIPPED
+    await this.finishTest(event)
   }
 
-  async onTestFail(test, err) {
+  async onTestFail(event: MochaEvent) {
+    const test = event.item
     this.launchStatus = TEST_STATUSES.FAILED
+    event.status = TEST_STATUSES.FAILED
     let tempId = 0
     const pollFn = async () => {
       if (this.testsInfo.has(this.getMochaId(test))) {
@@ -562,12 +589,12 @@ export class ReportportalParallelRunAgent extends Mocha.reporters.Base {
       return false
     }
     await poll(pollFn, 100, 10 * 1000)
-    await this.sendError(tempId, err)
+    await this.sendError(tempId, event.error)
     if (test.type === 'hook') {
       if (this.options.reporterOptions.reportHooks) {
-        this.onHookFinish(test, TEST_STATUSES.FAILED, err)
+        this.onHookFinish(event)
       }
-    } else await this.finishTest(test, TEST_STATUSES.FAILED)
+    } else this.finishTest(event)
   }
 
   async sendError(tempItemId, err) {
