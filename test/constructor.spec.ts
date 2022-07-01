@@ -7,7 +7,7 @@ describe('constructor', function () {
   it('should create RP client instance with passed options', function () {
     const runner = new EventEmitter()
     const options: any = getDefaultOptions()
-    const reporter = new ReportportalReporter(runner, options)
+    const reporter: any = new ReportportalReporter(runner, options)
     const reporterOptions: any = reporter.options
     expect(reporterOptions).eql(options)
   })
@@ -17,7 +17,7 @@ describe('constructor', function () {
     options.reporterOptions.launch = 'NewLaunchName'
     options.reporterOptions.rerun = true
     const runner = new EventEmitter()
-    const reporter = new ReportportalReporter(runner, options)
+    const reporter: any = new ReportportalReporter(runner, options)
     const reporterOptions: any = reporter.options.reporterOptions
     expect(reporterOptions.launch).eql('NewLaunchName')
     expect(reporterOptions.rerun).eql(true)
