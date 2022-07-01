@@ -22,8 +22,9 @@ function createTestData(test): TestObjectData {
   return { test: test.ctx.test.title, suite: test.ctx.test.parent.title }
 }
 
-export class ParallelReportingAPI {
-  public log(test, level = LOG_LEVELS.INFO, message = '', file) {
+export const ParallelReportingAPI = {
+  name: () => 'ParallelReportingAPI',
+  log: (test, level = LOG_LEVELS.INFO, message = '', file) => {
     const body: LoggerEvent = {
       testObjectData: createTestData(test),
       timeStamp: getTimeStamp(),
@@ -35,23 +36,17 @@ export class ParallelReportingAPI {
     const headers = { 'x-api-version': '2020-08' }
     const httpClient = new HttpClient()
     httpClient.post(url, 'sdet-reportportal-agent', headers, body)
-  }
-  public trace(test, message, file) {
-    this.log(test, LOG_LEVELS.TRACE, message, file)
-  }
-  public debug(test, message, file) {
-    this.log(test, LOG_LEVELS.DEBUG, message, file)
-  }
-  public info(test, message, file) {
-    this.log(test, LOG_LEVELS.INFO, message, file)
-  }
-  public warn(test, message, file) {
-    this.log(test, LOG_LEVELS.WARN, message, file)
-  }
-  public error(test, message, file) {
-    this.log(test, LOG_LEVELS.ERROR, message, file)
-  }
-  public fatal(test, message, file) {
-    this.log(test, LOG_LEVELS.FATAL, message, file)
-  }
+  },
+  trace: (test, message, file) =>
+    ParallelReportingAPI.log(test, LOG_LEVELS.TRACE, message, file),
+  debug: (test, message, file) =>
+    ParallelReportingAPI.log(test, LOG_LEVELS.DEBUG, message, file),
+  info: (test, message, file) =>
+    ParallelReportingAPI.log(test, LOG_LEVELS.INFO, message, file),
+  warn: (test, message, file) =>
+    ParallelReportingAPI.log(test, LOG_LEVELS.WARN, message, file),
+  error: (test, message, file) =>
+    ParallelReportingAPI.log(test, LOG_LEVELS.ERROR, message, file),
+  fatal: (test, message, file) =>
+    ParallelReportingAPI.log(test, LOG_LEVELS.FATAL, message, file),
 }

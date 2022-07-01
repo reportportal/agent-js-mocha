@@ -2,7 +2,6 @@ import { expect } from 'chai'
 import { ReportportalReporter } from '../src/reportportal-reporter'
 import { getDefaultOptions } from './mocks'
 import { ReportingAPI } from '../src/api/public-reporting-API'
-import { ParallelReportingAPI } from '../src/api/parallel-reporting-API'
 const EventEmitter = require('events')
 
 describe('ReportingAPI test', () => {
@@ -10,9 +9,7 @@ describe('ReportingAPI test', () => {
     const runner = new EventEmitter()
     new ReportportalReporter(runner, getDefaultOptions())
     const reportingAPI = ReportingAPI()
-    // eslint-disable-next-line no-console
-    console.log('reportingAPI: ', JSON.stringify(reportingAPI))
-    expect(reportingAPI instanceof ParallelReportingAPI).eql(true)
+    expect(reportingAPI.name()).eql('ParallelReportingAPI')
   })
 
   it('Get PublicReportingAPI', async () => {
@@ -21,6 +18,13 @@ describe('ReportingAPI test', () => {
     const runner = new EventEmitter()
     new ReportportalReporter(runner, options)
     const reportingAPI = ReportingAPI()
-    expect(reportingAPI instanceof ParallelReportingAPI).eql(false)
+    try {
+      reportingAPI.name()
+      throw new Error('reportingAPI.name() unexpected passed without error')
+    } catch (e) {
+      expect(
+        (e as Error).message.includes('reportingAPI.name is not a function')
+      ).eql(true)
+    }
   })
 })
