@@ -1,9 +1,13 @@
-import { OptionsSource } from '../options-source'
-import { ParallelReportingAPI } from './parallel-reporting-API'
+const ParallelReportingAPI = require('./parallel-reporting-API')
 const PublicReportingAPI = require('@reportportal/agent-js-mocha/lib/publicReportingAPI')
 
 export function ReportingAPI() {
-  return OptionsSource.getOptions().parallel
+  // eslint-disable-next-line no-console
+  console.log(
+    'ReportingAPI process.env.RETURNLY_REPORTPORTAL_PARALLEL: ',
+    process.env.RETURNLY_REPORTPORTAL_PARALLEL
+  )
+  return process.env.RETURNLY_REPORTPORTAL_PARALLEL === 'true'
     ? ParallelReportingAPI
     : PublicReportingAPI
 }

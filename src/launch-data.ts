@@ -227,7 +227,7 @@ export class LaunchData {
       testReportPortalId = test.tempId
       return true
     }
-    await poll(pollFn, 2000, 150 * 1000)
+    await poll(pollFn, 500, 10 * 1000)
     return testReportPortalId
   }
 
