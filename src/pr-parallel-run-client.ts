@@ -16,10 +16,11 @@ const {
 const MULTIPART_BOUNDARY = Math.floor(Math.random() * 10000000000).toString()
 
 export class PrParallelRunClient {
-  private debug: any
+  private debug: boolean
   private isLaunchMergeRequired: any
-  private map: {}
+  public map: {}
   private baseURL: string
+  private baseLaunchURL: string
   private headers: Record<string, string>
   private token: string
   private config: any
@@ -55,6 +56,14 @@ export class PrParallelRunClient {
         : params.isLaunchMergeRequired
     this.map = {}
     this.baseURL = [params.endpoint, params.project].join('/')
+    this.baseLaunchURL = [
+      `${new URL(params.endpoint).protocol}/`,
+      `${new URL(params.endpoint).hostname}:${new URL(params.endpoint).port}`,
+      'ui',
+      `#${params.project}`,
+      'launches',
+      'all',
+    ].join('/')
     this.headers = {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       'User-Agent': 'NodeJS',
@@ -216,12 +225,12 @@ export class PrParallelRunClient {
         this.restClient.create(url, launchData, { headers: this.headers }).then(
           (response) => {
             this.map[tempId].realId = response.id
+            this.map[tempId].launchNumber = response.number
             this.launchUuid = response.id
-
+            this.printLaunchURL(this.launchUuid)
             if (this.isLaunchMergeRequired) {
               helpers.saveLaunchIdToFile(response.id)
             }
-
             resolve(response)
           },
           (error) => {
@@ -236,6 +245,21 @@ export class PrParallelRunClient {
       tempId,
       promise: this.map[tempId].promiseStart,
     }
+  }
+
+  printLaunchURL(id: string) {
+    const url = ['launch', 'uuid', id].join('/')
+
+    this.restClient.retrieve(url, { headers: this.headers }).then(
+      (response) => {
+        console.log(
+          `\nREPORT_PORTAL LAUNCH LINK: ${this.baseLaunchURL}/${response.id}\n`
+        )
+      },
+      (error) => {
+        console.dir(error)
+      }
+    )
   }
 
   /**

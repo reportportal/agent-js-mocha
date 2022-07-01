@@ -6,6 +6,6 @@ export interface LoggerEvent {
 }
 
 export interface TestObjectData {
-  test: string
-  suite: string | undefined
+  test: string | undefined
+  suite: string
 }
