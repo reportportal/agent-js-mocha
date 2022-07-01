@@ -118,7 +118,9 @@
       "rules": {
         "no-unused-expressions": 0,
         "camelcase": "off"
-      }
+      },
+      "parserOptions": {
+        "project": ["./tsconfig.json"]
     }
   ],
   "plugins": ["prettier", "@typescript-eslint"]
