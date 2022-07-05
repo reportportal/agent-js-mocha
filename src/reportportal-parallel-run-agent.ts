@@ -1,6 +1,6 @@
+import Mocha from 'mocha'
 import { HOST, PORT } from './constants/event-setver-settings'
 import { Server, createServer } from 'http'
-const Mocha = require('Mocha')
 import { PrParallelRunClient } from './pr-parallel-run-client'
 import { TEST_STATUSES } from './constants/testStatuses'
 import { getTimeStamp } from './utils'
@@ -186,7 +186,9 @@ export class ReportportalParallelRunAgent extends Mocha.reporters.Base {
           promiseErrorHandler(err, 'Failed to shutdown server.')
         }
       })
-      await this.launchData.waitTillAllChildrenFinished(this.launchId!)
+      await this.launchData.waitTillAllChildrenFinished(
+        this.launchData.launchId
+      )
       const { promise } = this.rpClient.finishLaunch(this.launchData.launchId, {
         endTime: event.timeStamp,
         status: this.launchData.launchStatus,
