@@ -1,6 +1,6 @@
 {
   "name": "@rtly-sdet/reportportal-agent",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Mocha reporter for the Report Portal",
   "repository": {
     "type": "git",
@@ -10,7 +10,9 @@
   "author": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "prebuild": "npm run clean; rm -fr ./dist",
     "build": "tsc -p ./tsconfig.json",
@@ -33,7 +35,9 @@
   "dependencies": {
     "@reportportal/agent-js-mocha": "^5.0.1",
     "@reportportal/client-javascript": "^5.0.0",
+    "axios": "^0.24.0",
     "http-shutdown": "^1.2.2",
+    "pac-proxy-agent": "5.0.0",
     "uniqid": "^5.4.0",
     "uuid": "^8.3.2"
   },

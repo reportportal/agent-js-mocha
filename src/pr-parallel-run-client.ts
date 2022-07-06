@@ -1,10 +1,10 @@
 /* eslint-disable quotes,no-console,class-methods-use-this */
 import { ClientHelpers } from './client-helpers'
+import { ParallelRestClient } from './parallel-rest-client'
 
 const UniqId = require('uniqid')
 const helpers = require('@reportportal/client-javascript/lib/helpers')
 const Analytics = require('@reportportal/client-javascript/analytics/analytics')
-const RestClient = require('@reportportal/client-javascript/lib/rest')
 const {
   RP_STATUSES,
 } = require('@reportportal/client-javascript/lib/constants/statuses')
@@ -74,7 +74,7 @@ export class PrParallelRunClient {
     this.token = params.token
     this.config = params
     this.helpers = new ClientHelpers()
-    this.restClient = new RestClient({
+    this.restClient = new ParallelRestClient({
       baseURL: this.baseURL,
       headers: this.headers,
       restClientConfig: params.restClientConfig,
@@ -128,22 +128,6 @@ export class PrParallelRunClient {
     obj.resolveFinish = resolveFinish
     obj.rejectFinish = rejectFinish
     return obj
-  }
-
-  // eslint-disable-next-line valid-jsdoc
-  /**
-   *
-   * @Private
-   */
-  cleanMap(ids) {
-    ids.forEach((id) => {
-      delete this.map[id]
-    })
-  }
-
-  checkConnect() {
-    const url = [this.config.endpoint.replace('/v2', '/v1'), 'user'].join('/')
-    return RestClient.request('GET', url, {}, { headers: this.headers })
   }
 
   triggerAnalyticsEvent() {
