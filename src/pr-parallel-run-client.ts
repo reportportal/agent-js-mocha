@@ -1,6 +1,7 @@
 /* eslint-disable quotes,no-console,class-methods-use-this */
 import { ClientHelpers } from './client-helpers'
 import { ParallelRestClient } from './parallel-rest-client'
+import { Log, LogComponent } from '@rtly-sdet/logger'
 
 const UniqId = require('uniqid')
 const helpers = require('@reportportal/client-javascript/lib/helpers')
@@ -13,6 +14,7 @@ const {
   getAgentEventLabel,
 } = require('@reportportal/client-javascript/analytics/events')
 
+const log: Log = new Log(LogComponent.SDET_RUNNER)
 const MULTIPART_BOUNDARY = Math.floor(Math.random() * 10000000000).toString()
 
 export class PrParallelRunClient {
@@ -91,7 +93,7 @@ export class PrParallelRunClient {
    */
   logDebug(msg) {
     if (this.debug) {
-      console.log(msg)
+      log.debug(msg)
     }
   }
 
@@ -236,12 +238,12 @@ export class PrParallelRunClient {
 
     this.restClient.retrieve(url, { headers: this.headers }).then(
       (response) => {
-        console.log(
-          `\nREPORT_PORTAL LAUNCH LINK: ${this.baseLaunchURL}/${response.id}\n`
+        log.info(
+          `Report Portal Launch Link: ${this.baseLaunchURL}/${response.id}`
         )
       },
       (error) => {
-        console.dir(error)
+        log.error(error)
       }
     )
   }
@@ -384,7 +386,7 @@ export class PrParallelRunClient {
       )
     }
     if (launchObj.finishSend) {
-      console.log('startTestItem error: ', testItemDataRQ)
+      log.error(`startTestItem error: ${testItemDataRQ}`)
       const err = new Error(
         `Launch "${launchTempId}" is already finished, you can not add an item to it`
       )

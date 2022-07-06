@@ -38,7 +38,7 @@ export class ParallelRestClient {
     // - internal requests
     // - we set access Cookie
 
-    return this.isPacNeeded(url) ? new PacProxyAgent(proxy) : ''
+    return this.isPacNeeded(url) ? new PacProxyAgent(proxy) : undefined
   }
   static isPacNeeded(url: string) {
     if (process.env.BUILDKITE) return false

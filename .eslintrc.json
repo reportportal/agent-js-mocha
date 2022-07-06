@@ -120,9 +120,7 @@
         "camelcase": "off"
       },
       "parserOptions": {
-        "project": [
-          "./tsconfig.json"
-        ]
+        "project": ["./tsconfig.json"]
       }
     }
   ],

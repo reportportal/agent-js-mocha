@@ -3,6 +3,9 @@ import { poll } from '@rtly-sdet/utils'
 import { hookTypes } from './constants/itemTypes'
 import { TEST_STATUSES } from './constants/testStatuses'
 import { TestObjectData } from './interfaces/logger-event.interface'
+import { Log, LogComponent } from '@rtly-sdet/logger'
+
+const log: Log = new Log(LogComponent.SDET_RUNNER)
 
 export class LaunchData {
   private options: any
@@ -29,7 +32,7 @@ export class LaunchData {
   private logDebug(msg) {
     if (this.debug) {
       // eslint-disable-next-line no-console
-      console.log(msg)
+      log.debug(msg)
     }
   }
 
