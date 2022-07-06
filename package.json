@@ -1,21 +1,30 @@
 {
   "name": "@rtly-sdet/reportportal-agent",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "Mocha reporter for the Report Portal",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/returnly/sdet-reportportal-agent.git"
   },
-  "main": "index.js",
+  "license": "ISC",
+  "author": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "eslint": "eslint . --quiet",
-    "test": "jest --detectOpenHandles --config ./jest.config.js",
+    "prebuild": "npm run clean; rm -fr ./dist",
+    "build": "tsc -p ./tsconfig.json",
+    "eslint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "prettier": "run-p prettier:* -c --max-parallel 2 -l -n ",
     "prettier:tsjs": "prettier --write --loglevel warn \"**/**/*.[j-t]s\"",
     "prettier:json": "prettier --write --loglevel warn --parser json \"**/**/*.json\"",
-    "cleandependencies": "npm ci",
-    "build": "run-s cleandependencies test",
-    "release": "run-s prettier eslint build"
+    "release": "run-s prettier eslint oldTests build",
+    "clean": "rm -rf dist",
+    "test": "nyc mocha --config ./.mocharc.json",
+    "prepare": "husky install",
+    "coverage": "nyc report --reporter=text-summary"
   },
   "husky": {
     "hooks": {
@@ -23,26 +32,44 @@
       "commit-msg": "TAG_MATCHER=\"(RETURN-[0-9]+|SDET-[0-9]+)\" TAG_MATCH_INDEX=1 jira-smart-commit"
     }
   },
-  "license": "ISC",
-  "author": "",
   "dependencies": {
+    "@reportportal/agent-js-mocha": "^5.0.1",
     "@reportportal/client-javascript": "^5.0.0",
-    "mocha": "^7.0.1"
+    "axios": "^0.24.0",
+    "http-shutdown": "^1.2.2",
+    "pac-proxy-agent": "5.0.0",
+    "uniqid": "^5.4.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@rtly-sdet/utils": "0.0.31",
+    "@types/chai": "^4.2.22",
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.10.3",
+    "@typescript-eslint/eslint-plugin": "^5.2.0",
+    "@typescript-eslint/parser": "^5.2.0",
     "chai": "3.5.0",
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-config-prettier": "^6.10.0",
-    "eslint-plugin-import": "^2.20.0",
-    "eslint-plugin-jest": "^23.8.0",
-    "eslint-plugin-mocha": "^6.2.2",
-    "eslint-plugin-node": "^11.0.0",
-    "eslint-plugin-prettier": "^3.1.2",
-    "eslint-plugin-promise": "^4.2.1",
-    "jest": "^25.3.0",
-    "prettier": "^2.4.1",
+    "eslint": "^7.2.0",
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-webpack": "^0.13.0",
+    "eslint-plugin-chai-friendly": "^0.7.2",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jsx-a11y": "^6.4.1",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.26.1",
+    "husky": "^7.0.4",
+    "mocha": "^9.2.0",
+    "mocha-junit-reporter": "^2.0.2",
+    "mocha-multi-reporters": "^1.5.1",
     "npm-run-all": "^4.1.5",
-    "husky": "^7.0.4"
+    "nyc": "^15.1.0",
+    "prettier": "^2.4.1",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.4.3"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
   }
 }

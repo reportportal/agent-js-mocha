@@ -1,0 +1,28 @@
+{
+  "compileOnSave": true,
+  "compilerOptions": {
+    "sourceMap": false,
+    "baseUrl": ".",
+    "rootDir": ".",
+    "outDir": "dist",
+    "declaration": true,
+    "allowJs": true,
+    "checkJs": false,
+    "types": ["node", "mocha", "chai"],
+    "lib": ["es2019"],
+    "target": "es2019",
+    "experimentalDecorators": true,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "removeComments": true,
+    "strict": true,
+    "preserveConstEnums": true,
+    "resolveJsonModule": true,
+    "incremental": false,
+    "skipLibCheck": true,
+    "esModuleInterop": true
+  },
+  "include": ["./index.ts", "./src/**/*.ts", "./test/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}

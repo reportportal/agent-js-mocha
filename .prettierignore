@@ -1,0 +1,9 @@
+.vscode
+.history
+node_modules
+dist
+reports
+reportsdocker
+etc
+*.d.ts
+sdet-runner/

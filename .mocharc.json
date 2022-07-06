@@ -1,0 +1,13 @@
+{
+  "timeout": 5000,
+  "extension": ["ts"],
+  "require": ["ts-node/register"],
+  "spec": "./test/**/*.spec.ts",
+  "reporter": "mocha-multi-reporters",
+  "reporterEnabled": "spec, mocha-junit-reporter",
+  "reporterOptions": "configFile=.mocharc.json",
+  "mochaJunitReporterReporterOptions": {
+    "mochaFile": "./coverage/results.xml",
+    "includePending": true
+  }
+}
