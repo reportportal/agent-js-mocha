@@ -15,7 +15,7 @@
  */
 
 const path = require('path');
-const { getCodeRef, getAgentInfo } = require('./../lib/utils');
+const { getCodeRef, getAgentInfo, parseStringToArray } = require('./../lib/utils');
 
 describe('utils', function() {
   describe('getCodeRef', function() {
@@ -41,6 +41,16 @@ describe('utils', function() {
 
       expect(Object.keys(agentInfo)).toContain('version');
       expect(Object.keys(agentInfo)).toContain('name');
+    });
+  });
+  describe('parseStringToArray', function() {
+    it('should parse string to array', function() {
+      const actualArray = parseStringToArray('attributeKey1:attributeValue1;attributeValue2');
+      const expectedArray = [
+        { key: 'attributeKey1', value: 'attributeValue1' },
+        { value: 'attributeValue2' },
+      ];
+      expect(JSON.stringify(actualArray) === JSON.stringify(expectedArray)).toBeTruthy();
     });
   });
 });
