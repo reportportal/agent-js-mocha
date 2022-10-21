@@ -25,7 +25,7 @@ jest.mock('./../lib/utils', () => ({
   }),
 }));
 jest.mock('./../lib/utils', () => ({
-  parseStringToArray: () => [],
+  parseStringToArray: () => jest.fn(() => []),
 }));
 
 describe('launch reporting', function() {
