@@ -23,7 +23,7 @@ jest.mock('./../lib/utils', () => ({
     name: 'agentName',
     version: 'agentVersion',
   }),
-  parseStringToArray: () => [],
+  parseAttributes: () => [],
 }));
 
 describe('launch reporting', function() {
