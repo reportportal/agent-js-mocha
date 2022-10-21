@@ -24,7 +24,7 @@ jest.mock('./../lib/utils', () => ({
     version: 'agentVersion',
   }),
 }));
-jest.mock('./../lib/utils', () => ({
+jest.mock('./utils', () => ({
   parseStringToArray: () => jest.fn(() => []),
 }));
 
