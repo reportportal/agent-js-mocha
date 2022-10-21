@@ -24,6 +24,9 @@ jest.mock('./../lib/utils', () => ({
     version: 'agentVersion',
   }),
 }));
+jest.mock('./../lib/utils', () => ({
+  parseStringToArray: () => [],
+}));
 
 describe('launch reporting', function() {
   afterEach(function() {
