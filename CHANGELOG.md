@@ -1,5 +1,6 @@
 ### Fixed
 - Skipped test duplication
+- Config attributes parsing using .mocharc
 
 ### Added
 - Added "mode" option for submitting results to Debug tab.

@@ -32,6 +32,25 @@ let mochaMain = new Mocha({
   }
 });
 ```
+Using `.mocharc.js`:
+```javascript
+module.exports = {
+  'extension': ['js', 'cjs', 'mjs'],
+  'package': './package.json',
+  reporter: '@reportportal/agent-js-mocha',
+  'reporter-option':[
+    'endpoint=https://your.reportportal.server/api/v1',
+    'token=00000000-0000-0000-0000-000000000000',
+    'launch=YourLauncherName',
+    'project=YourReportPortalProjectName',
+    'attributes=YourKey:YourValue;YourValue',
+  ],
+  'file': [
+    'spec/someTest.spec.js',
+  ]
+}
+
+```
 
 #### You can find an example of using Mocha Reporter [here](https://github.com/reportportal/examples-js/tree/master/example-mocha).
 
