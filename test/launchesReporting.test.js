@@ -23,7 +23,7 @@ jest.mock('./../lib/utils', () => ({
     name: 'agentName',
     version: 'agentVersion',
   }),
-  parseAttributes: () => [],
+  parseAttributes: () => [{ key: 'key', value: 'value' }],
 }));
 
 describe('launch reporting', function() {
@@ -46,6 +46,10 @@ describe('launch reporting', function() {
             key: 'agent',
             value: 'agentName|agentVersion',
             system: true,
+          },
+          {
+            key: 'key',
+            value: 'value',
           },
         ],
         mode: undefined,
@@ -78,6 +82,10 @@ describe('launch reporting', function() {
             value: 'agentName|agentVersion',
             system: true,
           },
+          {
+            key: 'key',
+            value: 'value',
+          },
         ],
         mode: 'DEBUG',
       };
@@ -106,6 +114,10 @@ describe('launch reporting', function() {
             key: 'agent',
             value: 'agentName|agentVersion',
             system: true,
+          },
+          {
+            key: 'key',
+            value: 'value',
           },
         ],
         rerun: true,
