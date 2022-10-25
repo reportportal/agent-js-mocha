@@ -53,4 +53,13 @@ describe('utils', function() {
       expect(actualArray).toEqual(expectedArray);
     });
   });
+  it('should return passed array', function() {
+    const array = [
+      { key: 'attributeKey1', value: 'attributeValue1' },
+      { value: 'attributeValue2' },
+    ];
+    const actualArray = parseAttributes(array);
+    const expectedArray = array;
+    expect(actualArray).toEqual(expectedArray);
+  });
 });

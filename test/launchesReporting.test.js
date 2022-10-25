@@ -17,14 +17,13 @@
 const EventEmitter = require('events');
 const { getDefaultConfig, RPClient, mockedDate } = require('./mocks');
 const ReportportalAgent = require('./../lib/mochaReporter');
-const { parseAttributes } = require('./../lib/utils');
 
 jest.mock('./../lib/utils', () => ({
   getAgentInfo: () => ({
     name: 'agentName',
     version: 'agentVersion',
   }),
-  parseAttributes,
+  parseAttributes: () => [],
 }));
 
 describe('launch reporting', function() {
@@ -112,36 +111,6 @@ describe('launch reporting', function() {
         rerun: true,
         rerunOf: 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
       };
-
-      reporter.onLaunchStart();
-
-      expect(reporter.launchId).toEqual('tempLaunchId');
-      expect(spyStartLaunch).toHaveBeenCalledWith(expetedLaunchStartObject);
-    });
-
-    it('should start launch with stringed attributes', function() {
-      const options = getDefaultConfig();
-      options.attributes = '';
-      const runner = new EventEmitter();
-      const reporter = new ReportportalAgent(runner, options);
-      reporter.rpClient = new RPClient(options);
-      const expetedLaunchStartObject = {
-        token: '00000000-0000-0000-0000-000000000000',
-        name: 'LauncherName',
-        startTime: mockedDate,
-        description: 'Launch description',
-        attributes: [
-          {
-            key: 'agent',
-            value: 'agentName|agentVersion',
-            system: true,
-          },
-        ],
-        mode: undefined,
-        rerun: undefined,
-        rerunOf: undefined,
-      };
-      const spyStartLaunch = jest.spyOn(reporter.rpClient, 'startLaunch');
 
       reporter.onLaunchStart();
 
