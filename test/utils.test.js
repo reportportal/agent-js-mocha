@@ -50,7 +50,7 @@ describe('utils', function() {
         { key: 'attributeKey1', value: 'attributeValue1' },
         { value: 'attributeValue2' },
       ];
-      expect(JSON.stringify(actualArray) === JSON.stringify(expectedArray)).toBeTruthy();
+      expect(actualArray).toEqual(expectedArray);
     });
   });
 });
