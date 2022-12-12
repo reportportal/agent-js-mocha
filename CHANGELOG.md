@@ -3,6 +3,9 @@
 - Skipped test duplication
 - Config attributes parsing using .mocharc
 
+### Security
+- Versions of several vulnerable dependencies updated
+
 ### Added
 - `mode` option for submitting results to Debug tab
 - Latest error log to the step description
