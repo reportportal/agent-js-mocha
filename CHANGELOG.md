@@ -1,7 +1,21 @@
+### Fixed
+- `skippedIssue` config property processing using .mocharc or string values
+- Skipped test duplication
+- Config attributes parsing using .mocharc
+
+### Security
+- Versions of several vulnerable dependencies updated
+
+### Added
+- `mode` option for submitting results to Debug tab
+- Latest error log to the step description
+
+### Changed
+- Package size reduced
 
 ## [5.0.1] - 2020-06-23
 ### Added
-- Added link to the example in readme. 
+- Added link to the example in readme.
 
 ## [5.0.0] - 2020-06-22
 ### Added

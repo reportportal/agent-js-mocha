@@ -10,13 +10,13 @@ npm install @reportportal/agent-js-mocha
 ```
 
 ## How to use:
-Fill reporterOptions in Mocha configuration. 
+Fill reporterOptions in Mocha configuration.
 ```javascript
 const Mocha = require("mocha");
 let mochaMain = new Mocha({
   reporter: '@reportportal/agent-js-mocha',
   reporterOptions: {
-    "token": "00000000-0000-0000-0000-000000000000",                
+    "token": "00000000-0000-0000-0000-000000000000",
     "endpoint": "https://your.reportportal.server/api/v1",
     "project": "YourReportPortalProjectName",
     "launch": "YourLauncherName",
@@ -32,6 +32,25 @@ let mochaMain = new Mocha({
   }
 });
 ```
+Using `.mocharc.js`:
+```javascript
+module.exports = {
+  'extension': ['js', 'cjs', 'mjs'],
+  'package': './package.json',
+  reporter: '@reportportal/agent-js-mocha',
+  'reporter-option':[
+    'endpoint=https://your.reportportal.server/api/v1',
+    'token=00000000-0000-0000-0000-000000000000',
+    'launch=YourLauncherName',
+    'project=YourReportPortalProjectName',
+    'attributes=YourKey:YourValue;YourValue',
+  ],
+  'file': [
+    'spec/someTest.spec.js',
+  ]
+}
+
+```
 
 #### You can find an example of using Mocha Reporter [here](https://github.com/reportportal/examples-js/tree/master/example-mocha).
 
@@ -44,7 +63,8 @@ Runs support following options:
 | token                 | User's Report Portal token from which you want to send requests. It can be found on the profile page of this user.|
 | endpoint              | URL of your server. For example 'https://server:8080/api/v1'.                                                     |
 | launch                | Name of launch at creation.                                                                                       |
-| project               | The name of the project in which the launches will be created.                                                    |
+| project               | The name of the project in which the launches will be created.
+| mode               | *Default: "default".* Results will be submitting to Launches tab<br> *"debug"* - Results will be submitting to Debug tab.                                                          |
 | rerun                 | *Default: false.* Enable [rerun](https://github.com/reportportal/documentation/blob/master/src/md/src/DevGuides/rerun.md)|
 | rerunOf               | UUID of launch you want to rerun. If not specified, report portal will update the latest launch with the same name|
 | reportHooks           | *Default: false.* Determines report before and after hooks or not.                                                |
@@ -112,7 +132,7 @@ describe('suite',()=>{
 ```
 #### Report attributes for steps and suites
 
-**addAttributes (*attributes*)**. Add attributes(tags) to the current test/suite. Should be called inside of corresponding test or suite.</br> 
+**addAttributes (*attributes*)**. Add attributes(tags) to the current test/suite. Should be called inside of corresponding test or suite.</br>
 *attributes* is array of pairs of key and value:
 ```javascript
 [{
@@ -141,7 +161,7 @@ describe('suite',()=>{
 
 #### Integration with Sauce Labs
 
-To integrate with Sauce Labs just add attributes: 
+To integrate with Sauce Labs just add attributes:
 
 ```javascript
 [{
@@ -155,9 +175,9 @@ To integrate with Sauce Labs just add attributes:
 
 #### Report description for steps and suites
 
-**setDescription (*description*)**. Set text description to the current test/suite. Should be called inside of corresponding test or suite.</br> 
+**setDescription (*description*)**. Set text description to the current test/suite. Should be called inside of corresponding test or suite.</br>
 
-Mocha doesn't allow functional calls directly into describe section. You can call setDescription inside of before/after hooks to set description to the corresponding suite. 
+Mocha doesn't allow functional calls directly into describe section. You can call setDescription inside of before/after hooks to set description to the corresponding suite.
 
 **Example:**
 ```javascript
@@ -175,9 +195,9 @@ describe('suite',()=>{
 
 #### Report test case id for steps and suites
 
-**setTestCaseId (*testCaseId*)**. Set test case id to the current test/suite. Should be called inside of corresponding test or suite.</br> 
+**setTestCaseId (*testCaseId*)**. Set test case id to the current test/suite. Should be called inside of corresponding test or suite.</br>
 
-Mocha doesn't allow functional calls directly into describe section. You can call setTestCaseId inside of before/after hooks to set test case id to the corresponding suite. 
+Mocha doesn't allow functional calls directly into describe section. You can call setTestCaseId inside of before/after hooks to set test case id to the corresponding suite.
 
 **Example:**
 ```javascript
@@ -233,7 +253,7 @@ describe('suite',()=>{
   });
 });
 ```
- 
+
 # Copyright Notice
 
 Licensed under the [Apache License v2.0](LICENSE)
