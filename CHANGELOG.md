@@ -1,3 +1,5 @@
+
+## [5.0.2] - 2022-12-12
 ### Fixed
 - `skippedIssue` config property processing using .mocharc or string values
 - Skipped test duplication
