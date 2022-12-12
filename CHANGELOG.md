@@ -1,10 +1,11 @@
 ### Fixed
+- `skippedIssue` config property processing using .mocharc or string values
 - Skipped test duplication
 - Config attributes parsing using .mocharc
 
 ### Added
-- Added "mode" option for submitting results to Debug tab.
-- Added latest error log to the step description.
+- `mode` option for submitting results to Debug tab
+- Latest error log to the step description
 
 ### Changed
 - Package size reduced
