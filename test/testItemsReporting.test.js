@@ -156,7 +156,7 @@ describe('test items reporting', function() {
 
       expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
     });
-    it('description should exist error log', function() {
+    it('description should contain last error log', function() {
       reporter = createAndPrepareReporter();
       const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
       const currentTest = {
