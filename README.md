@@ -64,7 +64,7 @@ Runs support following options:
 | endpoint              | URL of your server. For example 'https://server:8080/api/v1'.                                                     |
 | launch                | Name of launch at creation.                                                                                       |
 | project               | The name of the project in which the launches will be created.
-| mode               | *Default: "default".* Results will be submitting to Launches tab<br> *"debug"* - Results will be submitting to Debug tab.                                                          |
+| mode               | *Default: "DEFAULT".* Results will be submitting to Launches tab<br> *"DEBUG"* - Results will be submitting to Debug tab (Values must be upper case).                                                          |
 | rerun                 | *Default: false.* Enable [rerun](https://github.com/reportportal/documentation/blob/master/src/md/src/DevGuides/rerun.md)|
 | rerunOf               | UUID of launch you want to rerun. If not specified, report portal will update the latest launch with the same name|
 | reportHooks           | *Default: false.* Determines report before and after hooks or not.                                                |
