@@ -1,7 +1,7 @@
 # @reportportal/agent-js-mocha
 
 Agent to integrate Mocha with ReportPortal.
-* More about [Mocha](https://playwright.dev/)
+* More about [Mocha](https://mochajs.org/)
 * More about [ReportPortal](http://reportportal.io/)
 
 It was designed to work with mocha programmatically, in order to be able to parametrize each test run.
