@@ -1,9 +1,12 @@
-# Mocha reporter for EPAM report portal
-This is mocha runtime reporter for the [Report Portal](https://github.com/reportportal/reportportal).
+# @reportportal/agent-js-mocha
+
+Agent to integrate Mocha with ReportPortal.
+* More about [Mocha](https://playwright.dev/)
+* More about [ReportPortal](http://reportportal.io/)
 
 It was designed to work with mocha programmatically, in order to be able to parametrize each test run.
 
-## Installation steps:
+## Installation
 
 ```cmd
 npm install @reportportal/agent-js-mocha
