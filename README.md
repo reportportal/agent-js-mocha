@@ -16,7 +16,7 @@ npm install --save-dev @reportportal/agent-js-mocha
 Fill reporterOptions in Mocha configuration.
 ```javascript
 const Mocha = require("mocha");
-let mochaMain = new Mocha({
+const mochaMain = new Mocha({
   reporter: '@reportportal/agent-js-mocha',
   reporterOptions: {
     "token": "00000000-0000-0000-0000-000000000000",
@@ -77,13 +77,13 @@ Runs support following options:
 
 The agent provides an API to extend the functionality of Mocha.
 
-Import the PublicReportingAPI as shown below to use additional reporting features.
+Import the `PublicReportingAPI` as shown below to use additional reporting features.
 
 ```javascript
 const PublicReportingAPI = require('@reportportal/agent-js-mocha/lib/publicReportingAPI');
 ```
 #### Report logs and attachments
-PublicReportingAPI provides the following methods for reporting logs into the current test/step.
+`PublicReportingAPI` provides the following methods for reporting logs into the current test/step.
 
 * log(*level*, *message* , *file*). Reports *message* and optional *file* with specified log *level* as a log of the current test. If called outside of the test, reports message as a log of the current suite.<br/>
 *level* shoud be equal to one the following values: *TRACE*, *DEBUG*, *INFO*, *WARN*, *ERROR*, *FATAL*.<br/>
