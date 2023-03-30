@@ -9,7 +9,7 @@ It was designed to work with mocha programmatically, in order to be able to para
 ## Installation
 
 ```cmd
-npm install @reportportal/agent-js-mocha
+npm install --save-dev @reportportal/agent-js-mocha
 ```
 
 ## How to use:
