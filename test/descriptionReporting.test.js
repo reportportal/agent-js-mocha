@@ -24,7 +24,7 @@ describe('description reporting', function() {
     const options = getDefaultConfig();
     const runner = new EventEmitter();
     reporter = new ReportportalAgent(runner, options);
-    reporter.rpClient = new RPClient(options);
+    reporter.rpClient = new RPClient(options.reporterOptions);
     reporter.suitesStackTempId = ['tempRootSuiteId', 'tempSuiteId'];
   });
 
