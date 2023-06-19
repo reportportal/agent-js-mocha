@@ -23,7 +23,7 @@ const createReporter = (customReporterOptions = {}) => {
   options.reporterOptions = Object.assign(options.reporterOptions, customReporterOptions);
   const runner = new EventEmitter();
   const reporter = new ReportportalAgent(runner, options);
-  reporter.rpClient = new RPClient(options);
+  reporter.rpClient = new RPClient(options.reporterOptions);
   return reporter;
 };
 

@@ -35,9 +35,8 @@ describe('launch reporting', function() {
       const options = getDefaultConfig();
       const runner = new EventEmitter();
       const reporter = new ReportportalAgent(runner, options);
-      reporter.rpClient = new RPClient(options);
+      reporter.rpClient = new RPClient(options.reporterOptions);
       const expetedLaunchStartObject = {
-        token: '00000000-0000-0000-0000-000000000000',
         name: 'LauncherName',
         startTime: mockedDate,
         description: 'Launch description',
@@ -65,10 +64,9 @@ describe('launch reporting', function() {
       options.reporterOptions.mode = 'DEBUG';
       const runner = new EventEmitter();
       const reporter = new ReportportalAgent(runner, options);
-      reporter.rpClient = new RPClient(options);
+      reporter.rpClient = new RPClient(options.reporterOptions);
       const spyStartLaunch = jest.spyOn(reporter.rpClient, 'startLaunch');
       const expetedLaunchStartObject = {
-        token: '00000000-0000-0000-0000-000000000000',
         name: 'LauncherName',
         startTime: mockedDate,
         description: 'Launch description',
@@ -94,10 +92,9 @@ describe('launch reporting', function() {
       options.reporterOptions.rerunOf = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
       const runner = new EventEmitter();
       const reporter = new ReportportalAgent(runner, options);
-      reporter.rpClient = new RPClient(options);
+      reporter.rpClient = new RPClient(options.reporterOptions);
       const spyStartLaunch = jest.spyOn(reporter.rpClient, 'startLaunch');
       const expetedLaunchStartObject = {
-        token: '00000000-0000-0000-0000-000000000000',
         name: 'LauncherName',
         startTime: mockedDate,
         description: 'Launch description',
@@ -124,7 +121,7 @@ describe('launch reporting', function() {
       const options = getDefaultConfig();
       const runner = new EventEmitter();
       const reporter = new ReportportalAgent(runner, options);
-      reporter.rpClient = new RPClient(options);
+      reporter.rpClient = new RPClient(options.reporterOptions);
       const spyFinishLaunch = jest.spyOn(reporter.rpClient, 'finishLaunch');
       reporter.launchId = 'tempLaunchId';
 
@@ -139,7 +136,7 @@ describe('launch reporting', function() {
       const options = getDefaultConfig();
       const runner = new EventEmitter();
       const reporter = new ReportportalAgent(runner, options);
-      reporter.rpClient = new RPClient(options);
+      reporter.rpClient = new RPClient(options.reporterOptions);
       const spyFinishLaunch = jest.spyOn(reporter.rpClient, 'finishLaunch');
       reporter.launchId = 'tempLaunchId';
       reporter.setLaunchStatus('info');
@@ -158,7 +155,7 @@ describe('launch reporting', function() {
       const options = getDefaultConfig();
       const runner = new EventEmitter();
       const reporter = new ReportportalAgent(runner, options);
-      reporter.rpClient = new RPClient(options);
+      reporter.rpClient = new RPClient(options.reporterOptions);
       const expectedSystemAttributes = [
         {
           key: 'agent',
@@ -177,7 +174,7 @@ describe('launch reporting', function() {
       options.reporterOptions.skippedIssue = true;
       const runner = new EventEmitter();
       const reporter = new ReportportalAgent(runner, options);
-      reporter.rpClient = new RPClient(options);
+      reporter.rpClient = new RPClient(options.reporterOptions);
       const expectedSystemAttributes = [
         {
           key: 'agent',
@@ -196,7 +193,7 @@ describe('launch reporting', function() {
       options.reporterOptions.skippedIssue = false;
       const runner = new EventEmitter();
       const reporter = new ReportportalAgent(runner, options);
-      reporter.rpClient = new RPClient(options);
+      reporter.rpClient = new RPClient(options.reporterOptions);
       const expectedSystemAttributes = [
         {
           key: 'agent',
