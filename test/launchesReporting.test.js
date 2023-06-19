@@ -37,7 +37,7 @@ describe('launch reporting', function() {
       const reporter = new ReportportalAgent(runner, options);
       reporter.rpClient = new RPClient(options);
       const expetedLaunchStartObject = {
-        token: '00000000-0000-0000-0000-000000000000',
+        apikey: '00000000-0000-0000-0000-000000000000',
         name: 'LauncherName',
         startTime: mockedDate,
         description: 'Launch description',
@@ -68,7 +68,7 @@ describe('launch reporting', function() {
       reporter.rpClient = new RPClient(options);
       const spyStartLaunch = jest.spyOn(reporter.rpClient, 'startLaunch');
       const expetedLaunchStartObject = {
-        token: '00000000-0000-0000-0000-000000000000',
+        apikey: '00000000-0000-0000-0000-000000000000',
         name: 'LauncherName',
         startTime: mockedDate,
         description: 'Launch description',
@@ -97,7 +97,7 @@ describe('launch reporting', function() {
       reporter.rpClient = new RPClient(options);
       const spyStartLaunch = jest.spyOn(reporter.rpClient, 'startLaunch');
       const expetedLaunchStartObject = {
-        token: '00000000-0000-0000-0000-000000000000',
+        apikey: '00000000-0000-0000-0000-000000000000',
         name: 'LauncherName',
         startTime: mockedDate,
         description: 'Launch description',
