@@ -1,6 +1,6 @@
 {
   "name": "@reportportal/agent-js-mocha",
-  "version": "5.0.2",
+  "version": "5.0.3",
   "description": "Mocha reporter for the Report Portal",
   "author": "ReportPortal.io",
   "scripts": {
