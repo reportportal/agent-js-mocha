@@ -26,12 +26,12 @@ jest.mock('./../lib/utils', () => ({
   parseAttributes: () => [],
 }));
 
-describe('launch reporting', function() {
-  afterEach(function() {
+describe('launch reporting', function () {
+  afterEach(function () {
     jest.clearAllMocks();
   });
-  describe('onLaunchStart', function() {
-    it('should start launch with default options', function() {
+  describe('onLaunchStart', function () {
+    it('should start launch with default options', function () {
       const options = getDefaultConfig();
       const runner = new EventEmitter();
       const reporter = new ReportportalAgent(runner, options);
@@ -59,7 +59,7 @@ describe('launch reporting', function() {
       expect(spyStartLaunch).toHaveBeenCalledWith(expetedLaunchStartObject);
     });
 
-    it('should submit results to Debug tab', function() {
+    it('should submit results to Debug tab', function () {
       const options = getDefaultConfig();
       options.reporterOptions.mode = 'DEBUG';
       const runner = new EventEmitter();
@@ -86,7 +86,7 @@ describe('launch reporting', function() {
       expect(spyStartLaunch).toHaveBeenCalledWith(expetedLaunchStartObject);
     });
 
-    it('should rerun launch', function() {
+    it('should rerun launch', function () {
       const options = getDefaultConfig();
       options.reporterOptions.rerun = true;
       options.reporterOptions.rerunOf = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx';
@@ -116,8 +116,8 @@ describe('launch reporting', function() {
     });
   });
 
-  describe('onLaunchFinish', function() {
-    it('should finish launch', function() {
+  describe('onLaunchFinish', function () {
+    it('should finish launch', function () {
       const options = getDefaultConfig();
       const runner = new EventEmitter();
       const reporter = new ReportportalAgent(runner, options);
@@ -132,7 +132,7 @@ describe('launch reporting', function() {
       });
     });
 
-    it('setLaunchStatus: should finish launch with specifyed status', function() {
+    it('setLaunchStatus: should finish launch with specifyed status', function () {
       const options = getDefaultConfig();
       const runner = new EventEmitter();
       const reporter = new ReportportalAgent(runner, options);
@@ -150,8 +150,8 @@ describe('launch reporting', function() {
     });
   });
 
-  describe('getSystemAttributes', function() {
-    it('skippedIssue undefined. Should return attribute with agent name and version', function() {
+  describe('getSystemAttributes', function () {
+    it('skippedIssue undefined. Should return attribute with agent name and version', function () {
       const options = getDefaultConfig();
       const runner = new EventEmitter();
       const reporter = new ReportportalAgent(runner, options);
@@ -169,7 +169,7 @@ describe('launch reporting', function() {
       expect(systemAttributes).toEqual(expectedSystemAttributes);
     });
 
-    it('skippedIssue = true. Should return attribute with agent name and version', function() {
+    it('skippedIssue = true. Should return attribute with agent name and version', function () {
       const options = getDefaultConfig();
       options.reporterOptions.skippedIssue = true;
       const runner = new EventEmitter();
@@ -188,7 +188,7 @@ describe('launch reporting', function() {
       expect(systemAttributes).toEqual(expectedSystemAttributes);
     });
 
-    it('skippedIssue = false. Should return 2 attribute: with agent name/version and skippedIssue', function() {
+    it('skippedIssue = false. Should return 2 attribute: with agent name/version and skippedIssue', function () {
       const options = getDefaultConfig();
       options.reporterOptions.skippedIssue = false;
       const runner = new EventEmitter();

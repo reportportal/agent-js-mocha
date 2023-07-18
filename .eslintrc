@@ -27,7 +27,8 @@
     "no-invalid-this": 0,
     "prefer-object-spread": 0,
     "no-console": 0,
-    "func-names": 0
+    "func-names": 0,
+    "default-param-last": 0
   },
   "overrides": [{
     "files": ["*.spec.js"],
