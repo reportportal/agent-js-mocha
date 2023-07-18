@@ -17,9 +17,9 @@
 const path = require('path');
 const { getCodeRef, getAgentInfo, parseAttributes } = require('./../lib/utils');
 
-describe('utils', function() {
-  describe('getCodeRef', function() {
-    it('should return correct code ref', function() {
+describe('utils', function () {
+  describe('getCodeRef', function () {
+    it('should return correct code ref', function () {
       jest.spyOn(process, 'cwd').mockImplementation(() => `C:${path.sep}testProject`);
       const mockedTest = {
         title: 'testTitle',
@@ -35,16 +35,16 @@ describe('utils', function() {
       jest.clearAllMocks();
     });
   });
-  describe('getAgentInfo', function() {
-    it('should contain version and name properties', function() {
+  describe('getAgentInfo', function () {
+    it('should contain version and name properties', function () {
       const agentInfo = getAgentInfo();
 
       expect(Object.keys(agentInfo)).toContain('version');
       expect(Object.keys(agentInfo)).toContain('name');
     });
   });
-  describe('parseAttributes', function() {
-    it('should parse string to array', function() {
+  describe('parseAttributes', function () {
+    it('should parse string to array', function () {
       const actualArray = parseAttributes('attributeKey1:attributeValue1;attributeValue2');
       const expectedArray = [
         { key: 'attributeKey1', value: 'attributeValue1' },
@@ -53,7 +53,7 @@ describe('utils', function() {
       expect(actualArray).toEqual(expectedArray);
     });
   });
-  it('should return passed array', function() {
+  it('should return passed array', function () {
     const array = [
       { key: 'attributeKey1', value: 'attributeValue1' },
       { value: 'attributeValue2' },

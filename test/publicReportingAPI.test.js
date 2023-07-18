@@ -38,10 +38,10 @@ const publicReportingAPIStatusMethods = [
   { method: 'setStatusWarn', status: 'warn' },
 ];
 
-describe('PublicReportingAPI', function() {
-  describe('Log reporting', function() {
+describe('PublicReportingAPI', function () {
+  describe('Log reporting', function () {
     let file;
-    beforeAll(function() {
+    beforeAll(function () {
       file = {
         name: 'filename',
         type: 'image/png',
@@ -49,7 +49,7 @@ describe('PublicReportingAPI', function() {
       };
     });
 
-    it('log withot parameters: should call addLog method with info level and empty message', function() {
+    it('log withot parameters: should call addLog method with info level and empty message', function () {
       const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
 
       const expectedAddLogObj = {
@@ -62,7 +62,7 @@ describe('PublicReportingAPI', function() {
       expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
     });
 
-    it('log: should call addLog method with specified level and message', function() {
+    it('log: should call addLog method with specified level and message', function () {
       const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
 
       const expectedAddLogObj = {
@@ -74,7 +74,7 @@ describe('PublicReportingAPI', function() {
 
       expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
     });
-    it('log: should call addLog method with specified level, message and attachment', function() {
+    it('log: should call addLog method with specified level, message and attachment', function () {
       const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
 
       const expectedAddLogObj = {
@@ -87,7 +87,7 @@ describe('PublicReportingAPI', function() {
 
       expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
     });
-    it('trace: should call addLog method with TRACE level and specified parameters', function() {
+    it('trace: should call addLog method with TRACE level and specified parameters', function () {
       const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
 
       const expectedAddLogObj = {
@@ -100,7 +100,7 @@ describe('PublicReportingAPI', function() {
 
       expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
     });
-    it('debug: should call addLog method with DEBUG level and specified parameters', function() {
+    it('debug: should call addLog method with DEBUG level and specified parameters', function () {
       const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
 
       const expectedAddLogObj = {
@@ -113,7 +113,7 @@ describe('PublicReportingAPI', function() {
 
       expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
     });
-    it('info: should call addLog method with INFO level and specified parameters', function() {
+    it('info: should call addLog method with INFO level and specified parameters', function () {
       const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
 
       const expectedAddLogObj = {
@@ -126,7 +126,7 @@ describe('PublicReportingAPI', function() {
 
       expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
     });
-    it('warn: should call addLog method with WARN level and specified parameters', function() {
+    it('warn: should call addLog method with WARN level and specified parameters', function () {
       const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
 
       const expectedAddLogObj = {
@@ -139,7 +139,7 @@ describe('PublicReportingAPI', function() {
 
       expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
     });
-    it('error: should call addLog method with ERROR level and specified parameters', function() {
+    it('error: should call addLog method with ERROR level and specified parameters', function () {
       const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
 
       const expectedAddLogObj = {
@@ -152,7 +152,7 @@ describe('PublicReportingAPI', function() {
 
       expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
     });
-    it('fatal: should call addLog method with FATAL level and specified parameters', function() {
+    it('fatal: should call addLog method with FATAL level and specified parameters', function () {
       const spyAddLog = jest.spyOn(ClientPublicReportingAPI, 'addLog').mockImplementation(() => {});
 
       const expectedAddLogObj = {
@@ -165,7 +165,7 @@ describe('PublicReportingAPI', function() {
 
       expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
     });
-    it('launchLog without params: should call addLaunchLog method with info level and empty message', function() {
+    it('launchLog without params: should call addLaunchLog method with info level and empty message', function () {
       const spyAddLog = jest
         .spyOn(ClientPublicReportingAPI, 'addLaunchLog')
         .mockImplementation(() => {});
@@ -181,7 +181,7 @@ describe('PublicReportingAPI', function() {
 
       expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
     });
-    it('launchLog: should call addLaunchLog method with parameters', function() {
+    it('launchLog: should call addLaunchLog method with parameters', function () {
       const spyAddLog = jest
         .spyOn(ClientPublicReportingAPI, 'addLaunchLog')
         .mockImplementation(() => {});
@@ -198,7 +198,7 @@ describe('PublicReportingAPI', function() {
 
       expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
     });
-    it('launchTrace: should call addLaunchLog with TRACE level and specified parameters', function() {
+    it('launchTrace: should call addLaunchLog with TRACE level and specified parameters', function () {
       const spyAddLog = jest
         .spyOn(ClientPublicReportingAPI, 'addLaunchLog')
         .mockImplementation(() => {});
@@ -215,7 +215,7 @@ describe('PublicReportingAPI', function() {
 
       expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
     });
-    it('launchDebug: should call addLaunchLog with DEBUG level and specified parameters', function() {
+    it('launchDebug: should call addLaunchLog with DEBUG level and specified parameters', function () {
       const spyAddLog = jest
         .spyOn(ClientPublicReportingAPI, 'addLaunchLog')
         .mockImplementation(() => {});
@@ -232,7 +232,7 @@ describe('PublicReportingAPI', function() {
 
       expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
     });
-    it('launchInfo: should call addLaunchLog with INFO level and specified parameters', function() {
+    it('launchInfo: should call addLaunchLog with INFO level and specified parameters', function () {
       const spyAddLog = jest
         .spyOn(ClientPublicReportingAPI, 'addLaunchLog')
         .mockImplementation(() => {});
@@ -249,7 +249,7 @@ describe('PublicReportingAPI', function() {
 
       expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
     });
-    it('launchWarn: should call addLaunchLog with WARN level and specified parameters', function() {
+    it('launchWarn: should call addLaunchLog with WARN level and specified parameters', function () {
       const spyAddLog = jest
         .spyOn(ClientPublicReportingAPI, 'addLaunchLog')
         .mockImplementation(() => {});
@@ -266,7 +266,7 @@ describe('PublicReportingAPI', function() {
 
       expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
     });
-    it('launchError: should call addLaunchLog with ERROR level and specified parameters', function() {
+    it('launchError: should call addLaunchLog with ERROR level and specified parameters', function () {
       const spyAddLog = jest
         .spyOn(ClientPublicReportingAPI, 'addLaunchLog')
         .mockImplementation(() => {});
@@ -283,7 +283,7 @@ describe('PublicReportingAPI', function() {
 
       expect(spyAddLog).toHaveBeenCalledWith(expectedAddLogObj);
     });
-    it('launchFatal: should call addLaunchLog with FATAL level and specified parameters', function() {
+    it('launchFatal: should call addLaunchLog with FATAL level and specified parameters', function () {
       const spyAddLog = jest
         .spyOn(ClientPublicReportingAPI, 'addLaunchLog')
         .mockImplementation(() => {});
@@ -302,10 +302,10 @@ describe('PublicReportingAPI', function() {
     });
   });
 
-  describe('Item status reporting', function() {
+  describe('Item status reporting', function () {
     // eslint-disable-next-line mocha/no-setup-in-describe
     publicReportingAPIStatusMethods.forEach(({ method, status }) => {
-      it(`${method}: should call ${method} method with "${status}" status`, function() {
+      it(`${method}: should call ${method} method with "${status}" status`, function () {
         const spySetStatus = jest
           .spyOn(ClientPublicReportingAPI, 'setStatus')
           .mockImplementation(() => {});
@@ -317,10 +317,10 @@ describe('PublicReportingAPI', function() {
     });
   });
 
-  describe('Launch status reporting', function() {
+  describe('Launch status reporting', function () {
     // eslint-disable-next-line mocha/no-setup-in-describe
     publicReportingAPILaunchStatusMethods.forEach(({ method, status }) => {
-      it(`${method}: should call ${method} method with "${status}" status`, function() {
+      it(`${method}: should call ${method} method with "${status}" status`, function () {
         const spySetStatus = jest
           .spyOn(ClientPublicReportingAPI, 'setLaunchStatus')
           .mockImplementation(() => {});

@@ -1,22 +1,25 @@
-# Mocha reporter for EPAM report portal
-This is mocha runtime reporter for the [Report Portal](https://github.com/reportportal/reportportal).
+# @reportportal/agent-js-mocha
+
+Agent to integrate Mocha with ReportPortal.
+* More about [Mocha](https://mochajs.org/)
+* More about [ReportPortal](http://reportportal.io/)
 
 It was designed to work with mocha programmatically, in order to be able to parametrize each test run.
 
-## Installation steps:
+## Installation
 
 ```cmd
-npm install @reportportal/agent-js-mocha
+npm install --save-dev @reportportal/agent-js-mocha
 ```
 
 ## How to use:
 Fill reporterOptions in Mocha configuration.
 ```javascript
 const Mocha = require("mocha");
-let mochaMain = new Mocha({
+const mochaMain = new Mocha({
   reporter: '@reportportal/agent-js-mocha',
   reporterOptions: {
-    "token": "00000000-0000-0000-0000-000000000000",
+    "apiKey": "reportportalApiKey",
     "endpoint": "https://your.reportportal.server/api/v1",
     "project": "YourReportPortalProjectName",
     "launch": "YourLauncherName",
@@ -40,7 +43,7 @@ module.exports = {
   reporter: '@reportportal/agent-js-mocha',
   'reporter-option':[
     'endpoint=https://your.reportportal.server/api/v1',
-    'token=00000000-0000-0000-0000-000000000000',
+    'apiKey=reportportalApiKey',
     'launch=YourLauncherName',
     'project=YourReportPortalProjectName',
     'attributes=YourKey:YourValue;YourValue',
@@ -56,31 +59,36 @@ module.exports = {
 
 ### Options
 
-Runs support following options:
+The full list of available options presented below.
 
-| Parameter             | Description                                                                                                       |
-| --------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| token                 | User's Report Portal token from which you want to send requests. It can be found on the profile page of this user.|
-| endpoint              | URL of your server. For example 'https://server:8080/api/v1'.                                                     |
-| launch                | Name of launch at creation.                                                                                       |
-| project               | The name of the project in which the launches will be created.
-| mode               | *Default: "default".* Results will be submitting to Launches tab<br> *"debug"* - Results will be submitting to Debug tab.                                                          |
-| rerun                 | *Default: false.* Enable [rerun](https://github.com/reportportal/documentation/blob/master/src/md/src/DevGuides/rerun.md)|
-| rerunOf               | UUID of launch you want to rerun. If not specified, report portal will update the latest launch with the same name|
-| reportHooks           | *Default: false.* Determines report before and after hooks or not.                                                |
-| skippedIssue          | *Default: true.* ReportPortal provides feature to mark skipped tests as not 'To Investigate' items on WS side.<br> Parameter could be equal boolean values:<br> *TRUE* - skipped tests considered as issues and will be marked as 'To Investigate' on Report Portal.<br> *FALSE* - skipped tests will not be marked as 'To Investigate' on application.|
+| Option           | Necessity  | Default   | Description                                                                                                                                                                                                                                                                                                                                                                              |
+|------------------|------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| apiKey           | Required   |           | User's reportportal token from which you want to send requests. It can be found on the profile page of this user.                                                                                                                                                                                                                                                                        |
+| endpoint         | Required   |           | URL of your server. For example 'https://server:8080/api/v1'.                                                                                                                                                                                                                                                                                                                            |
+| launch           | Required   |           | Name of launch at creation.                                                                                                                                                                                                                                                                                                                                                              |
+| project          | Required   |           | The name of the project in which the launches will be created.                                                                                                                                                                                                                                                                                                                           |
+| attributes       | Optional   | []        | Launch attributes.                                                                                                                                                                                                                                                                                                                                                                       |
+| description      | Optional   | ''        | Launch description.                                                                                                                                                                                                                                                                                                                                                                      |
+| rerun            | Optional   | false     | Enable [rerun](https://github.com/reportportal/documentation/blob/master/src/md/src/DevGuides/rerun.md)                                                                                                                                                                                                                                                                                  |
+| rerunOf          | Optional   | Not set   | UUID of launch you want to rerun. If not specified, reportportal will update the latest launch with the same name                                                                                                                                                                                                                                                                        |
+| mode             | Optional   | 'DEFAULT' | Results will be submitted to Launches page <br/> *'DEBUG'* - Results will be submitted to Debug page (values must be upper case).                                                                                                                                                                                                                                                        |
+| skippedIssue     | Optional   | true      | reportportal provides feature to mark skipped tests as not 'To Investigate'. <br/> Option could be equal boolean values: <br/> *true* - skipped tests considered as issues and will be marked as 'To Investigate' on reportportal. <br/> *false* - skipped tests will not be marked as 'To Investigate' on application.                                                                  |
+| debug            | Optional   | false     | This flag allows seeing the logs of the client-javascript. Useful for debugging.                                                                                                                                                                                                                                                                                                         |
+| reportHooks      | Optional   | false     | Determines report before and after hooks or not.                                                                                                                                                                                                                                                                                                                                         |
+| restClientConfig | Optional   | Not set   | The object with `agent` property for configure [http(s)](https://nodejs.org/api/https.html#https_https_request_url_options_callback) client, may contain other client options eg. [`timeout`](https://github.com/reportportal/client-javascript#timeout-30000ms-on-axios-requests). <br/> Visit [client-javascript](https://github.com/reportportal/client-javascript) for more details. |
+| token            | Deprecated | Not set   | Use `apiKey` instead.                                                                                                                                                                                                                                                                                                                                                                    |
 
 ### Additional reporting functionality
 
 The agent provides an API to extend the functionality of Mocha.
 
-Import the PublicReportingAPI as shown below to use additional reporting features.
+Import the `PublicReportingAPI` as shown below to use additional reporting features.
 
 ```javascript
 const PublicReportingAPI = require('@reportportal/agent-js-mocha/lib/publicReportingAPI');
 ```
 #### Report logs and attachments
-PublicReportingAPI provides the following methods for reporting logs into the current test/step.
+`PublicReportingAPI` provides the following methods for reporting logs into the current test/step.
 
 * log(*level*, *message* , *file*). Reports *message* and optional *file* with specified log *level* as a log of the current test. If called outside of the test, reports message as a log of the current suite.<br/>
 *level* shoud be equal to one the following values: *TRACE*, *DEBUG*, *INFO*, *WARN*, *ERROR*, *FATAL*.<br/>
