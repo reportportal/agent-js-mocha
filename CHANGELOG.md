@@ -1,3 +1,7 @@
+### Deprecated
+- Node.js 10 usage. This version is the latest that supports Node.js 10.
+### Changed
+- `@reportportal/client-javascript` bumped to version `5.0.15`.
 
 ## [5.0.3] - 2023-07-18
 ### Changed
