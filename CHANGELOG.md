@@ -1,6 +1,7 @@
 ### Changed
 - **Breaking change** Drop support of Node.js 10. The version [5.0.4](https://github.com/reportportal/agent-js-mocha/releases/tag/v5.0.4) is the latest that supports it.
-- `@reportportal/client-javascript` bumped to version `5.1.0`.
+- `@reportportal/client-javascript` bumped to version `5.1.3`.
+- `mocha` bumped to version `10.4.0`.
 
 ## [5.0.4] - 2024-01-19
 ### Deprecated
