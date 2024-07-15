@@ -2,13 +2,12 @@
   "env": {
     "es6": true,
     "node": true,
-    "mocha": true
   },
-  "extends": ["airbnb-base", "plugin:prettier/recommended", "plugin:mocha/recommended", "plugin:jest/recommended"],
+  "extends": ["airbnb-base", "plugin:prettier/recommended", "plugin:jest/recommended"],
   "parserOptions": {
     "ecmaVersion": 2018
   },
-  "plugins": ["prettier", "mocha", "jest"],
+  "plugins": ["prettier", "jest"],
   "rules": {
     "prettier/prettier": 2,
     "no-unused-expressions": [
@@ -34,8 +33,7 @@
     "files": ["*.spec.js"],
     "rules": {
       "func-names":"off",
-      "jest/valid-expect": 0,
-      "mocha/no-pending-tests": 0
+      "jest/valid-expect": 0
     }
   }]
 }
