@@ -1,6 +1,6 @@
 {
   "name": "@reportportal/agent-js-mocha",
-  "version": "5.0.4",
+  "version": "5.1.0",
   "description": "Agent to integrate Mocha with ReportPortal.",
   "author": "ReportPortal.io",
   "scripts": {
