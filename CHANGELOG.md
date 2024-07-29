@@ -1,7 +1,7 @@
 ### Changed
 - **Breaking change** Drop support of Node.js 10. The version [5.0.4](https://github.com/reportportal/agent-js-mocha/releases/tag/v5.0.4) is the latest that supports it.
 - `@reportportal/client-javascript` bumped to version `5.1.4`, new `launchUuidPrintOutput` types introduced: 'FILE', 'ENVIRONMENT'.
-- `mocha` bumped to version `10.6.0`.
+- `mocha` bumped to version `10.7.0`.
 ### Security
 - Updated versions of vulnerable packages (braces).
 ### Deprecated
