@@ -12,8 +12,9 @@ It was designed to work with mocha programmatically, in order to be able to para
 npm install --save-dev @reportportal/agent-js-mocha
 ```
 
-## How to use:
-Fill reporterOptions in Mocha configuration.
+## Configuration
+
+Fill in the `reporterOptions` in Mocha configuration.
 ```javascript
 const Mocha = require("mocha");
 const mochaMain = new Mocha({
@@ -35,6 +36,7 @@ const mochaMain = new Mocha({
   }
 });
 ```
+
 Using `.mocharc.js`:
 ```javascript
 module.exports = {
@@ -55,39 +57,45 @@ module.exports = {
 
 ```
 
-#### You can find an example of using Mocha Reporter [here](https://github.com/reportportal/examples-js/tree/master/example-mocha).
-
 ### Options
 
 The full list of available options presented below.
 
-| Option           | Necessity  | Default   | Description                                                                                                                                                                                                                                                                                                                                                                              |
-|------------------|------------|-----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| apiKey           | Required   |           | User's reportportal token from which you want to send requests. It can be found on the profile page of this user.                                                                                                                                                                                                                                                                        |
-| endpoint         | Required   |           | URL of your server. For example 'https://server:8080/api/v1'.                                                                                                                                                                                                                                                                                                                            |
-| launch           | Required   |           | Name of launch at creation.                                                                                                                                                                                                                                                                                                                                                              |
-| project          | Required   |           | The name of the project in which the launches will be created.                                                                                                                                                                                                                                                                                                                           |
-| attributes       | Optional   | []        | Launch attributes.                                                                                                                                                                                                                                                                                                                                                                       |
-| description      | Optional   | ''        | Launch description.                                                                                                                                                                                                                                                                                                                                                                      |
-| rerun            | Optional   | false     | Enable [rerun](https://reportportal.io/docs/dev-guides/RerunDevelopersGuide)                                                                                                                                                                                                                                                                                  |
-| rerunOf          | Optional   | Not set   | UUID of launch you want to rerun. If not specified, reportportal will update the latest launch with the same name                                                                                                                                                                                                                                                                        |
-| mode             | Optional   | 'DEFAULT' | Results will be submitted to Launches page <br/> *'DEBUG'* - Results will be submitted to Debug page (values must be upper case).                                                                                                                                                                                                                                                        |
-| skippedIssue     | Optional   | true      | reportportal provides feature to mark skipped tests as not 'To Investigate'. <br/> Option could be equal boolean values: <br/> *true* - skipped tests considered as issues and will be marked as 'To Investigate' on reportportal. <br/> *false* - skipped tests will not be marked as 'To Investigate' on application.                                                                  |
-| debug            | Optional   | false     | This flag allows seeing the logs of the client-javascript. Useful for debugging.                                                                                                                                                                                                                                                                                                         |
-| reportHooks      | Optional   | false     | Determines report before and after hooks or not.                                                                                                                                                                                                                                                                                                                                         |
-| restClientConfig | Optional   | Not set   | The object with `agent` property for configure [http(s)](https://nodejs.org/api/https.html#https_https_request_url_options_callback) client, may contain other client options eg. [`timeout`](https://github.com/reportportal/client-javascript#timeout-30000ms-on-axios-requests). <br/> Visit [client-javascript](https://github.com/reportportal/client-javascript) for more details. |
-| token            | Deprecated | Not set   | Use `apiKey` instead.                                                                                                                                                                                                                                                                                                                                                                    |
+| Option                | Necessity  | Default   | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|-----------------------|------------|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| apiKey                | Required   |           | User's reportportal token from which you want to send requests. It can be found on the profile page of this user.                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| endpoint              | Required   |           | URL of your server. For example 'https://server:8080/api/v1'.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| launch                | Required   |           | Name of launch at creation.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| project               | Required   |           | The name of the project in which the launches will be created.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+| attributes            | Optional   | []        | Launch attributes.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| description           | Optional   | ''        | Launch description.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              |
+| rerun                 | Optional   | false     | Enable [rerun](https://reportportal.io/docs/dev-guides/RerunDevelopersGuide)                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| rerunOf               | Optional   | Not set   | UUID of launch you want to rerun. If not specified, reportportal will update the latest launch with the same name                                                                                                                                                                                                                                                                                                                                                                                                                                |
+| mode                  | Optional   | 'DEFAULT' | Results will be submitted to Launches page <br/> *'DEBUG'* - Results will be submitted to Debug page (values must be upper case).                                                                                                                                                                                                                                                                                                                                                                                                                |
+| debug                 | Optional   | false     | This flag allows seeing the logs of the client-javascript. Useful for debugging.                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| restClientConfig      | Optional   | Not set   | `axios` like http client [config](https://github.com/axios/axios#request-config). May contain `agent` property for configure [http(s)](https://nodejs.org/api/https.html#https_https_request_url_options_callback) client, and other client options e.g. `proxy`, [`timeout`](https://github.com/reportportal/client-javascript#timeout-30000ms-on-axios-requests). For debugging and displaying logs the `debug: true` option can be used. <br/> Visit [client-javascript](https://github.com/reportportal/client-javascript) for more details. |
+| headers               | Optional   | {}        | The object with custom headers for internal http client.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         |
+| launchUuidPrint       | Optional   | false     | Whether to print the current launch UUID.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+| launchUuidPrintOutput | Optional   | 'STDOUT'  | Launch UUID printing output. Possible values: 'STDOUT', 'STDERR', 'FILE', 'ENVIRONMENT'. Works only if `launchUuidPrint` set to `true`. File format: `rp-launch-uuid-${launch_uuid}.tmp`. Env variable: `RP_LAUNCH_UUID`, note that the env variable is only available in the reporter process (it cannot be obtained from tests).                                                                                                                                                                                                               |
+| skippedIssue          | Optional   | true      | reportportal provides feature to mark skipped tests as not 'To Investigate'. <br/> Option could be equal boolean values: <br/> *true* - skipped tests considered as issues and will be marked as 'To Investigate' on reportportal. <br/> *false* - skipped tests will not be marked as 'To Investigate' on application.                                                                                                                                                                                                                          |
+| reportHooks           | Optional   | false     | Determines report before and after hooks or not.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| token                 | Deprecated | Not set   | Use `apiKey` instead.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 
-### Additional reporting functionality
 
-The agent provides an API to extend the functionality of Mocha.
+## Examples
+
+The `agent-js-mocha` usage example can be found [here](https://github.com/reportportal/examples-js/tree/master/example-mocha).
+
+## Reporting
+
+This reporter provides Reporting API to use it directly in tests to send some additional data to the report.
 
 Import the `PublicReportingAPI` as shown below to use additional reporting features.
 
 ```javascript
 const PublicReportingAPI = require('@reportportal/agent-js-mocha/lib/publicReportingAPI');
 ```
-#### Report logs and attachments
+### Logs and attachments
 `PublicReportingAPI` provides the following methods for reporting logs into the current test/step.
 
 * log(*level*, *message* , *file*). Reports *message* and optional *file* with specified log *level* as a log of the current test. If called outside of the test, reports message as a log of the current suite.<br/>
@@ -138,7 +146,7 @@ describe('suite',()=>{
   });
 });
 ```
-#### Report attributes for steps and suites
+### Attributes for steps and suites
 
 **addAttributes (*attributes*)**. Add attributes(tags) to the current test/suite. Should be called inside of corresponding test or suite.</br>
 *attributes* is array of pairs of key and value:
@@ -181,7 +189,7 @@ To integrate with Sauce Labs just add attributes:
 }]
 ```
 
-#### Report description for steps and suites
+### Description for steps and suites
 
 **setDescription (*description*)**. Set text description to the current test/suite. Should be called inside of corresponding test or suite.</br>
 
@@ -201,7 +209,7 @@ describe('suite',()=>{
 });
 ```
 
-#### Report test case id for steps and suites
+### Test case id for steps and suites
 
 **setTestCaseId (*testCaseId*)**. Set test case id to the current test/suite. Should be called inside of corresponding test or suite.</br>
 
@@ -213,15 +221,15 @@ const PublicReportingAPI = require('@reportportal/agent-js-mocha/lib/publicRepor
 ...
 describe('suite',()=>{
   before(function (){
-    PublicReportingAPI.setTestCaseId('TestCaseIdForTheSuite'));
+    PublicReportingAPI.setTestCaseId('TestCaseIdForTheSuite');
   });
   it('test', () => {
-    PublicReportingAPI.setTestCaseId('TestCaseIdForTheTest'));
+    PublicReportingAPI.setTestCaseId('TestCaseIdForTheTest');
   });
 });
 ```
 
-#### Finish launch/test item with status
+### Finish launch/test item with explicit status
 
 PublicReportingAPI provides the following methods for setting status to the current suite/spec.
 
@@ -256,7 +264,7 @@ const PublicReportingAPI = require('@reportportal/agent-js-mocha/lib/publicRepor
 ...
 describe('suite',()=>{
   it('test info', function() {
-    PublicReportingAPI.setStatusInfo();
+    PublicReportingAPI.setStatusFailed();
     expect(true).to.be.equal(true);
   });
 });
