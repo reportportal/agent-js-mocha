@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@reportportal/client-javascript": "~5.1.4",
-    "mocha": "^10.6.0"
+    "mocha": "^10.7.0"
   },
   "directories": {
     "lib": "./lib"
