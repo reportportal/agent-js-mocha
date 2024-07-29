@@ -1,7 +1,7 @@
 {
   "name": "@reportportal/agent-js-mocha",
   "version": "5.0.4",
-  "description": "Mocha reporter for the Report Portal",
+  "description": "Agent to integrate Mocha with ReportPortal.",
   "author": "ReportPortal.io",
   "scripts": {
     "lint": "eslint . --quiet",
