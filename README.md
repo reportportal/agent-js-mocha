@@ -20,7 +20,7 @@ const Mocha = require("mocha");
 const mochaMain = new Mocha({
   reporter: '@reportportal/agent-js-mocha',
   reporterOptions: {
-    "apiKey": "reportportalApiKey",
+    "apiKey": "<API_KEY>",
     "endpoint": "https://your.reportportal.server/api/v1",
     "project": "YourReportPortalProjectName",
     "launch": "YourLauncherName",
@@ -80,7 +80,6 @@ The full list of available options presented below.
 | skippedIssue          | Optional   | true      | reportportal provides feature to mark skipped tests as not 'To Investigate'. <br/> Option could be equal boolean values: <br/> *true* - skipped tests considered as issues and will be marked as 'To Investigate' on reportportal. <br/> *false* - skipped tests will not be marked as 'To Investigate' on application.                                                                                                                                                                                                                          |
 | reportHooks           | Optional   | false     | Determines report before and after hooks or not.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | token                 | Deprecated | Not set   | Use `apiKey` instead.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
-
 
 ## Examples
 
