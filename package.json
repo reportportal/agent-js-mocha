@@ -10,7 +10,7 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
-    "@reportportal/client-javascript": "~5.1.4",
+    "@reportportal/client-javascript": "~5.3.0",
     "mocha": "^10.7.0"
   },
   "directories": {
