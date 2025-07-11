@@ -15,6 +15,7 @@
  */
 
 const EventEmitter = require('events');
+const helpers = require('@reportportal/client-javascript/lib/helpers');
 const { getDefaultConfig, RPClient, mockedDate } = require('./mocks');
 const ReportportalAgent = require('./../lib/mochaReporter');
 const testStatuses = require('./../lib/constants/testStatuses');
@@ -39,6 +40,10 @@ describe('test items reporting', function () {
     reporter.suitesInfo.set(suite, { tempId: 'tempSuiteId', startTime: mockedDate });
     return reporter;
   };
+
+  beforeEach(() => {
+    jest.spyOn(helpers, 'now').mockReturnValue(mockedDate);
+  });
 
   describe('finishTest', function () {
     afterEach(function () {

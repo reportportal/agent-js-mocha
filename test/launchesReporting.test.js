@@ -15,6 +15,7 @@
  */
 
 const EventEmitter = require('events');
+const helpers = require('@reportportal/client-javascript/lib/helpers');
 const { getDefaultConfig, RPClient, mockedDate } = require('./mocks');
 const ReportportalAgent = require('./../lib/mochaReporter');
 
@@ -27,6 +28,9 @@ jest.mock('./../lib/utils', () => ({
 }));
 
 describe('launch reporting', function () {
+  beforeEach(() => {
+    jest.spyOn(helpers, 'now').mockReturnValue(mockedDate);
+  });
   afterEach(function () {
     jest.clearAllMocks();
   });
@@ -37,7 +41,7 @@ describe('launch reporting', function () {
       const reporter = new ReportportalAgent(runner, options);
       reporter.rpClient = new RPClient(options.reporterOptions);
       const expetedLaunchStartObject = {
-        name: 'LauncherName',
+        name: 'LaunchName',
         startTime: mockedDate,
         description: 'Launch description',
         attributes: [
@@ -67,7 +71,7 @@ describe('launch reporting', function () {
       reporter.rpClient = new RPClient(options.reporterOptions);
       const spyStartLaunch = jest.spyOn(reporter.rpClient, 'startLaunch');
       const expetedLaunchStartObject = {
-        name: 'LauncherName',
+        name: 'LaunchName',
         startTime: mockedDate,
         description: 'Launch description',
         attributes: [
@@ -95,7 +99,7 @@ describe('launch reporting', function () {
       reporter.rpClient = new RPClient(options.reporterOptions);
       const spyStartLaunch = jest.spyOn(reporter.rpClient, 'startLaunch');
       const expetedLaunchStartObject = {
-        name: 'LauncherName',
+        name: 'LaunchName',
         startTime: mockedDate,
         description: 'Launch description',
         attributes: [

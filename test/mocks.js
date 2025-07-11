@@ -1,5 +1,5 @@
 /*
- *  Copyright 2020 EPAM Systems
+ *  Copyright 2024 EPAM Systems
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,7 +14,9 @@
  *  limitations under the License.
  */
 
-const mockedDate = Date.now();
+const mockedDate = '2024-09-20T14:32:35.304456Z';
+const mockedDateWithout1Millisecond = '2024-09-20T14:32:35.304456Z';
+
 class RPClient {
   constructor(config) {
     this.config = config;
@@ -42,10 +44,6 @@ class RPClient {
     this.sendLog = jest.fn().mockReturnValue({
       promise: Promise.resolve('ok'),
     });
-
-    this.helpers = {
-      now: () => mockedDate,
-    };
   }
 }
 
@@ -55,7 +53,7 @@ const getDefaultConfig = () => ({
     apiKey: 'reportportalApiKey',
     endpoint: 'https://reportportal.server/api/v1',
     project: 'ProjectName',
-    launch: 'LauncherName',
+    launch: 'LaunchName',
     description: 'Launch description',
     attributes: [],
   },
@@ -65,4 +63,5 @@ module.exports = {
   RPClient,
   getDefaultConfig,
   mockedDate,
+  mockedDateWithout1Millisecond,
 };

@@ -15,6 +15,7 @@
  */
 
 const EventEmitter = require('events');
+const helpers = require('@reportportal/client-javascript/lib/helpers');
 const { getDefaultConfig, RPClient, mockedDate } = require('./mocks');
 const ReportportalAgent = require('./../lib/mochaReporter');
 
@@ -35,6 +36,10 @@ describe('logs reporting', function () {
       type: 'image/png',
       content: Buffer.from([1, 2, 3, 4, 5, 6, 7]).toString('base64'),
     };
+  });
+
+  beforeEach(() => {
+    jest.spyOn(helpers, 'now').mockReturnValue(mockedDate);
   });
 
   afterEach(function () {

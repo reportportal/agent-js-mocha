@@ -15,7 +15,13 @@
  */
 
 const EventEmitter = require('events');
-const { getDefaultConfig, RPClient, mockedDate } = require('./mocks');
+const helpers = require('@reportportal/client-javascript/lib/helpers');
+const {
+  getDefaultConfig,
+  RPClient,
+  mockedDate,
+  mockedDateWithout1Millisecond,
+} = require('./mocks');
 const ReportportalAgent = require('./../lib/mochaReporter');
 
 const createReporter = (customReporterOptions = {}) => {
@@ -48,6 +54,10 @@ describe('reporting hooks', function () {
       });
     });
 
+    beforeEach(() => {
+      jest.spyOn(helpers, 'now').mockReturnValue(mockedDate);
+    });
+
     afterEach(function () {
       reporter.hookIds.clear();
       reporter.currentTest = null;
@@ -56,7 +66,7 @@ describe('reporting hooks', function () {
     describe('onHookStart', function () {
       beforeEach(function () {
         reporter.currentTest = {
-          startTime: mockedDate + 1,
+          startTime: mockedDate,
         };
       });
       it('should start before each hook', function () {
@@ -67,7 +77,7 @@ describe('reporting hooks', function () {
         };
         const expectedHookStartObj = {
           name: 'before each hook with title',
-          startTime: mockedDate,
+          startTime: mockedDateWithout1Millisecond,
           type: 'BEFORE_METHOD',
         };
 
@@ -88,7 +98,7 @@ describe('reporting hooks', function () {
         };
         const expectedHookStartObj = {
           name: 'before all hook with title',
-          startTime: mockedDate - 1,
+          startTime: mockedDateWithout1Millisecond,
           type: 'BEFORE_SUITE',
         };
 
