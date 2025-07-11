@@ -29,47 +29,47 @@ describe('test case id reporting', function () {
   });
 
   afterEach(function () {
-    reporter.currentTest = null;
-    reporter.testCaseIds.clear();
+    reporter.activeTests.clear();
+    reporter.testsInfo.clear();
     jest.clearAllMocks();
   });
 
-  it('onSetTestCaseId: should set test case id for current test in the testCaseIds map', function () {
+  it('onSetTestCaseId: should set test case id for current test in the testsInfo map', function () {
     const currentTest = {
       title: 'test',
       tempId: 'testItemId',
     };
-    reporter.currentTest = currentTest;
+    reporter.activeTests.set(currentTest, currentTest);
     const testCaseId = 'test_case_id';
-    const expectedDescriptionsMap = new Map([['testItemId', testCaseId]]);
+    const expectedTestsInfoMap = new Map([['testItemId', { testCaseId }]]);
 
     reporter.onSetTestCaseId({ testCaseId });
 
-    expect(reporter.testCaseIds).toEqual(expectedDescriptionsMap);
+    expect(reporter.testsInfo).toEqual(expectedTestsInfoMap);
   });
 
-  it('onSetTestCaseId: should overwrite test case id for current test in the testCaseIds map', function () {
+  it('onSetTestCaseId: should overwrite test case id for current test in the testsInfo map', function () {
     const currentTest = {
       title: 'test',
       tempId: 'testItemId',
     };
-    reporter.currentTest = currentTest;
-    reporter.testCaseIds.set('testItemId', 'old_test_case_id');
+    reporter.activeTests.set(currentTest, currentTest);
+    reporter.testsInfo.set('testItemId', { testCaseId: 'old_test_case_id' });
     const newTestCaseId = 'new_test_case_id';
 
-    const expectedDescriptionsMap = new Map([['testItemId', newTestCaseId]]);
+    const expectedTestsInfoMap = new Map([['testItemId', { testCaseId: newTestCaseId }]]);
 
     reporter.onSetTestCaseId({ testCaseId: newTestCaseId });
 
-    expect(reporter.testCaseIds).toEqual(expectedDescriptionsMap);
+    expect(reporter.testsInfo).toEqual(expectedTestsInfoMap);
   });
 
-  it('onSetTestCaseId: should set test case id for current suite in testCaseIds map', function () {
+  it('onSetTestCaseId: should set test case id for current suite in testsInfo map', function () {
     const testCaseId = 'suite_test_case_id';
-    const expectedDescriptionsMap = new Map([['tempSuiteId', testCaseId]]);
+    const expectedTestsInfoMap = new Map([['tempSuiteId', { testCaseId }]]);
 
     reporter.onSetTestCaseId({ testCaseId });
 
-    expect(reporter.testCaseIds).toEqual(expectedDescriptionsMap);
+    expect(reporter.testsInfo).toEqual(expectedTestsInfoMap);
   });
 });

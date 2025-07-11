@@ -47,10 +47,9 @@ describe('test items reporting', function () {
 
   describe('finishTest', function () {
     afterEach(function () {
-      reporter.currentTest = null;
+      reporter.activeTests.clear();
       reporter.hookIds.clear();
-      reporter.attributes.clear();
-      reporter.descriptions.clear();
+      reporter.testsInfo.clear();
       jest.clearAllMocks();
     });
     it('should finish test with specified status', function () {
@@ -67,7 +66,7 @@ describe('test items reporting', function () {
         status: 'failed',
         retry: false,
       };
-      reporter.currentTest = currentTest;
+      reporter.activeTests.set(currentTest, currentTest);
 
       reporter.finishTest(currentTest, testStatuses.FAILED);
 
@@ -88,7 +87,7 @@ describe('test items reporting', function () {
         status: 'skipped',
         retry: false,
       };
-      reporter.currentTest = currentTest;
+      reporter.activeTests.set(currentTest, currentTest);
 
       reporter.finishTest(currentTest, testStatuses.SKIPPED);
 
@@ -114,7 +113,7 @@ describe('test items reporting', function () {
           issueType: 'NOT_ISSUE',
         },
       };
-      reporter.currentTest = currentTest;
+      reporter.activeTests.set(currentTest, currentTest);
 
       reporter.finishTest(currentTest, testStatuses.SKIPPED);
 
@@ -127,7 +126,9 @@ describe('test items reporting', function () {
       const currentTest = {
         tempId: 'testItemId',
       };
-      reporter.attributes.set('testItemId', [{ key: 'key1', value: 'value1' }]);
+      reporter.testsInfo.set('testItemId', {
+        attributes: [{ key: 'key1', value: 'value1' }],
+      });
 
       const expectedTestFinishObj = {
         endTime: mockedDate,
@@ -135,7 +136,7 @@ describe('test items reporting', function () {
         status: 'passed',
         attributes: [{ key: 'key1', value: 'value1' }],
       };
-      reporter.currentTest = currentTest;
+      reporter.activeTests.set(currentTest, currentTest);
 
       reporter.finishTest(currentTest, testStatuses.PASSED);
 
@@ -147,7 +148,9 @@ describe('test items reporting', function () {
       const currentTest = {
         tempId: 'testItemId',
       };
-      reporter.descriptions.set('testItemId', 'test description');
+      reporter.testsInfo.set('testItemId', {
+        description: 'test description',
+      });
 
       const expectedTestFinishObj = {
         endTime: mockedDate,
@@ -155,7 +158,7 @@ describe('test items reporting', function () {
         status: 'passed',
         description: 'test description',
       };
-      reporter.currentTest = currentTest;
+      reporter.activeTests.set(currentTest, currentTest);
 
       reporter.finishTest(currentTest, testStatuses.PASSED);
 
@@ -171,7 +174,9 @@ describe('test items reporting', function () {
         },
       };
       const description = 'test description';
-      reporter.descriptions.set('testItemId', description);
+      reporter.testsInfo.set('testItemId', {
+        description: description,
+      });
 
       const descriptionWithError = description.concat(
         `\n\`\`\`error\n${currentTest.err.stack}\n\`\`\``,
@@ -182,7 +187,7 @@ describe('test items reporting', function () {
         status: 'failed',
         description: descriptionWithError,
       };
-      reporter.currentTest = currentTest;
+      reporter.activeTests.set(currentTest, currentTest);
 
       reporter.finishTest(currentTest, testStatuses.FAILED);
 
@@ -194,7 +199,9 @@ describe('test items reporting', function () {
       const currentTest = {
         tempId: 'testItemId',
       };
-      reporter.testCaseIds.set('testItemId', 'test_case_Id');
+      reporter.testsInfo.set('testItemId', {
+        testCaseId: 'test_case_Id',
+      });
 
       const expectedTestFinishObj = {
         endTime: mockedDate,
@@ -202,7 +209,7 @@ describe('test items reporting', function () {
         status: 'passed',
         testCaseId: 'test_case_Id',
       };
-      reporter.currentTest = currentTest;
+      reporter.activeTests.set(currentTest, currentTest);
 
       reporter.finishTest(currentTest, testStatuses.PASSED);
 
@@ -221,7 +228,7 @@ describe('test items reporting', function () {
         retry: false,
         status: 'info',
       };
-      reporter.currentTest = currentTest;
+      reporter.activeTests.set(currentTest, currentTest);
       reporter.setStatus({ status: 'info' });
 
       reporter.finishTest(currentTest, testStatuses.PASSED);
@@ -236,7 +243,7 @@ describe('test items reporting', function () {
     });
 
     afterEach(function () {
-      reporter.currentTest = null;
+      reporter.activeTests.clear();
       reporter.hookIds.clear();
       jest.clearAllMocks();
     });
@@ -370,7 +377,7 @@ describe('test items reporting', function () {
           status: 'passed',
           retry: false,
         };
-        reporter.currentTest = currentTest;
+        reporter.activeTests.set(currentTest, currentTest);
 
         reporter.onTestFinish(currentTest);
 
@@ -390,7 +397,7 @@ describe('test items reporting', function () {
           status: 'failed',
           retry: false,
         };
-        reporter.currentTest = currentTest;
+        reporter.activeTests.set(currentTest, currentTest);
 
         reporter.onTestFinish(currentTest);
 
@@ -411,7 +418,7 @@ describe('test items reporting', function () {
           status: 'failed',
           retry: true,
         };
-        reporter.currentTest = currentTest;
+        reporter.activeTests.set(currentTest, currentTest);
 
         reporter.onTestFinish(currentTest);
 
@@ -432,7 +439,7 @@ describe('test items reporting', function () {
           level: 'ERROR',
           message: 'error message',
         };
-        reporter.currentTest = currentTest;
+        reporter.activeTests.set(currentTest, currentTest);
 
         reporter.onTestFail(currentTest, 'error message');
 
@@ -447,7 +454,7 @@ describe('test items reporting', function () {
           state: 'pending',
           tempId: 'testItemId',
         };
-        reporter.currentTest = currentTest;
+        reporter.activeTests.set(currentTest, currentTest);
         const hook = {
           title: '"before each" hook: named hook',
           parent: suite,

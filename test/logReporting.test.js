@@ -43,8 +43,9 @@ describe('logs reporting', function () {
   });
 
   afterEach(function () {
-    reporter.currentTest = null;
+    reporter.activeTests.clear();
     reporter.hookIds.clear();
+    reporter.testsInfo.clear();
     jest.clearAllMocks();
   });
 
@@ -66,7 +67,7 @@ describe('logs reporting', function () {
         level: 'ERROR',
         message: 'info log',
       };
-      reporter.currentTest = currentTest;
+      reporter.activeTests.set(currentTest, currentTest);
 
       reporter.sendTestItemLog({ log });
 

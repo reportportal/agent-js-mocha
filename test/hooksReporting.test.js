@@ -60,14 +60,16 @@ describe('reporting hooks', function () {
 
     afterEach(function () {
       reporter.hookIds.clear();
-      reporter.currentTest = null;
+      reporter.activeTests.clear();
+      reporter.testsInfo.clear();
       jest.clearAllMocks();
     });
     describe('onHookStart', function () {
       beforeEach(function () {
-        reporter.currentTest = {
+        const testInfo = {
           startTime: mockedDate,
         };
+        reporter.activeTests.set({}, testInfo);
       });
       it('should start before each hook', function () {
         const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
@@ -184,7 +186,7 @@ describe('reporting hooks', function () {
           state: 'pending',
           tempId: 'tempTestId',
         };
-        reporter.currentTest = currentTest;
+        reporter.activeTests.set(currentTest, currentTest);
         const hook = {
           title: '"before each" hook: named hook',
           parent: suiteFirstLevel,
@@ -223,7 +225,8 @@ describe('reporting hooks', function () {
 
     afterEach(function () {
       reporter.hookIds.clear();
-      reporter.currentTest = null;
+      reporter.activeTests.clear();
+      reporter.testsInfo.clear();
       jest.clearAllMocks();
     });
 
