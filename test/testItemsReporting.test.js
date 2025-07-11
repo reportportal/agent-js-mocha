@@ -175,7 +175,7 @@ describe('test items reporting', function () {
       };
       const description = 'test description';
       reporter.testsInfo.set('testItemId', {
-        description: description,
+        description,
       });
 
       const descriptionWithError = description.concat(
