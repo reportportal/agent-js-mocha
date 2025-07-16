@@ -14,7 +14,9 @@
  *  limitations under the License.
  */
 
+const EventEmitter = require('events');
 const ReportportalAgent = require('./../lib/mochaReporter');
+const { getDefaultConfig } = require('./mocks');
 
 describe('promiseErrorHandler', function () {
   let consoleSpy;
@@ -29,17 +31,10 @@ describe('promiseErrorHandler', function () {
 
   it('should handle promise rejection with error message', async () => {
     const error = new Error('Test error');
-    
-    // Since promiseErrorHandler is not exported, we'll test it indirectly
-    // by creating a reporter and triggering a promise rejection
-    const EventEmitter = require('events');
-    const { getDefaultConfig } = require('./mocks');
-    
+    // Mock the RPClient to return a rejected promise
     const options = getDefaultConfig();
     const runner = new EventEmitter();
     const reporter = new ReportportalAgent(runner, options);
-    
-    // Mock the RPClient to return a rejected promise
     const mockPromise = Promise.reject(error);
     reporter.rpClient.sendLog = jest.fn().mockReturnValue({
       promise: mockPromise,
@@ -49,8 +44,10 @@ describe('promiseErrorHandler', function () {
     reporter.sendLog('testId', { level: 'ERROR', message: 'test' });
 
     // Wait for the promise to be rejected and handled
-    await new Promise(resolve => setTimeout(resolve, 10));
+    await new Promise((resolve) => {
+      setTimeout(resolve, 10);
+    });
 
     expect(consoleSpy).toHaveBeenCalledWith('Failed to send log.', error);
   });
-}); 
+});
