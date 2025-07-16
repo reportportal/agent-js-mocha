@@ -15,7 +15,7 @@
  */
 
 const mockedDate = '2024-09-20T14:32:35.304456Z';
-const mockedDateWithout1Millisecond = '2024-09-20T14:32:35.304456Z';
+const mockedDateWithout1Millisecond = '2024-09-20T14:32:35.303456Z';
 
 class RPClient {
   constructor(config) {
