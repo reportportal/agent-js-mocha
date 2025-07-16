@@ -235,6 +235,100 @@ describe('test items reporting', function () {
 
       expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
     });
+
+    it('test with error: should finish test with error in description', function () {
+      reporter = createAndPrepareReporter();
+      const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
+      const currentTest = {
+        tempId: 'testItemId',
+        err: {
+          stack: 'Error: test failed\n    at test.js:10:5',
+        },
+      };
+      reporter.testsInfo.set('testItemId', {
+        description: 'test description',
+      });
+
+      const expectedTestFinishObj = {
+        endTime: mockedDate,
+        retry: false,
+        status: 'failed',
+        description: 'test description\n```error\nError: test failed\n    at test.js:10:5\n```',
+      };
+      reporter.activeTests.set(currentTest, currentTest);
+
+      reporter.finishTest(currentTest, testStatuses.FAILED);
+
+      expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
+    });
+
+    it('skippedIssue=false with skipped test: should finish test with NOT_ISSUE', function () {
+      reporter = createAndPrepareReporter({
+        skippedIssue: false,
+      });
+      const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
+      const currentTest = {
+        tempId: 'testItemId',
+      };
+
+      const expectedTestFinishObj = {
+        endTime: mockedDate,
+        retry: false,
+        status: 'skipped',
+        issue: {
+          issueType: 'NOT_ISSUE',
+        },
+      };
+      reporter.activeTests.set(currentTest, currentTest);
+
+      reporter.finishTest(currentTest, testStatuses.SKIPPED);
+
+      expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
+    });
+
+    it('skippedIssue=false with passed test: should finish test without NOT_ISSUE', function () {
+      reporter = createAndPrepareReporter({
+        skippedIssue: false,
+      });
+      const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
+      const currentTest = {
+        tempId: 'testItemId',
+      };
+
+      const expectedTestFinishObj = {
+        endTime: mockedDate,
+        retry: false,
+        status: 'passed',
+      };
+      reporter.activeTests.set(currentTest, currentTest);
+
+      reporter.finishTest(currentTest, testStatuses.PASSED);
+
+      expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
+    });
+
+    it('test with error and no description: should finish test with error description', function () {
+      reporter = createAndPrepareReporter();
+      const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
+      const currentTest = {
+        tempId: 'testItemId',
+        err: {
+          stack: 'Error: test failed\n    at test.js:10:5',
+        },
+      };
+
+      const expectedTestFinishObj = {
+        endTime: mockedDate,
+        retry: false,
+        status: 'failed',
+        description: '\n```error\nError: test failed\n    at test.js:10:5\n```',
+      };
+      reporter.activeTests.set(currentTest, currentTest);
+
+      reporter.finishTest(currentTest, testStatuses.FAILED);
+
+      expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
+    });
   });
 
   describe('test event listeners', function () {
@@ -477,6 +571,95 @@ describe('test items reporting', function () {
         expect(spyFinishTestItem).toHaveBeenCalledTimes(1);
         expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
       });
+    });
+  });
+
+  describe('getTestItemId', function () {
+    it('should return tempId when testInfo exists', function () {
+      reporter = createAndPrepareReporter();
+      const test = { title: 'test' };
+      const testInfo = { tempId: 'testTempId' };
+      reporter.activeTests.set(test, testInfo);
+
+      const result = reporter.getTestItemId(test);
+
+      expect(result).toBe('testTempId');
+    });
+
+    it('should return current suite ID when testInfo does not exist', function () {
+      reporter = createAndPrepareReporter();
+      reporter.suitesStackTempId = ['tempSuiteId'];
+      const test = { title: 'test' };
+
+      const result = reporter.getTestItemId(test);
+
+      expect(result).toBe('tempSuiteId');
+    });
+  });
+
+  describe('onAddAttributes', function () {
+    it('should add attributes to existing testInfo.attributes', function () {
+      reporter = createAndPrepareReporter();
+      const currentTest = {
+        title: 'test',
+        tempId: 'testItemId',
+      };
+      reporter.activeTests.set(currentTest, currentTest);
+      reporter.testsInfo.set('testItemId', {
+        attributes: [{ key: 'existing', value: 'value' }],
+      });
+      const newAttributes = [{ key: 'new', value: 'value' }];
+
+      reporter.onAddAttributes({ attributes: newAttributes });
+
+      expect(reporter.testsInfo.get('testItemId').attributes).toEqual([
+        { key: 'existing', value: 'value' },
+        { key: 'new', value: 'value' },
+      ]);
+    });
+
+    it('should initialize attributes array when testInfo.attributes is null', function () {
+      reporter = createAndPrepareReporter();
+      const currentTest = {
+        title: 'test',
+        tempId: 'testItemId',
+      };
+      reporter.activeTests.set(currentTest, currentTest);
+      reporter.testsInfo.set('testItemId', {
+        description: 'test description',
+        // attributes is not set, so it will be undefined
+      });
+      const newAttributes = [{ key: 'new', value: 'value' }];
+
+      reporter.onAddAttributes({ attributes: newAttributes });
+
+      expect(reporter.testsInfo.get('testItemId').attributes).toEqual([
+        { key: 'new', value: 'value' },
+      ]);
+    });
+
+    it('should return attributes map via getter', function () {
+      reporter = createAndPrepareReporter();
+      reporter.testsInfo.set('testItemId1', {
+        attributes: [{ key: 'attr1', value: 'value1' }],
+      });
+      reporter.testsInfo.set('testItemId2', {
+        attributes: [{ key: 'attr2', value: 'value2' }],
+      });
+      reporter.testsInfo.set('testItemId3', {
+        description: 'no attributes',
+      });
+
+      const attributesMap = reporter.attributes;
+
+      expect(attributesMap).toBeInstanceOf(Map);
+      expect(attributesMap.get('testItemId1')).toEqual({
+        attributes: [{ key: 'attr1', value: 'value1' }],
+      });
+      expect(attributesMap.get('testItemId2')).toEqual({
+        attributes: [{ key: 'attr2', value: 'value2' }],
+      });
+      expect(attributesMap.has('testItemId3')).toBe(false);
     });
   });
 });
