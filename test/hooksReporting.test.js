@@ -15,7 +15,13 @@
  */
 
 const EventEmitter = require('events');
-const { getDefaultConfig, RPClient, mockedDate } = require('./mocks');
+const helpers = require('@reportportal/client-javascript/lib/helpers');
+const {
+  getDefaultConfig,
+  RPClient,
+  mockedDate,
+  mockedDateWithout1Millisecond,
+} = require('./mocks');
 const ReportportalAgent = require('./../lib/mochaReporter');
 
 const createReporter = (customReporterOptions = {}) => {
@@ -48,16 +54,22 @@ describe('reporting hooks', function () {
       });
     });
 
+    beforeEach(() => {
+      jest.spyOn(helpers, 'now').mockReturnValue(mockedDate);
+    });
+
     afterEach(function () {
       reporter.hookIds.clear();
-      reporter.currentTest = null;
+      reporter.activeTests.clear();
+      reporter.testsInfo.clear();
       jest.clearAllMocks();
     });
     describe('onHookStart', function () {
       beforeEach(function () {
-        reporter.currentTest = {
-          startTime: mockedDate + 1,
+        const testInfo = {
+          startTime: mockedDate,
         };
+        reporter.activeTests.set({}, testInfo);
       });
       it('should start before each hook', function () {
         const spyStartTestItem = jest.spyOn(reporter.rpClient, 'startTestItem');
@@ -67,7 +79,7 @@ describe('reporting hooks', function () {
         };
         const expectedHookStartObj = {
           name: 'before each hook with title',
-          startTime: mockedDate,
+          startTime: mockedDateWithout1Millisecond,
           type: 'BEFORE_METHOD',
         };
 
@@ -88,7 +100,7 @@ describe('reporting hooks', function () {
         };
         const expectedHookStartObj = {
           name: 'before all hook with title',
-          startTime: mockedDate - 1,
+          startTime: mockedDateWithout1Millisecond,
           type: 'BEFORE_SUITE',
         };
 
@@ -174,7 +186,7 @@ describe('reporting hooks', function () {
           state: 'pending',
           tempId: 'tempTestId',
         };
-        reporter.currentTest = currentTest;
+        reporter.activeTests.set(currentTest, currentTest);
         const hook = {
           title: '"before each" hook: named hook',
           parent: suiteFirstLevel,
@@ -213,7 +225,8 @@ describe('reporting hooks', function () {
 
     afterEach(function () {
       reporter.hookIds.clear();
-      reporter.currentTest = null;
+      reporter.activeTests.clear();
+      reporter.testsInfo.clear();
       jest.clearAllMocks();
     });
 

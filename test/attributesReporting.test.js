@@ -29,109 +29,32 @@ describe('attributes reporting', function () {
   });
 
   afterEach(function () {
-    reporter.currentTest = null;
-    reporter.attributes.clear();
+    reporter.activeTests.clear();
+    reporter.testsInfo.clear();
     jest.clearAllMocks();
   });
 
-  it('onAddAttributes: should add attributes for current test in attributes map', function () {
+  it('onAddAttributes: should add attributes for current test in the testsInfo map', function () {
     const currentTest = {
       title: 'test',
       tempId: 'testItemId',
     };
-    reporter.currentTest = currentTest;
-    const attributes = [
-      {
-        key: 'key1',
-        value: 'value1',
-      },
-    ];
-    const expectedAttributes = new Map([['testItemId', attributes]]);
+    reporter.activeTests.set(currentTest, currentTest);
+    const attributes = [{ key: 'key1', value: 'value1' }];
+    const expectedTestsInfoMap = new Map([['testItemId', { attributes }]]);
 
     reporter.onAddAttributes({ attributes });
 
-    expect(reporter.attributes).toEqual(expectedAttributes);
+    expect(reporter.testsInfo).toEqual(expectedTestsInfoMap);
   });
 
-  it('onAddAttributes: should append attributes for current test in attributes map', function () {
-    const currentTest = {
-      title: 'test',
-      tempId: 'testItemId',
-    };
-    reporter.currentTest = currentTest;
-    reporter.attributes.set('testItemId', [
-      {
-        key: 'key1',
-        value: 'value1',
-      },
-    ]);
-    const attributes = [
-      {
-        key: 'key2',
-        value: 'value2',
-      },
-      {
-        key: 'key3',
-        value: 'value3',
-      },
-    ];
-
-    const expectedAttributesMap = new Map([
-      [
-        'testItemId',
-        [
-          {
-            key: 'key1',
-            value: 'value1',
-          },
-          {
-            key: 'key2',
-            value: 'value2',
-          },
-          {
-            key: 'key3',
-            value: 'value3',
-          },
-        ],
-      ],
-    ]);
+  it('onAddAttributes: should add attributes for current suite in testsInfo map', function () {
+    const attributes = [{ key: 'key1', value: 'value1' }];
+    const expectedTestsInfoMap = new Map([['tempSuiteId', { attributes }]]);
 
     reporter.onAddAttributes({ attributes });
 
-    expect(reporter.attributes).toEqual(expectedAttributesMap);
-  });
-
-  it('onAddAttributes: should add attributes for current suite in attributes map', function () {
-    const attributes = [
-      {
-        key: 'key1',
-        value: 'value1',
-      },
-      {
-        key: 'key2',
-        value: 'value2',
-      },
-    ];
-
-    const expectedAttributesMap = new Map([
-      [
-        'tempSuiteId',
-        [
-          {
-            key: 'key1',
-            value: 'value1',
-          },
-          {
-            key: 'key2',
-            value: 'value2',
-          },
-        ],
-      ],
-    ]);
-
-    reporter.onAddAttributes({ attributes });
-
-    expect(reporter.attributes).toEqual(expectedAttributesMap);
+    expect(reporter.testsInfo).toEqual(expectedTestsInfoMap);
   });
 
   it('onAddAttributes without attributes: should not add attributes for current suite in attributes map', function () {

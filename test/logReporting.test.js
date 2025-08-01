@@ -15,6 +15,7 @@
  */
 
 const EventEmitter = require('events');
+const helpers = require('@reportportal/client-javascript/lib/helpers');
 const { getDefaultConfig, RPClient, mockedDate } = require('./mocks');
 const ReportportalAgent = require('./../lib/mochaReporter');
 
@@ -37,9 +38,14 @@ describe('logs reporting', function () {
     };
   });
 
+  beforeEach(() => {
+    jest.spyOn(helpers, 'now').mockReturnValue(mockedDate);
+  });
+
   afterEach(function () {
-    reporter.currentTest = null;
+    reporter.activeTests.clear();
     reporter.hookIds.clear();
+    reporter.testsInfo.clear();
     jest.clearAllMocks();
   });
 
@@ -61,7 +67,7 @@ describe('logs reporting', function () {
         level: 'ERROR',
         message: 'info log',
       };
-      reporter.currentTest = currentTest;
+      reporter.activeTests.set(currentTest, currentTest);
 
       reporter.sendTestItemLog({ log });
 
