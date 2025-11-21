@@ -1,5 +1,5 @@
 ### Added
-- Clarified custom log level support in README for `PublicReportingAPI.log()` (see [Logs and attachments](README.md#logs-and-attachments)).
+- Added details about custom log level support in README for `PublicReportingAPI.log()` (see [Logs and attachments](README.md#logs-and-attachments)).
 
 ### Changed
 - **Breaking change** Drop support of Node.js 12. The version [5.1.0](https://github.com/reportportal/agent-js-mocha/releases/tag/v5.1.0) is the latest that supports it.
