@@ -98,7 +98,7 @@ const PublicReportingAPI = require('@reportportal/agent-js-mocha/lib/publicRepor
 `PublicReportingAPI` provides the following methods for reporting logs into the current test/step.
 
 * log(*level*, *message* , *file*). Reports *message* and optional *file* with specified log *level* as a log of the current test. If called outside of the test, reports message as a log of the current suite.<br/>
-*level* shoud be equal to one the following values: *TRACE*, *DEBUG*, *INFO*, *WARN*, *ERROR*, *FATAL*.<br/>
+*level* can be one of the predefined values (*TRACE*, *DEBUG*, *INFO*, *WARN*, *ERROR*, *FATAL*) or any custom string.<br/>
 *file* should be an object: <br/>
 ```javascript
 {
