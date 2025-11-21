@@ -1,4 +1,4 @@
-### Changed
+### Added
 - Clarified custom log level support in README for `PublicReportingAPI.log()` (see [Logs and attachments](README.md#logs-and-attachments)).
 
 ### Changed
