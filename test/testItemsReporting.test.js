@@ -718,7 +718,11 @@ describe('test items reporting', function () {
       const hookParent = {};
       reporter.suitesInfo.set(hookParent, { startTime: '2020-05-22T15:29:00.000Z' });
 
-      const result = reporter.getHookStartTime({ parent: hookParent }, entityType.BEFORE_SUITE, parent);
+      const result = reporter.getHookStartTime(
+        { parent: hookParent },
+        entityType.BEFORE_SUITE,
+        parent,
+      );
 
       expect(result).toBe('2020-05-22T15:30:00.000Z');
       expect(utils.getBeforeHookStartTime).toHaveBeenCalledWith('2020-05-22T15:29:00.000Z');
