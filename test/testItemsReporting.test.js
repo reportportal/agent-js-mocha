@@ -690,4 +690,38 @@ describe('test items reporting', function () {
       expect(attributesMap.has('testItemId3')).toBe(false);
     });
   });
+
+  describe('getHookStartTime', function () {
+    const utils = require('./../lib/utils');
+    const { entityType } = require('./../lib/constants/itemTypes');
+
+    beforeEach(() => {
+      utils.getBeforeHookStartTime.mockReset();
+      reporter = createAndPrepareReporter();
+    });
+
+    it('returns hookTime for BEFORE_METHOD when parent start time missing', function () {
+      utils.getBeforeHookStartTime.mockReturnValue('beforeHookTime');
+      const test = { startTime: mockedDate };
+      reporter.activeTests.set(test, { startTime: mockedDate });
+
+      const result = reporter.getHookStartTime({ parent: {} }, entityType.BEFORE_METHOD, {});
+
+      expect(result).toBe('beforeHookTime');
+      expect(utils.getBeforeHookStartTime).toHaveBeenCalledWith(mockedDate);
+    });
+
+    it('returns earlier parent start for BEFORE_SUITE comparison branch', function () {
+      utils.getBeforeHookStartTime.mockReturnValue('2020-05-22T15:31:00.000Z');
+      const parent = {};
+      reporter.suitesInfo.set(parent, { startTime: '2020-05-22T15:30:00.000Z' });
+      const hookParent = {};
+      reporter.suitesInfo.set(hookParent, { startTime: '2020-05-22T15:29:00.000Z' });
+
+      const result = reporter.getHookStartTime({ parent: hookParent }, entityType.BEFORE_SUITE, parent);
+
+      expect(result).toBe('2020-05-22T15:30:00.000Z');
+      expect(utils.getBeforeHookStartTime).toHaveBeenCalledWith('2020-05-22T15:29:00.000Z');
+    });
+  });
 });
