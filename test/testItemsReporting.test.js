@@ -193,6 +193,34 @@ describe('test items reporting', function () {
 
       expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
     });
+    it('extendTestDescriptionWithLastError=false: should not append last error', function () {
+      reporter = createAndPrepareReporter({
+        extendTestDescriptionWithLastError: false,
+      });
+      const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
+      const currentTest = {
+        tempId: 'testItemId',
+        err: {
+          stack: 'some error',
+        },
+      };
+      const description = 'test description';
+      reporter.testsInfo.set('testItemId', {
+        description,
+      });
+
+      const expectedTestFinishObj = {
+        endTime: mockedDate,
+        retry: false,
+        status: 'failed',
+        description,
+      };
+      reporter.activeTests.set(currentTest, currentTest);
+
+      reporter.finishTest(currentTest, testStatuses.FAILED);
+
+      expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
+    });
     it('testCaseId exists for the test: should finish test with testCaseId', function () {
       reporter = createAndPrepareReporter();
       const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');

@@ -56,6 +56,7 @@ const getDefaultConfig = () => ({
     launch: 'LaunchName',
     description: 'Launch description',
     attributes: [],
+    extendTestDescriptionWithLastError: true,
   },
 });
 
