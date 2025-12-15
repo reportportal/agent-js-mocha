@@ -19,6 +19,8 @@ const helpers = require('@reportportal/client-javascript/lib/helpers');
 const { getDefaultConfig, RPClient, mockedDate } = require('./mocks');
 const ReportportalAgent = require('./../lib/mochaReporter');
 const testStatuses = require('./../lib/constants/testStatuses');
+const utils = require('./../lib/utils');
+const { entityType } = require('./../lib/constants/itemTypes');
 
 jest.mock('./../lib/utils');
 
@@ -186,6 +188,34 @@ describe('test items reporting', function () {
         retry: false,
         status: 'failed',
         description: descriptionWithError,
+      };
+      reporter.activeTests.set(currentTest, currentTest);
+
+      reporter.finishTest(currentTest, testStatuses.FAILED);
+
+      expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
+    });
+    it('extendTestDescriptionWithLastError=false: should not append last error', function () {
+      reporter = createAndPrepareReporter({
+        extendTestDescriptionWithLastError: false,
+      });
+      const spyFinishTestItem = jest.spyOn(reporter.rpClient, 'finishTestItem');
+      const currentTest = {
+        tempId: 'testItemId',
+        err: {
+          stack: 'some error',
+        },
+      };
+      const description = 'test description';
+      reporter.testsInfo.set('testItemId', {
+        description,
+      });
+
+      const expectedTestFinishObj = {
+        endTime: mockedDate,
+        retry: false,
+        status: 'failed',
+        description,
       };
       reporter.activeTests.set(currentTest, currentTest);
 
@@ -660,6 +690,41 @@ describe('test items reporting', function () {
         attributes: [{ key: 'attr2', value: 'value2' }],
       });
       expect(attributesMap.has('testItemId3')).toBe(false);
+    });
+  });
+
+  describe('getHookStartTime', function () {
+    beforeEach(() => {
+      utils.getBeforeHookStartTime.mockReset();
+      reporter = createAndPrepareReporter();
+    });
+
+    it('returns hookTime for BEFORE_METHOD when parent start time missing', function () {
+      utils.getBeforeHookStartTime.mockReturnValue('beforeHookTime');
+      const test = { startTime: mockedDate };
+      reporter.activeTests.set(test, { startTime: mockedDate });
+
+      const result = reporter.getHookStartTime({ parent: {} }, entityType.BEFORE_METHOD, {});
+
+      expect(result).toBe('beforeHookTime');
+      expect(utils.getBeforeHookStartTime).toHaveBeenCalledWith(mockedDate);
+    });
+
+    it('returns earlier parent start for BEFORE_SUITE comparison branch', function () {
+      utils.getBeforeHookStartTime.mockReturnValue('2020-05-22T15:31:00.000Z');
+      const parent = {};
+      reporter.suitesInfo.set(parent, { startTime: '2020-05-22T15:30:00.000Z' });
+      const hookParent = {};
+      reporter.suitesInfo.set(hookParent, { startTime: '2020-05-22T15:29:00.000Z' });
+
+      const result = reporter.getHookStartTime(
+        { parent: hookParent },
+        entityType.BEFORE_SUITE,
+        parent,
+      );
+
+      expect(result).toBe('2020-05-22T15:30:00.000Z');
+      expect(utils.getBeforeHookStartTime).toHaveBeenCalledWith('2020-05-22T15:29:00.000Z');
     });
   });
 });
