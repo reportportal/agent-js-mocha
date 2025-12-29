@@ -192,7 +192,7 @@ describe('launch reporting', function () {
       expect(systemAttributes).toEqual(expectedSystemAttributes);
     });
 
-    it('skippedIssue = false. Should return 2 attribute: with agent name/version and skippedIssue', function () {
+    it('skippedIssue = false. Should return attribute with agent name/version (skippedIssue handling delegated to client)', function () {
       const options = getDefaultConfig();
       options.reporterOptions.skippedIssue = false;
       const runner = new EventEmitter();
@@ -202,11 +202,6 @@ describe('launch reporting', function () {
         {
           key: 'agent',
           value: 'agentName|agentVersion',
-          system: true,
-        },
-        {
-          key: 'skippedIssue',
-          value: 'false',
           system: true,
         },
       ];
