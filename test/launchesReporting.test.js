@@ -154,23 +154,21 @@ describe('launch reporting', function () {
     });
   });
 
-  describe('getSystemAttributes', function () {
+  describe('getSystemAttribute', function () {
     it('skippedIssue undefined. Should return attribute with agent name and version', function () {
       const options = getDefaultConfig();
       const runner = new EventEmitter();
       const reporter = new ReportportalAgent(runner, options);
       reporter.rpClient = new RPClient(options.reporterOptions);
-      const expectedSystemAttributes = [
-        {
-          key: 'agent',
-          value: 'agentName|agentVersion',
-          system: true,
-        },
-      ];
+      const expectedSystemAttribute = {
+        key: 'agent',
+        value: 'agentName|agentVersion',
+        system: true,
+      };
 
-      const systemAttributes = reporter.getSystemAttributes();
+      const systemAttribute = ReportportalAgent.getSystemAttribute();
 
-      expect(systemAttributes).toEqual(expectedSystemAttributes);
+      expect(systemAttribute).toEqual(expectedSystemAttribute);
     });
 
     it('skippedIssue = true. Should return attribute with agent name and version', function () {
@@ -179,17 +177,15 @@ describe('launch reporting', function () {
       const runner = new EventEmitter();
       const reporter = new ReportportalAgent(runner, options);
       reporter.rpClient = new RPClient(options.reporterOptions);
-      const expectedSystemAttributes = [
-        {
-          key: 'agent',
-          value: 'agentName|agentVersion',
-          system: true,
-        },
-      ];
+      const expectedSystemAttribute = {
+        key: 'agent',
+        value: 'agentName|agentVersion',
+        system: true,
+      };
 
-      const systemAttributes = reporter.getSystemAttributes();
+      const systemAttribute = ReportportalAgent.getSystemAttribute();
 
-      expect(systemAttributes).toEqual(expectedSystemAttributes);
+      expect(systemAttribute).toEqual(expectedSystemAttribute);
     });
 
     it('skippedIssue = false. Should return attribute with agent name/version (skippedIssue handling delegated to client)', function () {
@@ -198,17 +194,15 @@ describe('launch reporting', function () {
       const runner = new EventEmitter();
       const reporter = new ReportportalAgent(runner, options);
       reporter.rpClient = new RPClient(options.reporterOptions);
-      const expectedSystemAttributes = [
-        {
-          key: 'agent',
-          value: 'agentName|agentVersion',
-          system: true,
-        },
-      ];
+      const expectedSystemAttribute = {
+        key: 'agent',
+        value: 'agentName|agentVersion',
+        system: true,
+      };
 
-      const systemAttributes = reporter.getSystemAttributes();
+      const systemAttribute = ReportportalAgent.getSystemAttribute();
 
-      expect(systemAttributes).toEqual(expectedSystemAttributes);
+      expect(systemAttribute).toEqual(expectedSystemAttribute);
     });
   });
 });
