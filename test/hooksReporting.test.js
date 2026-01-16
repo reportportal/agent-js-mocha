@@ -16,7 +16,6 @@
 
 const EventEmitter = require('events');
 const helpers = require('@reportportal/client-javascript/lib/helpers');
-const clientHelpers = require('@reportportal/client-javascript/lib/helpers');
 const {
   getDefaultConfig,
   RPClient,
@@ -36,7 +35,6 @@ const createReporter = (customReporterOptions = {}) => {
 
 describe('reporting hooks', function () {
   let reporter;
-  let originalFormatMicrosecondsToISOString;
   const rootSuite = {
     title: '',
     root: true,
@@ -58,16 +56,6 @@ describe('reporting hooks', function () {
 
     beforeEach(() => {
       jest.spyOn(helpers, 'now').mockReturnValue(mockedDate);
-      originalFormatMicrosecondsToISOString = clientHelpers.formatMicrosecondsToISOString;
-      clientHelpers.formatMicrosecondsToISOString = jest.fn((microseconds) => {
-        const milliseconds = Math.floor(microseconds / 1000);
-        const remainingMicroseconds = microseconds % 1000000;
-        const date = new Date(milliseconds);
-        const isoString = date.toISOString();
-        const [datePart] = isoString.split('.');
-        const microsecondsStr = remainingMicroseconds.toString().padStart(6, '0');
-        return `${datePart}.${microsecondsStr}Z`;
-      });
     });
 
     afterEach(function () {
@@ -75,11 +63,6 @@ describe('reporting hooks', function () {
       reporter.activeTests.clear();
       reporter.testsInfo.clear();
       jest.restoreAllMocks();
-      if (originalFormatMicrosecondsToISOString) {
-        clientHelpers.formatMicrosecondsToISOString = originalFormatMicrosecondsToISOString;
-      } else {
-        delete clientHelpers.formatMicrosecondsToISOString;
-      }
     });
     describe('onHookStart', function () {
       beforeEach(function () {

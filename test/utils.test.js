@@ -15,13 +15,11 @@
  */
 
 const path = require('path');
-const clientHelpers = require('@reportportal/client-javascript/lib/helpers');
 const {
   getCodeRef,
   getAgentInfo,
   parseAttributes,
   convertIsoStringToMicroseconds,
-  getBeforeHookStartTime,
 } = require('./../lib/utils');
 
 describe('utils', function () {
@@ -86,37 +84,6 @@ describe('utils', function () {
       const isoString = '1970-01-01T00:00:00.000001Z';
       const expectedMicroseconds = 1;
       expect(convertIsoStringToMicroseconds(isoString)).toBe(expectedMicroseconds);
-    });
-  });
-
-  describe('getBeforeHookStartTime', () => {
-    let originalFormatMicrosecondsToISOString;
-
-    beforeEach(() => {
-      originalFormatMicrosecondsToISOString = clientHelpers.formatMicrosecondsToISOString;
-      clientHelpers.formatMicrosecondsToISOString = jest.fn((microseconds) => {
-        const milliseconds = Math.floor(microseconds / 1000);
-        const remainingMicroseconds = microseconds % 1000000;
-        const date = new Date(milliseconds);
-        const isoString = date.toISOString();
-        const [datePart] = isoString.split('.');
-        const microsecondsStr = remainingMicroseconds.toString().padStart(6, '0');
-        return `${datePart}.${microsecondsStr}Z`;
-      });
-    });
-
-    afterEach(() => {
-      if (originalFormatMicrosecondsToISOString) {
-        clientHelpers.formatMicrosecondsToISOString = originalFormatMicrosecondsToISOString;
-      } else {
-        delete clientHelpers.formatMicrosecondsToISOString;
-      }
-    });
-
-    it('should return the start time for the hook as reduced time from test item start by 1 millisecond', () => {
-      const itemStartTime = '2024-09-20T14:32:35.304456Z';
-      const expectedHookStartTime = '2024-09-20T14:32:35.303456Z';
-      expect(getBeforeHookStartTime(itemStartTime)).toBe(expectedHookStartTime);
     });
   });
 });
