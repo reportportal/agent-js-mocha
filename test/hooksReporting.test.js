@@ -62,7 +62,7 @@ describe('reporting hooks', function () {
       reporter.hookIds.clear();
       reporter.activeTests.clear();
       reporter.testsInfo.clear();
-      jest.clearAllMocks();
+      jest.restoreAllMocks();
     });
     describe('onHookStart', function () {
       beforeEach(function () {
@@ -227,7 +227,7 @@ describe('reporting hooks', function () {
       reporter.hookIds.clear();
       reporter.activeTests.clear();
       reporter.testsInfo.clear();
-      jest.clearAllMocks();
+      jest.restoreAllMocks();
     });
 
     it('onHookStart: should not start hook', function () {

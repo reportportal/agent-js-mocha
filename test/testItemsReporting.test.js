@@ -96,7 +96,7 @@ describe('test items reporting', function () {
       expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
     });
 
-    it('skippedIssue=false: should finish skipped test with issue NOT_ISSUE', function () {
+    it('skippedIssue=false: should finish skipped test (issue handling delegated to client)', function () {
       reporter = createAndPrepareReporter({
         skippedIssue: false,
       });
@@ -111,9 +111,6 @@ describe('test items reporting', function () {
         endTime: mockedDate,
         status: 'skipped',
         retry: false,
-        issue: {
-          issueType: 'NOT_ISSUE',
-        },
       };
       reporter.activeTests.set(currentTest, currentTest);
 
@@ -292,7 +289,7 @@ describe('test items reporting', function () {
       expect(spyFinishTestItem).toHaveBeenCalledWith('testItemId', expectedTestFinishObj);
     });
 
-    it('skippedIssue=false with skipped test: should finish test with NOT_ISSUE', function () {
+    it('skippedIssue=false with skipped test: should finish test (issue handling delegated to client)', function () {
       reporter = createAndPrepareReporter({
         skippedIssue: false,
       });
@@ -305,9 +302,6 @@ describe('test items reporting', function () {
         endTime: mockedDate,
         retry: false,
         status: 'skipped',
-        issue: {
-          issueType: 'NOT_ISSUE',
-        },
       };
       reporter.activeTests.set(currentTest, currentTest);
 

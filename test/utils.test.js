@@ -20,7 +20,6 @@ const {
   getAgentInfo,
   parseAttributes,
   convertIsoStringToMicroseconds,
-  getBeforeHookStartTime,
 } = require('./../lib/utils');
 
 describe('utils', function () {
@@ -85,14 +84,6 @@ describe('utils', function () {
       const isoString = '1970-01-01T00:00:00.000001Z';
       const expectedMicroseconds = 1;
       expect(convertIsoStringToMicroseconds(isoString)).toBe(expectedMicroseconds);
-    });
-  });
-
-  describe('getBeforeHookStartTime', () => {
-    it('should return the start time for the hook as reduced time from test item start by 1 millisecond', () => {
-      const itemStartTime = '2024-09-20T14:32:35.304456Z';
-      const expectedHookStartTime = '2024-09-20T14:32:35.303456Z';
-      expect(getBeforeHookStartTime(itemStartTime)).toBe(expectedHookStartTime);
     });
   });
 });
