@@ -48,6 +48,38 @@ describe('utils', function () {
       expect(Object.keys(agentInfo)).toContain('version');
       expect(Object.keys(agentInfo)).toContain('name');
     });
+
+    it('should contain framework_version property', function () {
+      const agentInfo = getAgentInfo();
+
+      expect(Object.keys(agentInfo)).toContain('framework_version');
+      expect(typeof agentInfo.framework_version).toBe('string');
+    });
+
+    it('should fall back to declared version when mocha package is not found', function () {
+      jest.resetModules();
+      jest.doMock('mocha/package.json', () => {
+        // eslint-disable-next-line no-throw-literal
+        throw { code: 'MODULE_NOT_FOUND' };
+      });
+      // eslint-disable-next-line global-require
+      const { getAgentInfo: getAgentInfoFresh } = require('./../lib/utils');
+      const agentInfo = getAgentInfoFresh();
+
+      expect(Object.keys(agentInfo)).toContain('framework_version');
+      expect(typeof agentInfo.framework_version).toBe('string');
+    });
+
+    it('should use declared version when mocha package.json has no version', function () {
+      jest.resetModules();
+      jest.doMock('mocha/package.json', () => ({ version: '' }), { virtual: true });
+      // eslint-disable-next-line global-require
+      const { getAgentInfo: getAgentInfoFresh } = require('./../lib/utils');
+      const agentInfo = getAgentInfoFresh();
+
+      expect(Object.keys(agentInfo)).toContain('framework_version');
+      expect(typeof agentInfo.framework_version).toBe('string');
+    });
   });
   describe('parseAttributes', function () {
     it('should parse string to array', function () {
