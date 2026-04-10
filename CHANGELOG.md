@@ -1,4 +1,5 @@
 ### Added
+- Google Analytics improvements.
 - Custom log level support in README for `PublicReportingAPI.log()` (see [Logs and attachments](README.md#logs-and-attachments)).
 
 ### Changed
