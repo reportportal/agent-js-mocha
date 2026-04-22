@@ -56,7 +56,7 @@ describe('utils', function () {
       expect(typeof agentInfo.framework_version).toBe('string');
     });
 
-    it('should fall back to declared version when mocha package is not found', function () {
+    it('should fall back to "not_set" when mocha package is not found', function () {
       jest.resetModules();
       jest.doMock('mocha/package.json', () => {
         // eslint-disable-next-line no-throw-literal
@@ -66,19 +66,17 @@ describe('utils', function () {
       const { getAgentInfo: getAgentInfoFresh } = require('./../lib/utils');
       const agentInfo = getAgentInfoFresh();
 
-      expect(Object.keys(agentInfo)).toContain('framework_version');
-      expect(typeof agentInfo.framework_version).toBe('string');
+      expect(agentInfo.framework_version).toBe('not_set');
     });
 
-    it('should use declared version when mocha package.json has no version', function () {
+    it('should fall back to "not_set" when mocha package.json has no version', function () {
       jest.resetModules();
       jest.doMock('mocha/package.json', () => ({ version: '' }), { virtual: true });
       // eslint-disable-next-line global-require
       const { getAgentInfo: getAgentInfoFresh } = require('./../lib/utils');
       const agentInfo = getAgentInfoFresh();
 
-      expect(Object.keys(agentInfo)).toContain('framework_version');
-      expect(typeof agentInfo.framework_version).toBe('string');
+      expect(agentInfo.framework_version).toBe('not_set');
     });
   });
   describe('parseAttributes', function () {
