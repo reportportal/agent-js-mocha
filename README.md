@@ -274,7 +274,3 @@ describe('suite',()=>{
 # Copyright Notice
 
 Licensed under the [Apache License v2.0](LICENSE)
-
-## Code knowledge graph
-
-See [DEV_GUIDE.md](DEV_GUIDE.md#code-knowledge-graph) for details on the local code knowledge graph used by contributor tooling.
