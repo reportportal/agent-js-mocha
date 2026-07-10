@@ -15,7 +15,12 @@
  */
 
 const path = require('path');
-const { getCodeRef, getAgentInfo, parseAttributes } = require('./../lib/utils');
+const {
+  getCodeRef,
+  getAgentInfo,
+  parseAttributes,
+  convertIsoStringToMicroseconds,
+} = require('./../lib/utils');
 
 describe('utils', function () {
   describe('getCodeRef', function () {
@@ -59,7 +64,26 @@ describe('utils', function () {
       { value: 'attributeValue2' },
     ];
     const actualArray = parseAttributes(array);
-    const expectedArray = array;
-    expect(actualArray).toEqual(expectedArray);
+    expect(actualArray).toEqual(array);
+  });
+
+  describe('convertIsoStringToMicroseconds', () => {
+    it('converts ISO string with microseconds correctly', () => {
+      const isoString = '2024-09-20T14:32:35.304456Z';
+      const expectedMicroseconds = 1726842755304456;
+      expect(convertIsoStringToMicroseconds(isoString)).toBe(expectedMicroseconds);
+    });
+
+    it('handles microseconds accurately', () => {
+      const isoString = '2021-03-15T12:00:00.000001Z';
+      const expectedMicroseconds = 1615809600000001;
+      expect(convertIsoStringToMicroseconds(isoString)).toBe(expectedMicroseconds);
+    });
+
+    it('returns correct microseconds at epoch start', () => {
+      const isoString = '1970-01-01T00:00:00.000001Z';
+      const expectedMicroseconds = 1;
+      expect(convertIsoStringToMicroseconds(isoString)).toBe(expectedMicroseconds);
+    });
   });
 });

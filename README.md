@@ -20,7 +20,7 @@ const Mocha = require("mocha");
 const mochaMain = new Mocha({
   reporter: '@reportportal/agent-js-mocha',
   reporterOptions: {
-    "apiKey": "reportportalApiKey",
+    "apiKey": "<API_KEY>",
     "endpoint": "https://your.reportportal.server/api/v1",
     "project": "YourReportPortalProjectName",
     "launch": "YourLauncherName",
@@ -80,6 +80,7 @@ The full list of available options presented below.
 | skippedIssue          | Optional   | true      | reportportal provides feature to mark skipped tests as not 'To Investigate'. <br/> Option could be equal boolean values: <br/> *true* - skipped tests considered as issues and will be marked as 'To Investigate' on reportportal. <br/> *false* - skipped tests will not be marked as 'To Investigate' on application.                                                                                                                                                                                                                          |
 | reportHooks           | Optional   | false     | Determines report before and after hooks or not.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
 | token                 | Deprecated | Not set   | Use `apiKey` instead.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+| extendTestDescriptionWithLastError | Optional   | true      | If set to true the latest error log will be attached to the test case description.                                                                                                                                                                                                                                                                                                                                                                                                                                                               |
 
 
 ## Examples
@@ -99,7 +100,7 @@ const PublicReportingAPI = require('@reportportal/agent-js-mocha/lib/publicRepor
 `PublicReportingAPI` provides the following methods for reporting logs into the current test/step.
 
 * log(*level*, *message* , *file*). Reports *message* and optional *file* with specified log *level* as a log of the current test. If called outside of the test, reports message as a log of the current suite.<br/>
-*level* shoud be equal to one the following values: *TRACE*, *DEBUG*, *INFO*, *WARN*, *ERROR*, *FATAL*.<br/>
+*level* can be one of the predefined values (*TRACE*, *DEBUG*, *INFO*, *WARN*, *ERROR*, *FATAL*) or any custom string.<br/>
 *file* should be an object: <br/>
 ```javascript
 {

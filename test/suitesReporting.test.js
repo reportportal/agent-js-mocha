@@ -15,6 +15,7 @@
  */
 
 const EventEmitter = require('events');
+const helpers = require('@reportportal/client-javascript/lib/helpers');
 const { getDefaultConfig, RPClient, mockedDate } = require('./mocks');
 const ReportportalAgent = require('./../lib/mochaReporter');
 
@@ -44,6 +45,10 @@ describe('suites reporting', function () {
       title: 'Second level suite',
       parent: suiteFirstLevel,
     };
+  });
+
+  beforeEach(() => {
+    jest.spyOn(helpers, 'now').mockReturnValue(mockedDate);
   });
 
   afterEach(function () {
