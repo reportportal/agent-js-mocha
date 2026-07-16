@@ -20,6 +20,7 @@ const {
   getAgentInfo,
   parseAttributes,
   convertIsoStringToMicroseconds,
+  getBeforeHookStartTime,
 } = require('./../lib/utils');
 
 describe('utils', function () {
@@ -46,6 +47,36 @@ describe('utils', function () {
 
       expect(Object.keys(agentInfo)).toContain('version');
       expect(Object.keys(agentInfo)).toContain('name');
+    });
+
+    it('should contain framework_version property', function () {
+      const agentInfo = getAgentInfo();
+
+      expect(Object.keys(agentInfo)).toContain('framework_version');
+      expect(typeof agentInfo.framework_version).toBe('string');
+    });
+
+    it('should fall back to "not_set" when mocha package is not found', function () {
+      jest.resetModules();
+      jest.doMock('mocha/package.json', () => {
+        // eslint-disable-next-line no-throw-literal
+        throw { code: 'MODULE_NOT_FOUND' };
+      });
+      // eslint-disable-next-line global-require
+      const { getAgentInfo: getAgentInfoFresh } = require('./../lib/utils');
+      const agentInfo = getAgentInfoFresh();
+
+      expect(agentInfo.framework_version).toBe('not_set');
+    });
+
+    it('should fall back to "not_set" when mocha package.json has no version', function () {
+      jest.resetModules();
+      jest.doMock('mocha/package.json', () => ({ version: '' }), { virtual: true });
+      // eslint-disable-next-line global-require
+      const { getAgentInfo: getAgentInfoFresh } = require('./../lib/utils');
+      const agentInfo = getAgentInfoFresh();
+
+      expect(agentInfo.framework_version).toBe('not_set');
     });
   });
   describe('parseAttributes', function () {
@@ -84,6 +115,20 @@ describe('utils', function () {
       const isoString = '1970-01-01T00:00:00.000001Z';
       const expectedMicroseconds = 1;
       expect(convertIsoStringToMicroseconds(isoString)).toBe(expectedMicroseconds);
+    });
+  });
+
+  describe('getBeforeHookStartTime', () => {
+    it('should return ISO string with 1 millisecond subtracted', () => {
+      const isoString = '2024-09-20T14:32:35.304456Z';
+      const expected = '2024-09-20T14:32:35.303456Z';
+      expect(getBeforeHookStartTime(isoString)).toBe(expected);
+    });
+
+    it('should handle microsecond underflow within the same second', () => {
+      const isoString = '2024-09-20T14:32:35.000500Z';
+      const expected = '2024-09-20T14:32:34.999500Z';
+      expect(getBeforeHookStartTime(isoString)).toBe(expected);
     });
   });
 });
