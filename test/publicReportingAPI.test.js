@@ -14,7 +14,7 @@
  *  limitations under the License.
  */
 
-const ClientPublicReportingAPI = require('@reportportal/client-javascript/lib/publicReportingAPI');
+const ClientPublicReportingAPI = require('@reportportal/client-javascript/publicReportingAPI');
 const PublicReportingAPI = require('./../lib/publicReportingAPI');
 
 const publicReportingAPILaunchStatusMethods = [
