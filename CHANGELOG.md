@@ -1,3 +1,7 @@
+### Changed
+- **Breaking change** Drop support of Node.js 14. The version [5.1.0](https://github.com/reportportal/agent-js-mocha/releases/tag/v5.1.0) is the latest that supports it. The minimum supported Node.js version is now 16.0.0.
+- `@reportportal/client-javascript` bumped to version `5.6.0`.
+
 ### Added
 - Custom log level support in README for `PublicReportingAPI.log()` (see [Logs and attachments](README.md#logs-and-attachments)).
 

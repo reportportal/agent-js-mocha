@@ -15,7 +15,7 @@
  */
 
 const EventEmitter = require('events');
-const helpers = require('@reportportal/client-javascript/lib/helpers');
+const helpers = require('@reportportal/client-javascript/helpers');
 const { getDefaultConfig, RPClient, mockedDate } = require('./mocks');
 const ReportportalAgent = require('./../lib/mochaReporter');
 const testStatuses = require('./../lib/constants/testStatuses');
