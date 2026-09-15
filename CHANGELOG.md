@@ -2,7 +2,8 @@
 - Custom log level support in README for `PublicReportingAPI.log()` (see [Logs and attachments](README.md#logs-and-attachments)).
 
 ### Changed
-- **Breaking change** Drop support of Node.js 12 and 14. The version [5.1.0](https://github.com/reportportal/agent-js-mocha/releases/tag/v5.1.0) is the latest that supports it. The minimum supported Node.js version is now 16.0.0.
+- **Breaking change** Drop support of Node.js 14. The version [5.1.0](https://github.com/reportportal/agent-js-mocha/releases/tag/v5.1.0) is the latest that supports it. The minimum supported Node.js version is now 16.0.0.
+- **Breaking change** Drop support of Node.js 12. The version [5.1.0](https://github.com/reportportal/agent-js-mocha/releases/tag/v5.1.0) is the latest that supports it.
 - The agent now supports reporting the time for launches, test items and logs with microsecond precision in the ISO string format.
 For logs, microsecond precision is available on the UI from ReportPortal [version 24.2](https://reportportal.io/docs/releases/Version24.2/#:~:text=import%20plugin.-,Microseconds,-added%20to%20timestamps).
 - `@reportportal/client-javascript` bumped to version `5.6.0`.
